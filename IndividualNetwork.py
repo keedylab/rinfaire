@@ -1,0 +1,200 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import gemmi
+import numpy as np
+import networkx as nx
+import pyvis
+from pyvis.network import Network
+
+class IndividualNetwork:
+    def __init__ (self, Structure):
+        self.structure = Structure.model
+        self.name = Structure.name
+
+        # Creates networkX graph object
+        self.network = nx.Graph()
+    
+    def findAltConfAtoms(self):
+        # Creates empty dictionary of atoms with alt-confs
+        atomsWithAltConfsDict = {}
+
+        # Iterates over all chains, residues, and atoms to only add atoms that have an altloc
+        for n_ch, chain in enumerate(self.structure[0]):
+            for n_res, res in enumerate(chain):
+                
+                # Asserts that the residue is part of the polymer and not a ligand or water (by ensuring that it's not a HETATM)
+                if res.het_flag == 'A':
+                    print("Polymer: ", res.name,res,chain)
+                    
+                    # Iterates over each atom in the residue
+                    for n_atom, atom in enumerate(res):
+                
+                        # Checks if the atom has an altloc label
+                        if atom.has_altloc():
+
+                            #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
+                            if res.seqid.num in atomsWithAltConfsDict.keys():
+                                print('Resi present: ', res)
+                                atomsWithAltConfsDict[res.seqid.num].append(atom)
+                                
+                            else:
+                                print('New resi: ', res)
+                                atomsWithAltConfsDict[res.seqid.num] = []
+                                atomsWithAltConfsDict[res.seqid.num].append(atom)
+
+        return atomsWithAltConfsDict
+
+    def flagAmideHydrogenOnlyResidues (self, atomsWithAltConfsDict):
+        amideHOnlyList = []
+
+        for altResi in atomsWithAltConfsDict.copy():
+
+            listAtoms = []
+            for altAtoms in atomsWithAltConfsDict[altResi]:
+                listAtoms.append(altAtoms.name)
+
+            # Uses a set to ensure that all of the elements present in the list are all Hydrogens
+            # Since the number of Hydrogens could vary based on how many altlocs there are
+            if set(listAtoms) == set('H'):
+                amideHOnlyList.append(altResi)
+                print("Adding to amide Hydrogen only list: ", altResi, " because it only has amide hydrogen alt-confs: ", listAtoms)
+
+        return amideHOnlyList
+    
+    def populateNetwork (self):
+        atomsWithAltConfsDict = self.findAltConfAtoms()
+        amideHOnlyList = self.flagAmideHydrogenOnlyResidues(atomsWithAltConfsDict)
+        
+        contactCutoffValue = 4 # Distance cutoff value
+        tooFarCutoffValue = 25 # Minimum distance for two atoms and therefore residues to be considered as too far from each other
+
+        counterAtomAtom = 0
+        counterResiResi = 0
+
+        #List of all backbone atoms in the protein structure
+        backboneAtoms = ['N','CA','C','O','H','HA','HA2','HA3']
+
+        for firstResi in atomsWithAltConfsDict:
+            for secondResi in atomsWithAltConfsDict:
+
+                # Condition that satisfies both the fact that the first and second residues cannot be equal to each other
+                # And that we can prune duplicate connections by only looking at connection i,j and not j,i
+                if firstResi < secondResi:
+
+                    tooFarFlag = False
+                    amideHFlag = False
+                    
+                    for firstAtom in atomsWithAltConfsDict[firstResi]:
+                        for secondAtom in atomsWithAltConfsDict[secondResi]:
+
+                            # Condition to remove any cases of residues with amide H alt confs having connections with adjacent residues on the backbone
+                            if ((firstResi in amideHOnlyList) or (secondResi in amideHOnlyList)) and (firstResi + 1 == secondResi):
+                                amideHFlag = True
+                                print("These residues' connections:", firstResi, secondResi, "are not being searched because they are adjacent and one has amide H's")
+                                break
+
+                            # First condition to test if the two residues are adjacent residues that have coupled backbone alt-confs
+                            if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
+                                print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
+                                counterAtomAtom += 1 # Increments the number of atom-atom connections by 1
+                    
+                                # Tests if the connection it found is already present in the edge list
+                                # If so, it increments the edge weight by 1. If not, it creates a new edge
+                                if (firstResi,secondResi) in self.network.edges:
+                                    print('Adding to existing connection between: ', firstResi, secondResi)
+                                    self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + 0.1 # Increments the weight of the edge by 0.1
+                                else:
+                                    print('Creating new connection between: ', firstResi, secondResi)
+                                    self.network.add_edge(firstResi, secondResi, weight=0.1) # Adds a new edge with a weight of 0.1
+                                    counterResiResi += 1 #Increments the count of residue-residue connections by 1
+
+                            # If not, then calculate the distance between the two atoms
+                            else:
+                                # Calculates distance between the two atoms using Gemmi dist() function
+                                distance = firstAtom.pos.dist(secondAtom.pos)  
+
+                                # Condition that checks if the distance between atoms is greater than the threshold
+                                # If it is, then they are considered to be too far to even both checking the rest of the residue
+                                if distance > tooFarCutoffValue:
+                                    tooFarFlag = True
+                                    print("These residues are too far to warrant a full atom-atom search: ", firstResi, secondResi, "checking next connection")
+                                    break
+                                
+                                # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
+                                elif distance < contactCutoffValue:
+                                    print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
+                                    counterAtomAtom += 1 # Increments the number of atom-atom connections by 1
+                    
+                                    # Tests if the connection it found is already present in the edge list
+                                    # If so, it increments the edge weight by 1. If not, it creates a new edge
+                                    if (firstResi,secondResi) in self.network.edges:
+                                        print('Adding to existing connection between: ', firstResi, secondResi)
+                                        self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + 0.1 # Increments the weight of the edge by 0.1
+                                    else:
+                                        print('Creating new connection between: ', firstResi, secondResi)
+                                        self.network.add_edge(firstResi, secondResi, weight=0.1) # Adds a new edge with a weight of 0.1
+                                        counterResiResi += 1 #Increments the count of residue-residue connections by 1
+
+                        # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
+                        # ...between this pair and move on to the next pair of residues
+                        if tooFarFlag == True or amideHFlag == True:
+                            break
+    
+    def visualize (self):
+        # From VisArray function in postCONTACT script
+        self.network.remove_nodes_from(list(nx.isolates(self.network)))
+        nx.convert_node_labels_to_integers(self.network)
+
+        for i in self.network.nodes():
+            self.network.nodes[i]['label'] = str(i)
+
+        widths = nx.get_edge_attributes(self.network, 'weight')
+
+        nts = Network(notebook=True)
+
+        # populates the nodes and edges data structures
+        nts.from_nx(self.network)
+        outputpath = '6B8Z_qFit_V4.html'
+        nts.show(outputpath)
+
+    # def convertToAdjacency (self):
+        
+
+# print("Total number of atom-atom connections is: ", counterAtomAtom)
+# print("Total number of residue-residue connections is: ", counterResiResi)
+# print(G.edges)
+# print(G.edges.data('weight'))
+
+# # Defining a separate function that looks for and labels residues that are adjacent to ligands
+
+# # Creates empty dictionary of ligand atoms
+# ligandAtomsDict = {}
+
+# # Iterates over all chains, residues, and atoms to only add ligand atoms
+# for n_ch, chain in enumerate(st[0]):
+    
+#     for n_res, res in enumerate(chain):
+        
+#         # Asserts that the atom is a HETATM (H) and that it is not a water -- should give us all ligand atoms
+#         if res.het_flag == 'H' and (res.is_water() == False):
+#             print("Ligand: ", res.name,res,chain)
+            
+#             # Iterates over each atom in the residue
+#             for n_atom, atom in enumerate(res):
+
+#                 #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
+#                 if res.seqid.num in atomsWithAltConfsDict.keys():
+#                     print('Ligand present: ', res)
+#                     atomsWithAltConfsDict[res.seqid.num].append(atom)
+                    
+#                 else:
+#                     print('New ligand: ', res)
+#                     atomsWithAltConfsDict[res.seqid.num] = []
+#                     atomsWithAltConfsDict[res.seqid.num].append(atom)
+
+#                     # Checks if the atom has an altloc label
+#                     # if atom.has_altloc():
+
+
+
