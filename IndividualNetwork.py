@@ -9,7 +9,7 @@ from pyvis.network import Network
 
 class IndividualNetwork:
     def __init__ (self, Structure):
-        self.structure = Structure.model
+        self.model = Structure.model
         self.name = Structure.name
 
         # Creates networkX graph object
@@ -20,12 +20,12 @@ class IndividualNetwork:
         atomsWithAltConfsDict = {}
 
         # Iterates over all chains, residues, and atoms to only add atoms that have an altloc
-        for n_ch, chain in enumerate(self.structure[0]):
+        for n_ch, chain in enumerate(self.model[0]):
             for n_res, res in enumerate(chain):
                 
                 # Asserts that the residue is part of the polymer and not a ligand or water (by ensuring that it's not a HETATM)
                 if res.het_flag == 'A':
-                    print("Polymer: ", res.name,res,chain)
+                    #print("Polymer: ", res.name,res,chain)
                     
                     # Iterates over each atom in the residue
                     for n_atom, atom in enumerate(res):
@@ -35,11 +35,11 @@ class IndividualNetwork:
 
                             #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
                             if res.seqid.num in atomsWithAltConfsDict.keys():
-                                print('Resi present: ', res)
+                                #print('Resi present: ', res)
                                 atomsWithAltConfsDict[res.seqid.num].append(atom)
                                 
                             else:
-                                print('New resi: ', res)
+                                #print('New resi: ', res)
                                 atomsWithAltConfsDict[res.seqid.num] = []
                                 atomsWithAltConfsDict[res.seqid.num].append(atom)
 
@@ -58,7 +58,7 @@ class IndividualNetwork:
             # Since the number of Hydrogens could vary based on how many altlocs there are
             if set(listAtoms) == set('H'):
                 amideHOnlyList.append(altResi)
-                print("Adding to amide Hydrogen only list: ", altResi, " because it only has amide hydrogen alt-confs: ", listAtoms)
+                #print("Adding to amide Hydrogen only list: ", altResi, " because it only has amide hydrogen alt-confs: ", listAtoms)
 
         return amideHOnlyList
     
@@ -91,21 +91,21 @@ class IndividualNetwork:
                             # Condition to remove any cases of residues with amide H alt confs having connections with adjacent residues on the backbone
                             if ((firstResi in amideHOnlyList) or (secondResi in amideHOnlyList)) and (firstResi + 1 == secondResi):
                                 amideHFlag = True
-                                print("These residues' connections:", firstResi, secondResi, "are not being searched because they are adjacent and one has amide H's")
+                                #print("These residues' connections:", firstResi, secondResi, "are not being searched because they are adjacent and one has amide H's")
                                 break
 
                             # First condition to test if the two residues are adjacent residues that have coupled backbone alt-confs
                             if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
-                                print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
+                                #print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
                                 counterAtomAtom += 1 # Increments the number of atom-atom connections by 1
                     
                                 # Tests if the connection it found is already present in the edge list
                                 # If so, it increments the edge weight by 1. If not, it creates a new edge
                                 if (firstResi,secondResi) in self.network.edges:
-                                    print('Adding to existing connection between: ', firstResi, secondResi)
+                                    #print('Adding to existing connection between: ', firstResi, secondResi)
                                     self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + 0.1 # Increments the weight of the edge by 0.1
                                 else:
-                                    print('Creating new connection between: ', firstResi, secondResi)
+                                    #print('Creating new connection between: ', firstResi, secondResi)
                                     self.network.add_edge(firstResi, secondResi, weight=0.1) # Adds a new edge with a weight of 0.1
                                     counterResiResi += 1 #Increments the count of residue-residue connections by 1
 
@@ -118,21 +118,21 @@ class IndividualNetwork:
                                 # If it is, then they are considered to be too far to even both checking the rest of the residue
                                 if distance > tooFarCutoffValue:
                                     tooFarFlag = True
-                                    print("These residues are too far to warrant a full atom-atom search: ", firstResi, secondResi, "checking next connection")
+                                    #print("These residues are too far to warrant a full atom-atom search: ", firstResi, secondResi, "checking next connection")
                                     break
                                 
                                 # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
                                 elif distance < contactCutoffValue:
-                                    print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
+                                    #print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
                                     counterAtomAtom += 1 # Increments the number of atom-atom connections by 1
                     
                                     # Tests if the connection it found is already present in the edge list
                                     # If so, it increments the edge weight by 1. If not, it creates a new edge
                                     if (firstResi,secondResi) in self.network.edges:
-                                        print('Adding to existing connection between: ', firstResi, secondResi)
+                                        #print('Adding to existing connection between: ', firstResi, secondResi)
                                         self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + 0.1 # Increments the weight of the edge by 0.1
                                     else:
-                                        print('Creating new connection between: ', firstResi, secondResi)
+                                        #print('Creating new connection between: ', firstResi, secondResi)
                                         self.network.add_edge(firstResi, secondResi, weight=0.1) # Adds a new edge with a weight of 0.1
                                         counterResiResi += 1 #Increments the count of residue-residue connections by 1
 
@@ -146,20 +146,25 @@ class IndividualNetwork:
         self.network.remove_nodes_from(list(nx.isolates(self.network)))
         nx.convert_node_labels_to_integers(self.network)
 
+        # Converts node labels into strings
         for i in self.network.nodes():
             self.network.nodes[i]['label'] = str(i)
 
-        widths = nx.get_edge_attributes(self.network, 'weight')
+        # Gets weights of network
+        #widths = nx.get_edge_attributes(self.network, 'weight')
 
+        # Creates network object
+        # Notebook = true is for Jupyter Notebook (might need to remove later)
         nts = Network(notebook=True)
 
         # populates the nodes and edges data structures
         nts.from_nx(self.network)
-        outputpath = '6B8Z_qFit_V4.html'
+        outputpath = f'{self.name}.html'
         nts.show(outputpath)
 
-    # def convertToAdjacency (self):
-        
+    def convertToAdjacency (self):
+        return nx.to_dict_of_dicts(self.network)
+
 
 # print("Total number of atom-atom connections is: ", counterAtomAtom)
 # print("Total number of residue-residue connections is: ", counterResiResi)
