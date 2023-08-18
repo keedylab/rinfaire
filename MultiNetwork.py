@@ -35,10 +35,11 @@ class MultiNetwork:
         # Increments by one due to how indexing starts at 0 but residue numbering starts at 1
         self.size += 1
 
-    def OneToAll (self, seqID, startingResi, seqResidue):
-        mainCount = 0
-        seqCount = startingResi
+    def oneToAll (self, seqID, startingResi, seqResidue):
         
+        mainCount = 0
+        seqCount = startingResi - 1 # Subtracts 1 b/c it has not iterated over that residue yet in its traversal of the sequence
+   
         #if self.seqaln[seq_id][seq_residue] == '-':
         #    return None;
         
@@ -57,14 +58,14 @@ class MultiNetwork:
             # (since seq count represents the position in the individual sequence and not the full alignment)
             if seqCount == int(seqResidue) and i != '-':
                 
-                #print("Main count:", mainCount," Seq count: ", seqCount)
+                #print("Final Main count:", mainCount," Seq count: ", seqCount, 'Resi:', i)
 
                 # Returns the main count which is the position on the full alignment
                 return(mainCount)
 
-            #print("Main count:", mainCount," Seq count: ", seqCount)
+            #print("Main count:", mainCount," Seq count: ", seqCount, 'Resi:', i)
 
-    def Add (self, inputAdjacencyDict, inputStructName, inputStartingResi, normalizeflag):
+    def add (self, inputAdjacencyDict, inputStructName, inputStartingResi, normalizeflag):
         
         # Creates new blank 3D array that is of size (1 x length of seq x length of seq)
         addArray = np.zeros((1, self.size, self.size))
@@ -75,8 +76,8 @@ class MultiNetwork:
                 #print(f"Before conversion: {firstResi} {secondResi}")
 
                 # Uses the OneToAll conversion function to map individual resi # to sequence alignment #
-                updatedFirstResi = self.OneToAll(inputStructName, inputStartingResi, firstResi)
-                updatedSecondResi = self.OneToAll(inputStructName, inputStartingResi, secondResi)
+                updatedFirstResi = self.oneToAll(inputStructName, inputStartingResi, firstResi)
+                updatedSecondResi = self.oneToAll(inputStructName, inputStartingResi, secondResi)
 
                 #print(f"After conversion: {updatedFirstResi} {updatedSecondResi}")
 
@@ -103,12 +104,31 @@ class MultiNetwork:
         # addarray2d = addarray.reshape(self.size,self.size) # Converts addarray that technically is 3D array with third dimension of size 1 back to flat 2D array
         # self.VisArray(addarray2d,addpdbname)
 
-    def Sum (self):
+    def sum (self):
+
         sumMatrix = np.sum(self.array,axis=0)
-        print(sumMatrix)
+        return sumMatrix
+    
+    def visualize (self, inputarray, outputname):
+
+        # Creates graph from Numpy array
+        G = nx.from_numpy_array(inputarray)
+        G.remove_nodes_from(list(nx.isolates(G)))
+        nx.convert_node_labels_to_integers(G)
         
-        # Visualizing the added array
-        #self.VisArray(SumMatrix,'sumPDB')
+        for i in G.nodes():
+            G.nodes[i]['label'] = str(i)
+        
+        # widths = nx.get_edge_attributes(G, 'weight')
+
+        #print("Multi Network \n", G.edges(data=True), "\n")
+        
+        nts = Network(notebook=True)
+        
+        # populates the nodes and edges data structures
+        nts.from_nx(G)
+        outputpath = outputname + '.html'
+        nts.show(outputpath)
     
 
     

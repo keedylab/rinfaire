@@ -9,18 +9,17 @@ from pyvis.network import Network
 
 class IndividualNetwork:
     def __init__ (self, Structure):
-        self.model = Structure.model
-        self.name = Structure.name
-
-        # Creates networkX graph object
-        self.network = nx.Graph()
+        
+        self.struct = Structure
+        self.network = nx.Graph() # Creates networkX graph object
     
     def findAltConfAtoms(self):
+
         # Creates empty dictionary of atoms with alt-confs
         atomsWithAltConfsDict = {}
 
         # Iterates over all chains, residues, and atoms to only add atoms that have an altloc
-        for n_ch, chain in enumerate(self.model[0]):
+        for n_ch, chain in enumerate(self.struct.model[0]):
             for n_res, res in enumerate(chain):
                 
                 # Asserts that the residue is part of the polymer and not a ligand or water (by ensuring that it's not a HETATM)
@@ -159,7 +158,7 @@ class IndividualNetwork:
 
         # populates the nodes and edges data structures
         nts.from_nx(self.network)
-        outputpath = f'{self.name}.html'
+        outputpath = f'{self.struct.name}.html'
         nts.show(outputpath)
 
     def convertToAdjacency (self):

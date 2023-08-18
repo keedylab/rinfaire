@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 gemmi = "*"
 numpy = "*"
-jupyter = "*"
 pyvis = "==0.3.1"
 networkx = "*"
 biopython = "*"

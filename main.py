@@ -45,11 +45,9 @@ def readFileList (args):
     inputStructureListFile.close()
     return fileList
 
-def generateNetworks (fileList, args):
+def generateIndividualNetworks (fileList, args):
 
-    if args.multi == True:
-        # Initializes an empty multi-network object 
-        multi = MultiNetwork(args.alignmentFile)
+    networkList = []
 
     # Loops over every pathname in the structure pathname list
     for structPathName in fileList:
@@ -62,20 +60,41 @@ def generateNetworks (fileList, args):
         net.populateNetwork()
         net.visualize()
 
-        if args.multi == True:
-            # Adds the individual network object to the multi-network object
-            multi.Add(net.convertToAdjacency(), struct.getName()[0:4], struct.getFirstResi(), False)
-            print(multi.array)
+        # Appends the network generated into the list of networks
+        networkList.append(net)
 
-    if args.multi == True:
-        return multi
-    else:
-        return None
+    return networkList
+    
+def generateMultiNetwork(networkList, args):
+    
+    # Initializes an empty multi-network object 
+    multi = MultiNetwork(args.alignmentFile)
+
+    # Loops over each network in the list
+    for net in networkList:
+
+        # Adds the individual network object to the multi-network object
+        multi.add(
+            net.convertToAdjacency(), 
+            net.struct.getName()[0:4], 
+            net.struct.getFirstResi(), 
+            False
+        )
+
+    # Calculates the sum matrix of all the structures in the object
+    # Does this across each residue pairing
+    sumMatrix = multi.sum()
+    multi.visualize(sumMatrix, 'sumNetwork')
+
+    return multi
 
 def main ():
     args = setupArguments()
     fileList = readFileList(args)
-    multiNetwork = generateNetworks(fileList, args)
+    networkList = generateIndividualNetworks(fileList, args)
+    
+    if args.multi == True:
+        multi = generateMultiNetwork(networkList, args)
 
 if __name__ == "__main__":
     main()
