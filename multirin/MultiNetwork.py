@@ -10,10 +10,11 @@ import csv
 class MultiNetwork:
     
     # Class constructor
-    def __init__(self,alignmentpath):
+    def __init__(self, args):
         
-        self.setSeqAlignment(alignmentpath)
+        self.setSeqAlignment(args.alignmentFile)
         self.array = np.zeros((0, self.size, self.size))
+        self.args = args
             
         #self.lookuptable = table with pdb indices and relevant information
 
@@ -65,7 +66,7 @@ class MultiNetwork:
 
             #print("Main count:", mainCount," Seq count: ", seqCount, 'Resi:', i)
 
-    def add (self, inputAdjacencyDict, inputStructName, inputStartingResi, normalizeflag):
+    def add (self, inputAdjacencyDict, inputStructName, inputStartingResi):
         
         # Creates new blank 3D array that is of size (1 x length of seq x length of seq)
         addArray = np.zeros((1, self.size, self.size))
@@ -83,20 +84,32 @@ class MultiNetwork:
 
                 # Adds pairing to the array along with the weight
                 addArray[0][updatedFirstResi][updatedSecondResi] = inputAdjacencyDict[firstResi][secondResi]['width']
-                
-        # if normalizeflag == True:
-        #     maxvalue = 0
-        #     for idx, x in np.ndenumerate(addArray):
-        #         if x > maxvalue:
-        #             maxvalue = x
-
-        #     print(maxvalue)
-
-        #     # Iterate over all elements and divide by the max (scales from 0-10)
-        #     with np.nditer(addarray, op_flags=['readwrite']) as it:
-        #         for x in it:
-        #             x[...] = (x/maxvalue)*10
         
+        # Normalizalization of edge weights relative to the whole structure being added
+        # All values are scaled from (0) to the max edge weight present (10)
+        if self.args.no_normalizing_struct == False:
+
+            # Calculate the maximum value in the array being added
+            maxvalue = 0
+            for idx, x in np.ndenumerate(addArray):
+                if x > maxvalue:
+                    maxvalue = x
+
+            # Iterate over all elements and divide by the max (scales from 0-10)
+            with np.nditer(addArray, op_flags=['readwrite']) as it:
+                for y in it:
+                    y[...] = (y/maxvalue)*10
+        
+        print(addArray)
+
+        # Calculate the maximum value in the array being added
+        maxvalueprint = 0
+        for idx, x in np.ndenumerate(addArray):
+            if x > maxvalueprint:
+                maxvalueprint = x
+
+        print(maxvalueprint)
+
         # Merges new array with the main array
         self.array = np.concatenate((self.array,addArray), axis=0)
         

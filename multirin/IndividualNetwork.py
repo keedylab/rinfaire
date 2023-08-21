@@ -8,10 +8,11 @@ import pyvis
 from pyvis.network import Network
 
 class IndividualNetwork:
-    def __init__ (self, Structure):
+    def __init__ (self, Structure, args):
         
         self.struct = Structure
         self.network = nx.Graph() # Creates networkX graph object
+        self.args = args
     
     def findAltConfAtoms(self):
 
@@ -61,6 +62,30 @@ class IndividualNetwork:
 
         return amideHOnlyList
     
+    def updateEdge (self, firstResi, secondResi, counterResiResi):
+
+        # Conditional based on if normalizing the atom-atom pair numbers based on the residue type is toggled on/off
+        # Normally normalization is: ON 
+        if self.args.no_normalizing_resi == False:
+            # Normalizes by taking each atom-atom pair added and dividing it by the total # of atoms
+            # Equivalent to taking the full count of atom-atom pairs for this residue pair and dividign by total # of atoms
+            addValue = 10 / (self.struct.sequence[firstResi]['atomcount'] + self.struct.sequence[secondResi]['atomcount'])
+        else:
+            addValue = 0.1
+
+        # Tests if the connection it found is already present in the edge list
+        # If so, it increments the edge weight by 0.1. If not, it creates a new edge
+        if (firstResi,secondResi) in self.network.edges:
+            #print('Adding to existing connection between: ', firstResi, secondResi)
+            self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + addValue
+        else:
+            #print('Creating new connection between: ', firstResi, secondResi)
+            self.network.add_edge(firstResi, secondResi, weight=addValue) # Adds a new edge with a weight of 0.1
+            counterResiResi += 1 #Increments the count of residue-residue connections by 1
+        
+        return counterResiResi
+
+    
     def populateNetwork (self):
         atomsWithAltConfsDict = self.findAltConfAtoms()
         amideHOnlyList = self.flagAmideHydrogenOnlyResidues(atomsWithAltConfsDict)
@@ -68,7 +93,6 @@ class IndividualNetwork:
         contactCutoffValue = 4 # Distance cutoff value
         tooFarCutoffValue = 25 # Minimum distance for two atoms and therefore residues to be considered as too far from each other
 
-        counterAtomAtom = 0
         counterResiResi = 0
 
         #List of all backbone atoms in the protein structure
@@ -95,18 +119,9 @@ class IndividualNetwork:
 
                             # First condition to test if the two residues are adjacent residues that have coupled backbone alt-confs
                             if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
+                                
                                 #print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                counterAtomAtom += 1 # Increments the number of atom-atom connections by 1
-                    
-                                # Tests if the connection it found is already present in the edge list
-                                # If so, it increments the edge weight by 1. If not, it creates a new edge
-                                if (firstResi,secondResi) in self.network.edges:
-                                    #print('Adding to existing connection between: ', firstResi, secondResi)
-                                    self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + 0.1 # Increments the weight of the edge by 0.1
-                                else:
-                                    #print('Creating new connection between: ', firstResi, secondResi)
-                                    self.network.add_edge(firstResi, secondResi, weight=0.1) # Adds a new edge with a weight of 0.1
-                                    counterResiResi += 1 #Increments the count of residue-residue connections by 1
+                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi)
 
                             # If not, then calculate the distance between the two atoms
                             else:
@@ -123,17 +138,7 @@ class IndividualNetwork:
                                 # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
                                 elif distance < contactCutoffValue:
                                     #print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                    counterAtomAtom += 1 # Increments the number of atom-atom connections by 1
-                    
-                                    # Tests if the connection it found is already present in the edge list
-                                    # If so, it increments the edge weight by 1. If not, it creates a new edge
-                                    if (firstResi,secondResi) in self.network.edges:
-                                        #print('Adding to existing connection between: ', firstResi, secondResi)
-                                        self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + 0.1 # Increments the weight of the edge by 0.1
-                                    else:
-                                        #print('Creating new connection between: ', firstResi, secondResi)
-                                        self.network.add_edge(firstResi, secondResi, weight=0.1) # Adds a new edge with a weight of 0.1
-                                        counterResiResi += 1 #Increments the count of residue-residue connections by 1
+                                    counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi)
 
                         # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
                         # ...between this pair and move on to the next pair of residues

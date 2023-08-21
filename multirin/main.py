@@ -26,6 +26,20 @@ def setupArguments ():
         help='Flag that if present combines and analyzes the multiple networks inputted together'
     )
 
+    parser.add_argument( 
+        '--no_normalizing_resi', 
+        default=False,
+        action='store_true', 
+        help="Turns off the normalization of each residue-residue pair in the network by the size of the residue"
+    )
+
+    parser.add_argument( 
+        '--no_normalizing_struct', 
+        default=False,
+        action='store_true', 
+        help="Turns off the normalization of each structure's network in relation to the others"
+    )
+
     args = parser.parse_args()
 
     print(args.structureListFile, args.alignmentFile, args.multi)
@@ -53,10 +67,10 @@ def generateIndividualNetworks (fileList, args):
     for structPathName in fileList:
         
         # Creates a structure object from the structure in pathname
-        struct = Structure(structPathName)
+        struct = Structure(structPathName, args)
 
         # Creates an individual network object from the structure object and then populates the network
-        net = IndividualNetwork(struct)
+        net = IndividualNetwork(struct, args)
         net.populateNetwork()
         net.visualize()
 
@@ -68,7 +82,7 @@ def generateIndividualNetworks (fileList, args):
 def generateMultiNetwork(networkList, args):
     
     # Initializes an empty multi-network object 
-    multi = MultiNetwork(args.alignmentFile)
+    multi = MultiNetwork(args)
 
     # Loops over each network in the list
     for net in networkList:
@@ -77,8 +91,7 @@ def generateMultiNetwork(networkList, args):
         multi.add(
             net.convertToAdjacency(), 
             net.struct.getName()[0:4], 
-            net.struct.getFirstResi(), 
-            False
+            net.struct.getFirstResi()
         )
 
     # Calculates the sum matrix of all the structures in the object
