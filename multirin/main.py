@@ -1,6 +1,6 @@
-from IndividualNetwork import IndividualNetwork
-from Structure import Structure
-from MultiNetwork import MultiNetwork
+from .IndividualNetwork import IndividualNetwork
+from .Structure import Structure
+from .MultiNetwork import MultiNetwork
 import argparse
 
 def setupArguments ():
@@ -41,8 +41,6 @@ def setupArguments ():
     )
 
     args = parser.parse_args()
-
-    print(args.structureListFile, args.alignmentFile, args.multi)
     return args
 
 def readFileList (args):
