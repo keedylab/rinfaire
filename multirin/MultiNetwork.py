@@ -10,7 +10,7 @@ import csv
 class MultiNetwork:
     
     # Class constructor
-    def __init__(self, args):
+    def __init__ (self, args):
         
         self.setSeqAlignment(args.alignmentFile)
         self.array = np.zeros((0, self.size, self.size))

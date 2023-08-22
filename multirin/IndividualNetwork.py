@@ -14,7 +14,7 @@ class IndividualNetwork:
         self.network = nx.Graph() # Creates networkX graph object
         self.args = args
     
-    def findAltConfAtoms(self):
+    def findAltConfAtoms (self):
 
         # Creates empty dictionary of atoms with alt-confs
         atomsWithAltConfsDict = {}
