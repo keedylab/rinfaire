@@ -5,7 +5,7 @@ from scipy.cluster.hierarchy import dendrogram, linkage, average
 from scipy.spatial.distance import pdist, squareform
 from matplotlib import pyplot as plt
 from pyvis.network import Network
-import csv
+import logging
 
 class MultiNetwork:
     
@@ -83,39 +83,34 @@ class MultiNetwork:
                 #print(f"After conversion: {updatedFirstResi} {updatedSecondResi}")
 
                 # Adds pairing to the array along with the weight
-                addArray[0][updatedFirstResi][updatedSecondResi] = inputAdjacencyDict[firstResi][secondResi]['width']
+                addArray[0][updatedFirstResi][updatedSecondResi] = inputAdjacencyDict[firstResi][secondResi]['weight']
         
-        # Normalizalization of edge weights relative to the whole structure being added
+        # Normalization of edge weights relative to the whole structure being added
         # All values are scaled from (0) to the max edge weight present (10)
         if self.args.no_normalizing_struct == False:
-
-            # Calculate the maximum value in the array being added
-            maxvalue = 0
-            for idx, x in np.ndenumerate(addArray):
-                if x > maxvalue:
-                    maxvalue = x
-
-            # Iterate over all elements and divide by the max (scales from 0-10)
-            with np.nditer(addArray, op_flags=['readwrite']) as it:
-                for y in it:
-                    y[...] = (y/maxvalue)*10
-        
-        print(addArray)
-
-        # Calculate the maximum value in the array being added
-        maxvalueprint = 0
-        for idx, x in np.ndenumerate(addArray):
-            if x > maxvalueprint:
-                maxvalueprint = x
-
-        print(maxvalueprint)
-
+            addArray = self.normalizeStruct(addArray)
+            
         # Merges new array with the main array
         self.array = np.concatenate((self.array,addArray), axis=0)
         
         # # Visualizing the added array
         # addarray2d = addarray.reshape(self.size,self.size) # Converts addarray that technically is 3D array with third dimension of size 1 back to flat 2D array
         # self.VisArray(addarray2d,addpdbname)
+
+    def normalizeStruct (self, addArray):
+
+        # Calculate the maximum value in the array being added
+        maxvalue = 0
+        for idx, x in np.ndenumerate(addArray):
+            if x > maxvalue:
+                maxvalue = x
+
+        # Iterate over all elements and divide by the max (scales from 0-10)
+        with np.nditer(addArray, op_flags=['readwrite']) as it:
+            for y in it:
+                y[...] = (y/maxvalue)*10
+
+        return addArray
 
     def sum (self):
 
@@ -127,7 +122,7 @@ class MultiNetwork:
         # Creates graph from Numpy array
         G = nx.from_numpy_array(inputarray)
         G.remove_nodes_from(list(nx.isolates(G)))
-        nx.convert_node_labels_to_integers(G)
+        # nx.convert_node_labels_to_integers(G)
         
         for i in G.nodes():
             G.nodes[i]['label'] = str(i)

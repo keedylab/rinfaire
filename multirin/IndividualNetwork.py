@@ -148,7 +148,7 @@ class IndividualNetwork:
     def visualize (self):
         # From VisArray function in postCONTACT script
         self.network.remove_nodes_from(list(nx.isolates(self.network)))
-        nx.convert_node_labels_to_integers(self.network)
+        # nx.convert_node_labels_to_integers(self.network)
 
         # Converts node labels into strings
         for i in self.network.nodes():

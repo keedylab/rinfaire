@@ -1,4 +1,4 @@
-from multirin import main, Structure 
+from multirin import Structure 
 from argparse import Namespace
 import gemmi
 import unittest

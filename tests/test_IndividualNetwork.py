@@ -1,4 +1,4 @@
-from multirin import main, Structure, IndividualNetwork
+from multirin import Structure, IndividualNetwork
 from argparse import Namespace
 import gemmi
 import unittest
