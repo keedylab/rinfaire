@@ -6,6 +6,7 @@ import numpy as np
 import networkx as nx
 import pyvis
 from pyvis.network import Network
+import copy
 
 class IndividualNetwork:
     def __init__ (self, Structure, args):
@@ -146,13 +147,18 @@ class IndividualNetwork:
                             break
     
     def visualize (self):
-        # From VisArray function in postCONTACT script
-        self.network.remove_nodes_from(list(nx.isolates(self.network)))
-        # nx.convert_node_labels_to_integers(self.network)
 
-        # Converts node labels into strings
-        for i in self.network.nodes():
-            self.network.nodes[i]['label'] = str(i)
+        # Creates a deep copy of self.network
+        # So any operations performed here do not affect the class object
+        visNetwork = copy.deepcopy(self.network)
+
+        # From VisArray function in postCONTACT script
+        visNetwork.remove_nodes_from(list(nx.isolates(visNetwork)))
+        # nx.convert_node_labels_to_integers(visNetwork)
+
+        #Converts node labels into strings
+        for i in visNetwork.nodes():
+            visNetwork.nodes[i]['label'] = str(i)
 
         # Gets weights of network
         #widths = nx.get_edge_attributes(self.network, 'weight')
@@ -162,7 +168,7 @@ class IndividualNetwork:
         nts = Network(notebook=True)
 
         # populates the nodes and edges data structures
-        nts.from_nx(self.network)
+        nts.from_nx(visNetwork)
         outputpath = f'{self.struct.name}.html'
         nts.show(outputpath)
 

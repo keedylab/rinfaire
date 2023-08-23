@@ -70,7 +70,7 @@ def generateIndividualNetworks (fileList, args):
         # Creates an individual network object from the structure object and then populates the network
         net = IndividualNetwork(struct, args)
         net.populateNetwork()
-        #net.visualize()
+        net.visualize()
 
         # Appends the network generated into the list of networks
         networkList.append(net)

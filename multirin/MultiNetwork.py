@@ -89,7 +89,7 @@ class MultiNetwork:
         # All values are scaled from (0) to the max edge weight present (10)
         if self.args.no_normalizing_struct == False:
             addArray = self.normalizeStruct(addArray)
-            
+
         # Merges new array with the main array
         self.array = np.concatenate((self.array,addArray), axis=0)
         
@@ -122,15 +122,13 @@ class MultiNetwork:
         # Creates graph from Numpy array
         G = nx.from_numpy_array(inputarray)
         G.remove_nodes_from(list(nx.isolates(G)))
-        # nx.convert_node_labels_to_integers(G)
+        nx.convert_node_labels_to_integers(G)
         
         for i in G.nodes():
             G.nodes[i]['label'] = str(i)
         
         # widths = nx.get_edge_attributes(G, 'weight')
 
-        #print("Multi Network \n", G.edges(data=True), "\n")
-        
         nts = Network(notebook=True)
         
         # populates the nodes and edges data structures
