@@ -67,7 +67,7 @@ class IndividualNetwork:
 
         # Conditional based on if normalizing the atom-atom pair numbers based on the residue type is toggled on/off
         # Normally normalization is: ON 
-        if self.args.no_normalizing_resi == False:
+        if self.args.no_norm_resi == False:
             # Normalizes by taking each atom-atom pair added and dividing it by the total # of atoms
             # Equivalent to taking the full count of atom-atom pairs for this residue pair and dividign by total # of atoms
             addValue = 10 / (self.struct.sequence[firstResi]['atomcount'] + self.struct.sequence[secondResi]['atomcount'])
@@ -85,7 +85,6 @@ class IndividualNetwork:
             counterResiResi += 1 #Increments the count of residue-residue connections by 1
         
         return counterResiResi
-
     
     def populateNetwork (self):
         atomsWithAltConfsDict = self.findAltConfAtoms()

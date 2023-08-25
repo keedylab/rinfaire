@@ -87,7 +87,7 @@ class MultiNetwork:
         
         # Normalization of edge weights relative to the whole structure being added
         # All values are scaled from (0) to the max edge weight present (10)
-        if self.args.no_normalizing_struct == False:
+        if self.args.no_norm_struct == False:
             addArray = self.normalizeStruct(addArray)
 
         # Merges new array with the main array
