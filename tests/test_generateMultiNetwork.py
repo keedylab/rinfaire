@@ -33,7 +33,7 @@ class testGenerateMultiNetwork (unittest.TestCase):
     # Function to test residue conversion function
     def test_oneToAll (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_normalizing_struct=False)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
 
         # Tests with inputs of:
@@ -47,7 +47,7 @@ class testGenerateMultiNetwork (unittest.TestCase):
 
     def test_add_withoutNorm (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_normalizing_struct=True)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True)
         multi = MultiNetwork(args)
 
         multi.add(self.Dict_2SHV, "2SHV", 1)
@@ -63,7 +63,7 @@ class testGenerateMultiNetwork (unittest.TestCase):
 
     def test_add_withNorm (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_normalizing_struct=False)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
 
         # Adds dict of dicts to MultiNetwork object and then tests each connection's weight
@@ -79,7 +79,7 @@ class testGenerateMultiNetwork (unittest.TestCase):
 
     def test_NormalizeStruct (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_normalizing_struct=False)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
 
         # Creates a simple testing array with values
@@ -99,7 +99,7 @@ class testGenerateMultiNetwork (unittest.TestCase):
 
     def test_sum (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_normalizing_struct=True)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True)
         multi = MultiNetwork(args)
 
         # Adds dict of dicts to MultiNetwork object

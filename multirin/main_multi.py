@@ -102,7 +102,7 @@ def generateIndividualNetworks (fileList, args):
 
     return networkList
     
-def generateMultiNetwork(networkList, args):
+def generateMultiNetwork (networkList, args):
     
     # Initializes an empty multi-network object 
     multi = MultiNetwork(args)

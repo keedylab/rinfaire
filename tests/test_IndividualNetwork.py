@@ -13,7 +13,7 @@ class testIndividualNetwork (unittest.TestCase):
     # Function to test alt-conf finder function
     def test_findAltConfs (self):
 
-        args1 = Namespace(no_normalizing_resi=False)
+        args1 = Namespace(no_norm_resi=False)
         net1 = IndividualNetwork(self.struct1, args1)
 
         # Tests whether the correct residues are being flagged as having alt-confs
@@ -26,7 +26,7 @@ class testIndividualNetwork (unittest.TestCase):
 
     def test_updateEdge_withNorm (self):
 
-        args1 = Namespace(no_normalizing_resi=False)
+        args1 = Namespace(no_norm_resi=False)
         net1 = IndividualNetwork(self.struct1, args1)
 
         # Sets residue-residue counter
@@ -46,7 +46,7 @@ class testIndividualNetwork (unittest.TestCase):
 
     def test_updateEdge_withoutNorm (self):
 
-        args1 = Namespace(no_normalizing_resi=True)
+        args1 = Namespace(no_norm_resi=True)
         net1 = IndividualNetwork(self.struct1, args1)
 
         # Sets residue-residue counter
@@ -68,7 +68,7 @@ class testIndividualNetwork (unittest.TestCase):
     def test_convertToAdjacency (self):
 
         # Creates network that's the same as previous functions
-        args1 = Namespace(no_normalizing_resi=True)
+        args1 = Namespace(no_norm_resi=True)
         net1 = IndividualNetwork(self.struct1, args1)
         counter = 0
         counter = net1.updateEdge(1, 3, counter)
