@@ -1,5 +1,5 @@
 from IndividualNetwork import IndividualNetwork
-from Structure import Structure, Chain
+from Structure import Structure
 import argparse
 import os
 
@@ -39,37 +39,20 @@ def checkExtension (file, extension, errorMessage):
         raise argparse.ArgumentTypeError(errorMessage)
 
 def generateNetwork (args):
-
-    # Creates a structure object from the structure in pathname, then gets the chains into a list
+      
+    # Creates a structure object from the structure in pathname
     struct = Structure(args.structureFile, args)
-    chainList = struct.getChains()
 
-    print(struct)
-    print(chainList[0].structure)
+    # Creates an individual network object from the structure object and then populates the network
+    net = IndividualNetwork(struct, args)
+    net.populateNetwork()
+    net.visualize()
 
-    # Creates list of networks
-    netList = []
-
-    # TODO: Maybe create a dictionary for the chains, then iterate through dict to add all the chains in
-
-    # # Iterates over each chain in the list and creates a network for each
-    # for chain in chainList:
-
-    #     # Creates an individual network object from the structure object and then populates the network
-    #     net = IndividualNetwork(chain, args)
-    #     net.populateNetwork()
-
-    #     # Appends this to the list of networks
-    #     netList.append(net)
-
-    #     # Creates the pyvis visualization (as an .html output)
-    #     net.visualize()
-
-    return netList
+    return net
 
 def main ():
     args = setupArguments()
-    networkList = generateNetwork(args)
+    network = generateNetwork(args)
 
 if __name__ == "__main__":
     main()

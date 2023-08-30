@@ -9,9 +9,9 @@ from pyvis.network import Network
 import copy
 
 class IndividualNetwork:
-    def __init__ (self, chain, args):
+    def __init__ (self, Structure, args):
         
-        self.chain = chain
+        self.struct = Structure
         self.network = nx.Graph() # Creates networkX graph object
         self.args = args
     
@@ -20,28 +20,29 @@ class IndividualNetwork:
         # Creates empty dictionary of atoms with alt-confs
         atomsWithAltConfsDict = {}
 
-        # Iterates over all residues and atoms in the chain to only add atoms that have an altloc
-        for n_res, res in enumerate(self.chain):
-            
-            # Asserts that the residue is part of the polymer and not a ligand or water (by ensuring that it's not a HETATM)
-            if res.het_flag == 'A':
-                #print("Polymer: ", res.name,res,chain)
+        # Iterates over all chains, residues, and atoms to only add atoms that have an altloc
+        for n_ch, chain in enumerate(self.struct.model[0]):
+            for n_res, res in enumerate(chain):
                 
-                # Iterates over each atom in the residue
-                for n_atom, atom in enumerate(res):
-            
-                    # Checks if the atom has an altloc label
-                    if atom.has_altloc():
+                # Asserts that the residue is part of the polymer and not a ligand or water (by ensuring that it's not a HETATM)
+                if res.het_flag == 'A':
+                    #print("Polymer: ", res.name,res,chain)
+                    
+                    # Iterates over each atom in the residue
+                    for n_atom, atom in enumerate(res):
+                
+                        # Checks if the atom has an altloc label
+                        if atom.has_altloc():
 
-                        #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
-                        if res.seqid.num in atomsWithAltConfsDict.keys():
-                            #print('Resi present: ', res)
-                            atomsWithAltConfsDict[res.seqid.num].append(atom)
-                            
-                        else:
-                            #print('New resi: ', res)
-                            atomsWithAltConfsDict[res.seqid.num] = []
-                            atomsWithAltConfsDict[res.seqid.num].append(atom)
+                            #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
+                            if res.seqid.num in atomsWithAltConfsDict.keys():
+                                #print('Resi present: ', res)
+                                atomsWithAltConfsDict[res.seqid.num].append(atom)
+                                
+                            else:
+                                #print('New resi: ', res)
+                                atomsWithAltConfsDict[res.seqid.num] = []
+                                atomsWithAltConfsDict[res.seqid.num].append(atom)
 
         return atomsWithAltConfsDict
 
@@ -87,11 +88,6 @@ class IndividualNetwork:
     
     def populateNetwork (self):
         atomsWithAltConfsDict = self.findAltConfAtoms()
-
-        # TODO: Checks if 
-        if atomsWithAltConfsDict == {}:
-            return None
-
         amideHOnlyList = self.flagAmideHydrogenOnlyResidues(atomsWithAltConfsDict)
         
         contactCutoffValue = 4 # Distance cutoff value
