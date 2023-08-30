@@ -7,6 +7,7 @@ class Structure:
         self.setModel(pathname)
         self.setName(pathname)
         self.setSequence()
+        self.setChains()
 
         self.args = args
         
@@ -26,6 +27,15 @@ class Structure:
         filename = os.path.basename(pathname)
         filename = filename[:filename.rindex('.')]
         self.name = filename
+
+    def setChains (self):
+        
+        # Creates list of chains in structure
+        self.chains = []
+
+        # Iterates over all the chains in the model, append to this list
+        for n_ch, chain in enumerate(self.model[0]):
+            self.chains.append(Chain(chain, self))
 
     def setSequence (self):
         self.sequence = {}
@@ -63,7 +73,16 @@ class Structure:
     
     def getName (self):
         return self.name
-
+    
+    def getChains (self):
+        return self.chains
+    
+    # def getPeptideChains (self):
+        
+    #     # Interates
+    #     for chain in self.chains:
+    #         for n_res, res in enumerate(chain):
+                
     def getSequence (self):
         return self.sequence
     
@@ -74,3 +93,10 @@ class Structure:
         # First element ([0]) is the first residue
         startingResi = list(self.sequence.keys())[0]
         return startingResi
+
+class Chain:
+
+    def __init__ (self, chain, structure):
+        
+        self.chain = chain
+        self.structure = structure
