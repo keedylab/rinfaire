@@ -135,16 +135,7 @@ def generateMultiNetwork (networkList, args):
     
     # Initializes an empty multi-network object 
     multi = MultiNetwork(args)
-
-    # Loops over each network in the list
-    for net in networkList:
-
-        # Adds the individual network object to the multi-network object
-        multi.add(
-            net.convertToAdjacency(), 
-            net.struct.getName()[0:4], 
-            net.struct.getFirstResi()
-        )
+    multi.addNetworks(networkList)
 
     # Calculates the sum matrix of all the structures in the object
     # Does this across each residue pairing

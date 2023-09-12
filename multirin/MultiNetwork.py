@@ -1,4 +1,5 @@
-import numpy as np
+# import numpy as np
+import xarray as xr
 from Bio import SeqIO
 import networkx as nx
 from scipy.cluster.hierarchy import dendrogram, linkage, average
@@ -13,19 +14,23 @@ class MultiNetwork:
     def __init__ (self, args):
         
         self.setSeqAlignment(args.alignmentFile)
-        self.array = np.zeros((0, self.size, self.size))
+        self.array = None
+        # self.array = np.zeros((0, self.size, self.size))
         self.args = args
+
+        # if args.labels is not None:
+        #     self.setMetaData(args.labels)
             
         #self.lookuptable = table with pdb indices and relevant information
 
     # Set functions
 
-    def setSeqAlignment (self, alignmentpath):
+    def setSeqAlignment (self, alignmentPath):
         # Uses the SeqIO tool from Biopython to parse the fasta file
         self.seqaln = {}
         self.size = 0
         
-        for record in SeqIO.parse(alignmentpath, "fasta"):
+        for record in SeqIO.parse(alignmentPath, "fasta"):
             pdbid = record.id[0:4]
             self.seqaln[pdbid] = record.seq
             
@@ -35,6 +40,11 @@ class MultiNetwork:
             
         # Increments by one due to how indexing starts at 0 but residue numbering starts at 1
         self.size += 1
+
+    # TODO: Create metadata function
+    # def setMetaData (self, csvFile):
+
+    #     self.metadata = None
 
     def oneToAll (self, seqID, startingResi, seqResidue):
         
@@ -67,60 +77,78 @@ class MultiNetwork:
             #print("Main count:", mainCount," Seq count: ", seqCount, 'Resi:', i)
 
     def add (self, inputAdjacencyDict, inputStructName, inputStartingResi):
-        
-        # Creates new blank 3D array that is of size (1 x length of seq x length of seq)
-        addArray = np.zeros((1, self.size, self.size))
-                
+
+        # Loops through all pairings                
         for firstResi in inputAdjacencyDict:
             for secondResi in inputAdjacencyDict[firstResi]:
                 
                 #print(f"Before conversion: {firstResi} {secondResi}")
 
                 # Uses the OneToAll conversion function to map individual resi # to sequence alignment #
-                updatedFirstResi = self.oneToAll(inputStructName, inputStartingResi, firstResi)
-                updatedSecondResi = self.oneToAll(inputStructName, inputStartingResi, secondResi)
+                updatedFirstResi = self.oneToAll(inputStructName[0:4], inputStartingResi, firstResi)
+                updatedSecondResi = self.oneToAll(inputStructName[0:4], inputStartingResi, secondResi)
 
                 #print(f"After conversion: {updatedFirstResi} {updatedSecondResi}")
 
                 # Adds pairing to the array along with the weight
-                addArray[0][updatedFirstResi][updatedSecondResi] = inputAdjacencyDict[firstResi][secondResi]['weight']
-        
+                self.array.loc[inputStructName, updatedFirstResi, updatedSecondResi] = inputAdjacencyDict[firstResi][secondResi]['weight']
+
+    # TODO: Update unit test to make sure this function works
+    def normalizeStruct (self):
+
+        # Creates a vector of maximum values across the first and second residue
+        # Essentially a maximum value for each network
+        maxValues = self.array.max(dim=['firstResi','secondResi'])
+
+        # Then divides each network by the corresponding value in the vector of max values
+        # Scales from 0 - 10
+        self.array = (self.array / maxValues[:]) * 10
+    
+    # TODO: Update unit test to make sure this function works
+    def addNetworks (self, networkList):
+
+        # Creates list to represent all the structures
+        structList = []
+        for net in networkList:
+            structList.append(net.struct.getName())
+
+        print(structList)
+
+        # Creates new blank 3D array that is of size (number of structures x length of seq x length of seq)
+        self.array = xr.DataArray(
+            0, 
+            coords=dict(network=structList, firstResi=range(self.size), secondResi=range(self.size)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        # Iterates over the network list and adds values from each adjacency matrix
+        for net in networkList:
+            self.add(
+                net.convertToAdjacency(), 
+                net.struct.getName(), 
+                net.struct.getFirstResi()
+            )
+
         # Normalization of edge weights relative to the whole structure being added
         # All values are scaled from (0) to the max edge weight present (10)
         if self.args.no_norm_struct == False:
-            addArray = self.normalizeStruct(addArray)
+            self.normalizeStruct()
 
-        # Merges new array with the main array
-        self.array = np.concatenate((self.array,addArray), axis=0)
+        print(self.array)
         
-        # # Visualizing the added array
-        # addarray2d = addarray.reshape(self.size,self.size) # Converts addarray that technically is 3D array with third dimension of size 1 back to flat 2D array
-        # self.VisArray(addarray2d,addpdbname)
-
-    def normalizeStruct (self, addArray):
-
-        # Calculate the maximum value in the array being added
-        maxvalue = 0
-        for idx, x in np.ndenumerate(addArray):
-            if x > maxvalue:
-                maxvalue = x
-
-        # Iterate over all elements and divide by the max (scales from 0-10)
-        with np.nditer(addArray, op_flags=['readwrite']) as it:
-            for y in it:
-                y[...] = (y/maxvalue)*10
-
-        return addArray
-
+    # TODO: Update unit test to make sure this function works
     def sum (self):
 
-        sumMatrix = np.sum(self.array,axis=0)
+        sumMatrix = self.array.sum(dim="network")
         return sumMatrix
     
     def visualize (self, inputarray, outputname):
 
+        # Converts XArray into Numpy array
+        nparray = inputarray.to_numpy()
+
         # Creates graph from Numpy array
-        G = nx.from_numpy_array(inputarray)
+        G = nx.from_numpy_array(nparray)
         G.remove_nodes_from(list(nx.isolates(G)))
         nx.convert_node_labels_to_integers(G)
         
