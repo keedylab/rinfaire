@@ -31,7 +31,7 @@ class MultiNetwork:
         self.size = 0
         
         for record in SeqIO.parse(alignmentPath, "fasta"):
-            pdbid = record.id[0:4]
+            pdbid = record.id
             self.seqaln[pdbid] = record.seq
             
             # Makes sure that self.size is as long as the longest sequence (although they should be all the same) 
@@ -85,8 +85,8 @@ class MultiNetwork:
                 #print(f"Before conversion: {firstResi} {secondResi}")
 
                 # Uses the OneToAll conversion function to map individual resi # to sequence alignment #
-                updatedFirstResi = self.oneToAll(inputStructName[0:4], inputStartingResi, firstResi)
-                updatedSecondResi = self.oneToAll(inputStructName[0:4], inputStartingResi, secondResi)
+                updatedFirstResi = self.oneToAll(inputStructName, inputStartingResi, firstResi)
+                updatedSecondResi = self.oneToAll(inputStructName, inputStartingResi, secondResi)
 
                 #print(f"After conversion: {updatedFirstResi} {updatedSecondResi}")
 
@@ -161,7 +161,7 @@ class MultiNetwork:
         
         # populates the nodes and edges data structures
         nts.from_nx(G)
-        outputpath = outputname + '.html'
+        outputpath = f'{self.args.output}{outputname}.html'
         nts.show(outputpath)
     
 

@@ -168,7 +168,7 @@ class IndividualNetwork:
 
         # populates the nodes and edges data structures
         nts.from_nx(visNetwork)
-        outputpath = f'{self.struct.name}.html'
+        outputpath = f'{self.args.output}{self.struct.name}.html'
         nts.show(outputpath)
 
     def convertToAdjacency (self):

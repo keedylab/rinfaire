@@ -55,6 +55,11 @@ def setupArguments (multiFlag):
     
     # Options that are shared between both programs
 
+    parser.add_argument(
+            'output',
+            help='Output directory for all files generated'
+        )
+
     parser.add_argument( 
         '--no_norm_resi', 
         default=False,
