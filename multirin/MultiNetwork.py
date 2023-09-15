@@ -46,14 +46,11 @@ class MultiNetwork:
 
     #     self.metadata = None
 
-    def oneToAll (self, seqID, startingResi, seqResidue):
+    def oneToAll (self, seqID, sequenceList, seqResidue):
         
         mainCount = 0
-        seqCount = startingResi - 1 # Subtracts 1 b/c it has not iterated over that residue yet in its traversal of the sequence
-   
-        #if self.seqaln[seq_id][seq_residue] == '-':
-        #    return None;
-        
+        seqIndex = 0
+     
         # Iterates over each residue in the sequence of the structure being queried
         for i in self.seqaln[seqID]:
 
@@ -61,22 +58,22 @@ class MultiNetwork:
             mainCount = mainCount + 1
 
             # If there is a residue present (not just a - used as a placeholder)
-            # Then increment the seq count that counts the total number of actual residue positions that have been passed
+            # Then increment the seq index that counts the total number of actual residue positions that have been passed
             if i != '-':
-                seqCount = seqCount + 1
+                seqIndex = seqIndex + 1
 
             # Condition when it reaches the residue in question 
-            # (since seq count represents the position in the individual sequence and not the full alignment)
-            if seqCount == int(seqResidue) and i != '-':
+            # (since seq index represents the position in the individual sequence and not the full alignment)
+            if sequenceList[seqIndex] == int(seqResidue) and i != '-':
                 
-                logging.debug(f'Final Main count: {mainCount} Seq count: {seqCount} Resi: {i}')
+                logging.debug(f'Final Main count: {mainCount} Seq count: {sequenceList[seqIndex]} Resi: {i}')
 
                 # Returns the main count which is the position on the full alignment
                 return(mainCount)
 
-            logging.debug(f'Main count: {mainCount} Seq count: {seqCount} Resi: {i}')
+            logging.debug(f'Main count: {mainCount} Seq count: {sequenceList[seqIndex]} Resi: {i}')
 
-    def add (self, inputAdjacencyDict, inputStructName, inputStartingResi):
+    def add (self, inputAdjacencyDict, inputStructName, inputSequenceList):
 
         # Loops through all pairings                
         for firstResi in inputAdjacencyDict:
@@ -85,8 +82,8 @@ class MultiNetwork:
                 #print(f"Before conversion: {firstResi} {secondResi}")
 
                 # Uses the OneToAll conversion function to map individual resi # to sequence alignment #
-                updatedFirstResi = self.oneToAll(inputStructName, inputStartingResi, firstResi)
-                updatedSecondResi = self.oneToAll(inputStructName, inputStartingResi, secondResi)
+                updatedFirstResi = self.oneToAll(inputStructName, inputSequenceList, firstResi)
+                updatedSecondResi = self.oneToAll(inputStructName, inputSequenceList, secondResi)
 
                 #print(f"After conversion: {updatedFirstResi} {updatedSecondResi}")
 
@@ -128,7 +125,7 @@ class MultiNetwork:
             self.add(
                 net.convertToAdjacency(), 
                 net.struct.getName(), 
-                net.struct.getFirstResi()
+                net.struct.getSequenceList()
             )
 
         # Normalization of edge weights relative to the whole structure being added

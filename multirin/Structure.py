@@ -52,9 +52,12 @@ class Structure:
                     logging.debug(f'Number:{res.seqid.num} ResName:{res.name} AtomCount:{perResiAtomCounter}')
 
     def setSequenceList (self):
-        print(list(self.sequence.keys()))
-        self.sequenceList = sorted(list(self.sequence.keys()))
-        print(self.sequenceList)
+        
+        # Creates list with one element (so that index 0 will have a value)
+        self.sequenceList = [0]
+
+        # Then adds list of sequence keys to this list
+        self.sequenceList = self.sequenceList + sorted(list(self.sequence.keys()))
 
     # def setAttributes (self):
     #     cifBlock = self.model.make_mmcif_headers()
@@ -73,6 +76,9 @@ class Structure:
 
     def getSequence (self):
         return self.sequence
+
+    def getSequenceList (self):
+        return self.sequenceList
     
     def getFirstResi (self):
 
