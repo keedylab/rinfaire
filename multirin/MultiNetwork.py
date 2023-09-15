@@ -69,12 +69,12 @@ class MultiNetwork:
             # (since seq count represents the position in the individual sequence and not the full alignment)
             if seqCount == int(seqResidue) and i != '-':
                 
-                #print("Final Main count:", mainCount," Seq count: ", seqCount, 'Resi:', i)
+                logging.debug(f'Final Main count: {mainCount} Seq count: {seqCount} Resi: {i}')
 
                 # Returns the main count which is the position on the full alignment
                 return(mainCount)
 
-            #print("Main count:", mainCount," Seq count: ", seqCount, 'Resi:', i)
+            logging.debug(f'Main count: {mainCount} Seq count: {seqCount} Resi: {i}')
 
     def add (self, inputAdjacencyDict, inputStructName, inputStartingResi):
 
@@ -90,6 +90,7 @@ class MultiNetwork:
 
                 #print(f"After conversion: {updatedFirstResi} {updatedSecondResi}")
 
+                logging.debug(f'Adding network pair: ({firstResi},{secondResi}) as ({updatedFirstResi},{updatedSecondResi})')
                 # Adds pairing to the array along with the weight
                 self.array.loc[inputStructName, updatedFirstResi, updatedSecondResi] = inputAdjacencyDict[firstResi][secondResi]['weight']
 
@@ -123,6 +124,7 @@ class MultiNetwork:
 
         # Iterates over the network list and adds values from each adjacency matrix
         for net in networkList:
+            logging.info(f'Adding network: {net.struct.getName()}')
             self.add(
                 net.convertToAdjacency(), 
                 net.struct.getName(), 
@@ -133,13 +135,16 @@ class MultiNetwork:
         # All values are scaled from (0) to the max edge weight present (10)
         if self.args.no_norm_struct == False:
             self.normalizeStruct()
+            logging.info(f'Normalized all individual structures')
 
+        logging.info(f'Finished adding networks to MultiNetwork object')
         print(self.array)
         
     # TODO: Update unit test to make sure this function works
     def sum (self):
 
         sumMatrix = self.array.sum(dim="network")
+        logging.info(f'Created the sum matrix of all networks')
         return sumMatrix
     
     def visualize (self, inputarray, outputname):

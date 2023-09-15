@@ -27,6 +27,9 @@ class testStructure (unittest.TestCase):
         self.assertEqual(self.struct1.sequence[5]['name'], 'LEU')
         self.assertEqual(self.struct1.sequence[5]['atomcount'], 19)
 
+    def test_sequencelist (self):
+        print(self.struct1.sequenceList)
+
     def test_firstresi (self):
         self.assertEqual(self.struct1.getFirstResi(), 1)
  

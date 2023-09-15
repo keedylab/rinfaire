@@ -1,5 +1,6 @@
 import gemmi
 import os
+import logging
 
 class Structure:
     def __init__ (self, pathname, args):
@@ -7,6 +8,7 @@ class Structure:
         self.setModel(pathname)
         self.setName(pathname)
         self.setSequence()
+        self.setSequenceList()
 
         self.args = args
         
@@ -34,20 +36,25 @@ class Structure:
         for n_ch, chain in enumerate(self.model[0]):
             for n_res, res in enumerate(chain):
 
-                perResiAtomCouter = 0
+                perResiAtomCounter = 0
 
                 if res.het_flag == 'A':
                     for n_atom, atom in enumerate(res):
 
-                        perResiAtomCouter += 1
+                        perResiAtomCounter += 1
                     
                     # Appends to the sequence dict the:
                     # Residue number as key and amino acid as value
                     self.sequence[res.seqid.num] = {}
                     self.sequence[res.seqid.num]['name'] = res.name
-                    self.sequence[res.seqid.num]['atomcount'] = perResiAtomCouter
+                    self.sequence[res.seqid.num]['atomcount'] = perResiAtomCounter
 
-                    #print(res.seqid.num, res.name, perResiAtomCouter)
+                    logging.debug(f'Number:{res.seqid.num} ResName:{res.name} AtomCount:{perResiAtomCounter}')
+
+    def setSequenceList (self):
+        print(list(self.sequence.keys()))
+        self.sequenceList = sorted(list(self.sequence.keys()))
+        print(self.sequenceList)
 
     # def setAttributes (self):
     #     cifBlock = self.model.make_mmcif_headers()
@@ -72,5 +79,8 @@ class Structure:
         # Gets keys of self.sequence and creates a list with them
         # Since dictionaries are stored by insertion order and the first item inserted is the first residue,
         # First element ([0]) is the first residue
-        startingResi = list(self.sequence.keys())[0]
+        startingResi = self.sequenceList[0]
         return startingResi
+
+        # startingResi = list(self.sequence.keys())[0]
+        # return startingResi

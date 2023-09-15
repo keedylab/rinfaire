@@ -7,6 +7,7 @@ import networkx as nx
 import pyvis
 from pyvis.network import Network
 import copy
+import logging
 
 class IndividualNetwork:
     def __init__ (self, Structure, args):
