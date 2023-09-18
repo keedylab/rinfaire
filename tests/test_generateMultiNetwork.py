@@ -36,14 +36,20 @@ class testGenerateMultiNetwork (unittest.TestCase):
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
 
+        seqList1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        seqList2 = [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        seqList3 = [0, 211, 212, 213, 214, 215, 216, 217, 218, 219, 210, 211, 212]
+
         # Tests with inputs of:
         #   Fake PDB entry: 2SHV, 3LJR
         #   Starting residue: 5, 200
         #   Residue to convert: 10, 210
-        result1 = multi.oneToAll('2SHV', 5, 10)
-        result2 = multi.oneToAll('3LJR', 200, 210)
+        result1 = multi.oneToAll('1ALI', seqList1, 5)
+        result2 = multi.oneToAll('2SHV', seqList2, 8)
+        result3 = multi.oneToAll('3LJR', seqList2, 215)
         self.assertEqual(result1, 7)
-        self.assertEqual(result2, 14)
+        self.assertEqual(result2, 7)
+        self.assertEqual(result3, 7)
 
     def test_add_withoutNorm (self):
 
