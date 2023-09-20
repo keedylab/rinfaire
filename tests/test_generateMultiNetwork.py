@@ -2,6 +2,7 @@ from multirin import MultiNetwork
 from argparse import Namespace
 import unittest
 import numpy as np
+import xarray as xr
 
 # Define class to test the program
 class testGenerateMultiNetwork (unittest.TestCase):
@@ -23,11 +24,11 @@ class testGenerateMultiNetwork (unittest.TestCase):
         }
 
         self.Dict_2SJR = {
-            1: {3: {'weight': 0.2}, 5: {'weight': 0.1}},
-            3: {1: {'weight': 0.2}},
-            5: {1: {'weight': 0.1}},
-            10: {11: {'weight': 0.4}},
-            11: {10: {'weight': 0.4}}
+            211: {213: {'weight': 0.2}, 215: {'weight': 0.1}},
+            213: {211: {'weight': 0.2}},
+            215: {211: {'weight': 0.1}},
+            220: {221: {'weight': 0.4}},
+            221: {220: {'weight': 0.4}}
         }
 
     # Function to test residue conversion function
@@ -36,85 +37,135 @@ class testGenerateMultiNetwork (unittest.TestCase):
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
 
+        seqList1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        seqList2 = [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        seqList3 = [0, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222]
+
         # Tests with inputs of:
         #   Fake PDB entry: 2SHV, 3LJR
         #   Starting residue: 5, 200
         #   Residue to convert: 10, 210
-        result1 = multi.oneToAll('2SHV', 5, 10)
-        result2 = multi.oneToAll('3LJR', 200, 210)
+        result1 = multi.oneToAll('1ALI', seqList1, 5)
+        result2 = multi.oneToAll('2SHV', seqList2, 8)
+        result3 = multi.oneToAll('3LJR', seqList3, 215)
         self.assertEqual(result1, 7)
-        self.assertEqual(result2, 14)
+        self.assertEqual(result2, 7)
+        self.assertEqual(result3, 7)
 
     def test_add_withoutNorm (self):
 
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True)
         multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI","2SJR"]
 
-        multi.add(self.Dict_2SHV, "2SHV", 1)
-        self.assertEqual(multi.array[0][1][6], 0.1)
-        self.assertEqual(multi.array[0][6][1], 0.1)
-        self.assertEqual(multi.array[0][1][3], 0.2)
+        multi.array = xr.DataArray(
+            0.0, 
+            coords=dict(network=structList, firstResi=range(multi.size), secondResi=range(multi.size)), 
+            dims=("network", "firstResi", "secondResi")
+        )
 
-        # Creating another test case that is at analogous residues on the alignment but just shifted differently
-        multi.add(self.Dict_1ALI, "1ALI", 5)
-        self.assertEqual(multi.array[1][1][6], 0.1)
-        self.assertEqual(multi.array[1][6][1], 0.1)
-        self.assertEqual(multi.array[1][1][3], 0.2)
+        seqList1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        seqList2 = [0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        seqList3 = [0, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222]
+
+        multi.add(self.Dict_2SHV, "2SHV", seqList1)
+        self.assertEqual(multi.array.loc["2SHV", 1, 6].item(), 0.1)
+        self.assertEqual(multi.array.loc["2SHV", 6, 1].item(), 0.1)
+        self.assertEqual(multi.array.loc["2SHV", 1, 3].item(), 0.2)
+
+        # Creating another test case that is at analogous residues on the alignment but just shifted by 5
+        multi.add(self.Dict_1ALI, "1ALI", seqList2)
+        self.assertEqual(multi.array.loc["1ALI", 1, 6].item(), 0.1)
+        self.assertEqual(multi.array.loc["1ALI", 6, 1].item(), 0.1)
+        self.assertEqual(multi.array.loc["1ALI", 1, 3].item(), 0.2)
+
+        multi.add(self.Dict_2SJR, "2SJR", seqList3)
+        self.assertEqual(multi.array.loc["2SJR", 1, 6].item(), 0.1)
+        self.assertEqual(multi.array.loc["2SJR", 6, 1].item(), 0.1)
+        self.assertEqual(multi.array.loc["2SJR", 1, 3].item(), 0.2)
 
     def test_add_withNorm (self):
 
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI","2SJR"]
+
+        multi.array = xr.DataArray(
+            0.0, 
+            coords=dict(network=structList, firstResi=range(multi.size), secondResi=range(multi.size)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        seqList1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        seqList2 = [0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        seqList3 = [0, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222]
 
         # Adds dict of dicts to MultiNetwork object and then tests each connection's weight
-        multi.add(self.Dict_2SHV, "2SHV", 1)
-        self.assertEqual(multi.array[0][1][6], 5)
-        self.assertEqual(multi.array[0][6][1], 5)
-        self.assertEqual(multi.array[0][1][3], 10)
+        multi.add(self.Dict_2SHV, "2SHV", seqList1)
+        multi.add(self.Dict_1ALI, "1ALI", seqList2)
+        multi.add(self.Dict_2SJR, "2SJR", seqList3)
+        multi.normalizeStruct()
 
-        multi.add(self.Dict_1ALI, "1ALI", 5)
-        self.assertEqual(multi.array[1][1][6], 5)
-        self.assertEqual(multi.array[1][6][1], 5)
-        self.assertEqual(multi.array[1][1][3], 10)
+        self.assertEqual(multi.array.loc["2SHV", 1, 6].item(), 5)
+        self.assertEqual(multi.array.loc["2SHV", 6, 1].item(), 5)
+        self.assertEqual(multi.array.loc["2SHV", 1, 3].item(), 10)
+
+        self.assertEqual(multi.array.loc["1ALI", 1, 6].item(), 5)
+        self.assertEqual(multi.array.loc["1ALI", 6, 1].item(), 5)
+        self.assertEqual(multi.array.loc["1ALI", 1, 3].item(), 10)
+
+        self.assertEqual(multi.array.loc["2SJR", 1, 6].item(), 2.5)
+        self.assertEqual(multi.array.loc["2SJR", 6, 1].item(), 2.5)
+        self.assertEqual(multi.array.loc["2SJR", 1, 3].item(), 5)
 
     def test_NormalizeStruct (self):
 
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False)
         multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI"]
 
-        # Creates a simple testing array with values
-        testArray = np.array(
-            [[0, 0, 0, 0],
-             [0, 0, 0.5, 0.3],
-             [0, 0.5, 0, 0.2],
-             [0, 0.3, 0.2, 0]]
+        # Creates test array object
+        multi.array = xr.DataArray(
+            np.arange(18).reshape(2, 3, 3), 
+            coords=dict(network=structList, firstResi=range(3), secondResi=range(3)), 
+            dims=("network", "firstResi", "secondResi")
         )
 
-        # Creates a normalized array from the testing array using the normalizeStruct function
-        normArray = multi.normalizeStruct(testArray)
-        self.assertEqual(normArray[1][2], 10)
-        self.assertEqual(normArray[2][1], 10)
-        self.assertEqual(normArray[1][3], 6)
-        self.assertEqual(normArray[2][3], 4)
+        # Normalizes these values
+        multi.normalizeStruct()
+
+        self.assertEqual(multi.array.loc["2SHV", 1, 2].item(), (5/8) * 10)
+        self.assertEqual(multi.array.loc["1ALI", 1, 2].item(), (14/17) * 10)
 
     def test_sum (self):
 
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True)
         multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI","2SJR"]
+
+        multi.array = xr.DataArray(
+            0.0, 
+            coords=dict(network=structList, firstResi=range(multi.size), secondResi=range(multi.size)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        seqList1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        seqList2 = [0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        seqList3 = [0, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222]
 
         # Adds dict of dicts to MultiNetwork object
-        multi.add(self.Dict_2SHV, "2SHV", 1)
-        multi.add(self.Dict_1ALI, "1ALI", 5)
-        multi.add(self.Dict_2SJR, "2SJR", 1)
+        multi.add(self.Dict_2SHV, "2SHV", seqList1)
+        multi.add(self.Dict_1ALI, "1ALI", seqList2)
+        multi.add(self.Dict_2SJR, "2SJR", seqList3)
 
         # Calculates the sum across these three networks
         sumMulti = multi.sum()
 
         # Tests that positions at analogous positions are summed up
-        self.assertEqual(round(sumMulti[1][3], 1), 0.6)
-        self.assertEqual(round(sumMulti[3][1], 1), 0.6)
-        self.assertEqual(round(sumMulti[1][6], 1), 0.3)
-        self.assertEqual(round(sumMulti[12][13], 1), 0.4)
+        self.assertEqual(round(sumMulti[1][3].item(), 1), 0.6)
+        self.assertEqual(round(sumMulti[3][1].item(), 1), 0.6)
+        self.assertEqual(round(sumMulti[1][6].item(), 1), 0.3)
+        self.assertEqual(round(sumMulti[12][13].item(), 1), 0.4)
  
 if __name__ == '__main__':
     unittest.main()

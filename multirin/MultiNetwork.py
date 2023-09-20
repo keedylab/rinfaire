@@ -114,7 +114,7 @@ class MultiNetwork:
 
         # Creates new blank 3D array that is of size (number of structures x length of seq x length of seq)
         self.array = xr.DataArray(
-            0, 
+            0.0, 
             coords=dict(network=structList, firstResi=range(self.size), secondResi=range(self.size)), 
             dims=("network", "firstResi", "secondResi")
         )
