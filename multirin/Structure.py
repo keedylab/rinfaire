@@ -85,7 +85,7 @@ class Structure:
         # Gets keys of self.sequence and creates a list with them
         # Since dictionaries are stored by insertion order and the first item inserted is the first residue,
         # First element ([0]) is the first residue
-        startingResi = self.sequenceList[0]
+        startingResi = self.sequenceList[1]
         return startingResi
 
         # startingResi = list(self.sequence.keys())[0]
