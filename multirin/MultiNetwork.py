@@ -101,6 +101,15 @@ class MultiNetwork:
         # Then divides each network by the corresponding value in the vector of max values
         # Scales from 0 - 10
         self.array = (self.array / maxValues[:]) * 10
+
+    def scaleMultiNet (self):
+
+        # Gets maximum value across all dimensions
+        maxValue = self.array.max(dim=['network','firstResi','secondResi']).item()
+
+        # Then divides each network by max value
+        # Scales from 0 - 10
+        self.array = (self.array / maxValue) * 10
     
     # TODO: Update unit test to make sure this function works
     def addNetworks (self, networkList):
@@ -133,6 +142,11 @@ class MultiNetwork:
         if self.args.no_norm_struct == False:
             self.normalizeStruct()
             logging.info(f'Normalized all individual structures')
+
+        # Scales the entire MultiNetwork to be between values 0 and 10
+        if self.args.no_scale_multinet == False:
+            self.scaleMultiNet()
+            logging.info(f'Scaled the MultiNetwork to values between 0 and 10')
 
         logging.info(f'Finished adding networks to MultiNetwork object')
         print(self.array)

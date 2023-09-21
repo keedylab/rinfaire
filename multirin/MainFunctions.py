@@ -44,6 +44,13 @@ def setupArguments (multiFlag):
             action='store_true', 
             help="Turns off the normalization of each structure's network in relation to the others"
         )
+
+        parser.add_argument( 
+            '--no_scale_multinet', 
+            default=False,
+            action='store_true', 
+            help="Turns off the scaling of the MultiNetwork object to a range between 0 and 10"
+        )
     
     # Options specific to single model inputs
     else:
