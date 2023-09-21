@@ -108,8 +108,8 @@ class MultiNetwork:
         maxValue = self.array.max(dim=['network','firstResi','secondResi']).item()
 
         # Then divides each network by max value
-        # Scales from 0 - 10
-        self.array = (self.array / maxValue) * 10
+        # Scales to a set value (default 0 to 20)
+        self.array = (self.array / maxValue) * self.args.scale_value
     
     # TODO: Update unit test to make sure this function works
     def addNetworks (self, networkList):

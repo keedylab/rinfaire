@@ -51,6 +51,12 @@ def setupArguments (multiFlag):
             action='store_true', 
             help="Turns off the scaling of the MultiNetwork object to a range between 0 and 10"
         )
+
+        parser.add_argument( 
+            '--scale_value',
+            default=20,
+            help='Maximum edge weight the MultiNetwork should be scaled to'
+        )
     
     # Options specific to single model inputs
     else:
