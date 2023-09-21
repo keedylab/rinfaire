@@ -137,6 +137,25 @@ class testGenerateMultiNetwork (unittest.TestCase):
         self.assertEqual(multi.array.loc["2SHV", 1, 2].item(), (5/8) * 10)
         self.assertEqual(multi.array.loc["1ALI", 1, 2].item(), (14/17) * 10)
 
+    def test_scaleMultiNet (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, scale_value=20)
+        multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI"]
+
+        # Creates test array object
+        multi.array = xr.DataArray(
+            np.arange(18).reshape(2, 3, 3), 
+            coords=dict(network=structList, firstResi=range(3), secondResi=range(3)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        # Scales these values
+        multi.scaleMultiNet()
+
+        self.assertEqual(multi.array.loc["2SHV", 1, 2].item(), (5/17) * 20)
+        self.assertEqual(multi.array.loc["1ALI", 1, 2].item(), (14/17) * 20)
+
     def test_sum (self):
 
         args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True)
