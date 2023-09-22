@@ -55,7 +55,14 @@ def setupArguments (multiFlag):
         parser.add_argument( 
             '--scale_value',
             default=20,
+            type=int,
             help='Maximum edge weight the MultiNetwork should be scaled to'
+        )
+
+        parser.add_argument( 
+            '--remove_weak_edges',
+            type=int,
+            help='Option to remove weak edges by a percent cutoff factor specified'
         )
     
     # Options specific to single model inputs
