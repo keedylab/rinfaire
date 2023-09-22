@@ -150,13 +150,30 @@ class MultiNetwork:
 
         logging.info(f'Finished adding networks to MultiNetwork object')
         print(self.array)
+
+    def scaleSumNetwork (self, inputArray):
+
+        # Gets maximum value across all dimensions
+        maxValue = inputArray.max(dim=['firstResi','secondResi']).item()
+
+        # Then divides each network by max value
+        # Scales to a set value (default 0 to 20)
+        scaledInputArray = (inputArray / maxValue) * self.args.sum_network_scale
+
+        return scaledInputArray
         
-    # TODO: Update unit test to make sure this function works
     def sum (self):
 
-        sumMatrix = self.array.sum(dim="network")
+        # Calculates the sum across the network dimension (i.e. for each i,j residue pair)
+        sumArray = self.array.sum(dim="network")
+
+        # Scales the sum array to all be values between 0 and 20
+        if self.args.no_scale_sum_network == False:
+            sumArray = self.scaleSumNetwork(sumArray)
+            logging.info(f'Scaled the Sum Network to values between 0 and 20')
+
         logging.info(f'Created the sum matrix of all networks')
-        return sumMatrix
+        return sumArray
     
     def removeWeakEdges (self, inputArray):
         
