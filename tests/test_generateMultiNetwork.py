@@ -185,6 +185,33 @@ class testGenerateMultiNetwork (unittest.TestCase):
         self.assertEqual(round(sumMulti[3][1].item(), 1), 0.6)
         self.assertEqual(round(sumMulti[1][6].item(), 1), 0.3)
         self.assertEqual(round(sumMulti[12][13].item(), 1), 0.4)
+
+    def test_removeWeakEdges (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, remove_weak_edges=20)
+        multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI"]
+
+        # Creates test array object
+        # Two 5x5 arrays that have values from 0-50
+        multi.array = xr.DataArray(
+            np.arange(1,51,1).reshape(2, 5, 5), 
+            coords=dict(network=structList, firstResi=range(5), secondResi=range(5)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        # Gets original array's maximum value
+        maxValue = multi.array.max().item()
+
+        # Removes weak edges below 20% cutoff
+        removedArray = multi.removeWeakEdges(multi.array)
+
+        # Gets array of all values that are larger than zero but less than the cutoff
+        # Ideally this should be empty
+        cutoffArray = removedArray.where((removedArray < 0.2 * maxValue) & (removedArray > 0), drop=True)
+
+        # Asserts that this array is empty (since there should be no values after removal that fit criteria)
+        self.assertEqual(len(cutoffArray), 0)
  
 if __name__ == '__main__':
     unittest.main()

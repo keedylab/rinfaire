@@ -158,7 +158,23 @@ class MultiNetwork:
         logging.info(f'Created the sum matrix of all networks')
         return sumMatrix
     
+    def removeWeakEdges (self, inputArray):
+        
+        # Get maximum value across the entire array
+        # Then multiply that by the percent cutoff threshold specified by user
+        percentCutoffValue = inputArray.max() * (self.args.remove_weak_edges / 100)
+
+        # Finds entries in the array where they are less than the percent cutoff threshold
+        # Then it replaces them with 0.0
+        # If not, then it keeps the original value
+        return xr.where(inputArray < percentCutoffValue, 0.0, inputArray)
+    
     def visualize (self, inputarray, outputname):
+
+        # Removes weak edges so that the network is easier to visualize
+        if self.args.remove_weak_edges != None:
+            inputarray = self.removeWeakEdges(inputarray)
+            logging.info(f'Removed weak edges from array for visualization')
 
         # Converts XArray into Numpy array
         nparray = inputarray.to_numpy()
