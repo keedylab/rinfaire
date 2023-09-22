@@ -109,7 +109,7 @@ class MultiNetwork:
 
         # Then divides each network by max value
         # Scales to a set value (default 0 to 20)
-        self.array = (self.array / maxValue) * self.args.scale_value
+        self.array = (self.array / maxValue) * self.args.multinet_scale
     
     # TODO: Update unit test to make sure this function works
     def addNetworks (self, networkList):
@@ -144,7 +144,7 @@ class MultiNetwork:
             logging.info(f'Normalized all individual structures')
 
         # Scales the entire MultiNetwork to be between values 0 and 10
-        if self.args.no_scale_multinet == False:
+        if self.args.scale_multinet == True:
             self.scaleMultiNet()
             logging.info(f'Scaled the MultiNetwork to values between 0 and 10')
 
