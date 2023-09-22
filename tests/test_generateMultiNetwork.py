@@ -139,7 +139,7 @@ class testGenerateMultiNetwork (unittest.TestCase):
 
     def test_scaleMultiNet (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, scale_value=20)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, multinet_scale=20)
         multi = MultiNetwork(args)
         structList = ["2SHV","1ALI"]
 
@@ -156,9 +156,33 @@ class testGenerateMultiNetwork (unittest.TestCase):
         self.assertEqual(multi.array.loc["2SHV", 1, 2].item(), (5/17) * 20)
         self.assertEqual(multi.array.loc["1ALI", 1, 2].item(), (14/17) * 20)
 
+    def test_scaleSumNetwork (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, no_scale_sum_network=True, sum_network_scale=20)
+        multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI"]
+
+        # Creates test array object
+        multi.array = xr.DataArray(
+            np.arange(18).reshape(2, 3, 3), 
+            coords=dict(network=structList, firstResi=range(3), secondResi=range(3)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        # Creates sum array and then scales it
+        sumArray = multi.sum()
+        maxSumValue = sumArray.max().item()
+        scaledSumArray = multi.scaleSumNetwork(sumArray)
+
+        # Assert that values are equal
+        self.assertEqual(sumArray[0][0].item(), multi.array[0][0][0] + multi.array[1][0][0])
+        self.assertEqual(sumArray[2][2].item(), multi.array[0][2][2] + multi.array[1][2][2])
+        self.assertEqual(scaledSumArray[0][0].item(), ((multi.array[0][0][0] + multi.array[1][0][0]) / maxSumValue) * args.sum_network_scale)
+        self.assertEqual(scaledSumArray[2][2].item(), ((multi.array[0][2][2] + multi.array[1][2][2]) / maxSumValue) * args.sum_network_scale)
+
     def test_sum (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True, no_scale_sum_network=True)
         multi = MultiNetwork(args)
         structList = ["2SHV","1ALI","2SJR"]
 
