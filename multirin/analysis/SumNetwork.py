@@ -8,13 +8,14 @@ class SumNetwork:
 
     def __init__ (self, args):
         self.args = args
+        self.readPickle()
 
     def readPickle (self):
         
         # Opens pickle file
         with open(self.args.filename, 'rb') as pickleFile:
-            self.array = pickle.load(pickleFile)
-            print(self.array)
+            self.multinet = pickle.load(pickleFile)
+            print(self.multinet.array)
 
     def calculateSum (self):
 
