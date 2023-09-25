@@ -1,4 +1,4 @@
-from generate import MainFunctions
+from multirin.generate import MainFunctions
 
 def main ():
     multiFlag = False
