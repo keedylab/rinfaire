@@ -1,4 +1,5 @@
-from multirin import Structure, IndividualNetwork
+from multirin.generate.Structure import Structure
+from multirin.generate.IndividualNetwork import IndividualNetwork
 from argparse import Namespace
 import gemmi
 import unittest
@@ -8,7 +9,7 @@ class testIndividualNetwork (unittest.TestCase):
 
     @classmethod
     def setUpClass (self):
-        self.struct1 = Structure.Structure('tests/data/synth_structs/1111_Test.pdb', None)
+        self.struct1 = Structure('tests/data/synth_structs/1111_Test.pdb', None)
     
     # Function to test alt-conf finder function
     def test_findAltConfs (self):

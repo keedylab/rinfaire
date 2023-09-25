@@ -1,4 +1,4 @@
-import MainFunctions
+from generate import MainFunctions
 import logging
 
 def main ():

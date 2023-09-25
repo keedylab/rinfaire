@@ -1,4 +1,4 @@
-from multirin import MultiNetwork 
+from multirin.generate.MultiNetwork import MultiNetwork 
 from argparse import Namespace
 import unittest
 import numpy as np

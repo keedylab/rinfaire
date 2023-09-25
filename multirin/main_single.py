@@ -1,4 +1,4 @@
-import MainFunctions
+from generate import MainFunctions
 
 def main ():
     multiFlag = False

@@ -1,8 +1,8 @@
 import argparse
 import os
-from Structure import Structure
-from IndividualNetwork import IndividualNetwork
-from MultiNetwork import MultiNetwork
+from .Structure import Structure
+from .IndividualNetwork import IndividualNetwork
+from .MultiNetwork import MultiNetwork
 
 def setupArguments (multiFlag):
 
