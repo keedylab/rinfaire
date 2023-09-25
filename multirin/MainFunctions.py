@@ -46,17 +46,31 @@ def setupArguments (multiFlag):
         )
 
         parser.add_argument( 
-            '--no_scale_multinet', 
+            '--scale_multinet', 
             default=False,
             action='store_true', 
-            help="Turns off the scaling of the MultiNetwork object to a range between 0 and 10"
+            help="Scales the MultiNetwork object to a range between 0 and 10"
         )
 
         parser.add_argument( 
-            '--scale_value',
-            default=20,
+            '--multinet_scale',
+            default=10,
             type=int,
             help='Maximum edge weight the MultiNetwork should be scaled to'
+        )
+
+        parser.add_argument( 
+            '--no_scale_sum_network', 
+            default=False,
+            action='store_true', 
+            help="Turns off the scaling of the Sum Network"
+        )
+
+        parser.add_argument( 
+            '--sum_network_scale',
+            default=20,
+            type=int,
+            help='Maximum edge weight Sum Network should be scaled to'
         )
 
         parser.add_argument( 
