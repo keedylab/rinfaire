@@ -8,7 +8,6 @@ class SumNetwork:
 
     def __init__ (self, args):
         self.args = args
-        self.readPickle()
 
     def readPickle (self):
         

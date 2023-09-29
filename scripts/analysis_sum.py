@@ -59,6 +59,7 @@ def main ():
 
     # Creates SumNetwork object and imports user inputted pickle file 
     sumNetObject = SumNetwork(args)
+    sumNetObject.readPickle()
 
     # Calculates the sum network and performs scaling and removal of weak edges if flags are specified
     sumNetObject.calculateSum()
