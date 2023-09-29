@@ -48,6 +48,13 @@ def setupArguments ():
         help='Option to remove weak edges by a percent cutoff factor specified'
     )
 
+    parser.add_argument( 
+        '--no_resize_by_degree', 
+        default=False,
+        action='store_true', 
+        help="Turns off node resizing by degree"
+    )
+
     args = parser.parse_args()
 
     return args
