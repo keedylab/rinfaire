@@ -53,7 +53,7 @@ class SumNetwork:
         # If not, then it keeps the original value
         self.sumArray = xr.where(self.sumArray < percentCutoffValue, 0.0, self.sumArray)
 
-    def visualize (self, outputname):
+    def visualize (self):
 
         # Converts XArray into Numpy array
         nparray = self.sumArray.to_numpy()
@@ -72,5 +72,11 @@ class SumNetwork:
         
         # populates the nodes and edges data structures
         nts.from_nx(G)
-        outputpath = f'{self.args.output}{outputname}.html'
+        outputpath = f'{self.args.outputname}.html'
         nts.show(outputpath)
+
+    def exportPickle (self):
+
+        # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
+        with open(f'{self.args.outputname}.pkl', 'wb') as pickleFile:
+            pickle.dump(self, pickleFile)

@@ -67,7 +67,7 @@ def main ():
     # If not then it gets visualized through PyVis which creates a .html output
     # Both files use the same file extension provided by the outputname argument
     if args.output_pickle == True:
-        sumNetObject.outputPickle()
+        sumNetObject.exportPickle()
     else:
         sumNetObject.visualize()
 
