@@ -15,52 +15,48 @@ class SumNetwork:
         # Opens pickle file
         with open(self.args.filename, 'rb') as pickleFile:
             self.multinet = pickle.load(pickleFile)
-            print(self.multinet.array)
 
     def calculateSum (self):
 
         # Calculates the sum across the network dimension (i.e. for each i,j residue pair)
-        sumArray = self.array.sum(dim="network")
+        self.sumArray = self.multinet.array.sum(dim="network")
 
         # Scales the sum array to all be values between 0 and 20
         if self.args.no_scale_sum_network == False:
-            sumArray = self.scaleSumNetwork(sumArray)
+            self.scaleSumNetwork()
             logging.info(f'Scaled the Sum Network to values between 0 and 20')
 
-        logging.info(f'Created the sum matrix of all networks')
-        return sumArray
+        # Removes weak edges so that the network is easier to visualize
+        if self.args.remove_weak_edges != None:
+            self.removeWeakEdges()
+            logging.info(f'Removed weak edges from array')
 
-    def scaleSumNetwork (self, inputArray):
+        logging.info(f'Created the sum matrix of all networks')
+
+    def scaleSumNetwork (self):
 
         # Gets maximum value across all dimensions
-        maxValue = inputArray.max(dim=['firstResi','secondResi']).item()
+        maxValue = self.sumArray.max(dim=['firstResi','secondResi']).item()
 
         # Then divides each network by max value
         # Scales to a set value (default 0 to 20)
-        scaledInputArray = (inputArray / maxValue) * self.args.sum_network_scale
+        self.sumArray = (self.sumArray / maxValue) * self.args.sum_network_scale
 
-        return scaledInputArray
-
-    def removeWeakEdges (self, inputArray):
+    def removeWeakEdges (self):
         
         # Get maximum value across the entire array
         # Then multiply that by the percent cutoff threshold specified by user
-        percentCutoffValue = inputArray.max() * (self.args.remove_weak_edges / 100)
+        percentCutoffValue = self.sumArray.max() * (self.args.remove_weak_edges / 100)
 
         # Finds entries in the array where they are less than the percent cutoff threshold
         # Then it replaces them with 0.0
         # If not, then it keeps the original value
-        return xr.where(inputArray < percentCutoffValue, 0.0, inputArray)
+        self.sumArray = xr.where(self.sumArray < percentCutoffValue, 0.0, self.sumArray)
 
-    def visualize (self, inputarray, outputname):
-
-        # Removes weak edges so that the network is easier to visualize
-        if self.args.remove_weak_edges != None:
-            inputarray = self.removeWeakEdges(inputarray)
-            logging.info(f'Removed weak edges from array for visualization')
+    def visualize (self, outputname):
 
         # Converts XArray into Numpy array
-        nparray = inputarray.to_numpy()
+        nparray = self.sumArray.to_numpy()
 
         # Creates graph from Numpy array
         G = nx.from_numpy_array(nparray)
