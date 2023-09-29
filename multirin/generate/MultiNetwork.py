@@ -1,11 +1,5 @@
-# import numpy as np
 import xarray as xr
 from Bio import SeqIO
-import networkx as nx
-from scipy.cluster.hierarchy import dendrogram, linkage, average
-from scipy.spatial.distance import pdist, squareform
-from matplotlib import pyplot as plt
-from pyvis.network import Network
 import pickle
 import logging
 
