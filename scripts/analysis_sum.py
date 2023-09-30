@@ -58,7 +58,7 @@ def setupArguments ():
 
     parser.add_argument( 
         '--resize_by_degree_scale',
-        default=2,
+        default=1,
         type=int,
         help='Maximum edge weight Sum Network should be scaled to'
     )
