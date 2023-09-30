@@ -1,4 +1,5 @@
 from multirin.analysis.SumNetwork import SumNetwork
+from multirin.generate.MainFunctions import checkExtension
 import argparse
 import logging
 
@@ -63,6 +64,7 @@ def setupArguments ():
     )
 
     args = parser.parse_args()
+    checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 
     return args
 
