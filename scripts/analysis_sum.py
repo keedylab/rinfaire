@@ -55,6 +55,13 @@ def setupArguments ():
         help="Turns off node resizing by degree"
     )
 
+    parser.add_argument( 
+        '--resize_by_degree_scale',
+        default=2,
+        type=int,
+        help='Maximum edge weight Sum Network should be scaled to'
+    )
+
     args = parser.parse_args()
 
     return args
