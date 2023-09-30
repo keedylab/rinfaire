@@ -82,7 +82,7 @@ class SumNetwork:
 
         # Gets the degree of each node and stores this in a dict, then scales it by factor
         # Code from: https://stackoverflow.com/questions/70438752/dynamic-node-sizes-in-pyvis
-        nodeDegrees = dict(G.degree) 
+        nodeDegrees = dict(G.degree(weight='weight')) 
         nodeDegrees.update((x, self.args.resize_by_degree_scale * y) for x, y in nodeDegrees.items())
 
         # Then sets the node attribute in networkX of size to be the degree
