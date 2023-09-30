@@ -4,6 +4,7 @@ from argparse import Namespace
 import unittest
 import numpy as np
 import xarray as xr
+import networkx as nx
 
 # Define class to test the program
 class testSumNetwork (unittest.TestCase):
@@ -73,6 +74,26 @@ class testSumNetwork (unittest.TestCase):
 
         # Asserts that this array is empty (since there should be no values after removal that fit criteria)
         self.assertEqual(len(cutoffArray), 0)
+
+    def test_resizeByDegree (self):
+
+        args = Namespace(resize_by_degree_scale=2)
+        sumNetwork = SumNetwork(args)
+
+        # Creates empty networkX graph and then populates it with edges of different weights
+        graph = nx.Graph()
+        graph.add_edge(2, 1, weight=4.7)
+        graph.add_edge(2, 3, weight=3.3)
+        graph.add_edge(2, 5, weight=2.0)
+
+        # Resizes the graph
+        graphResized = sumNetwork.resizeByDegree(graph)
+
+        # Checks if the node sizes are what they should be
+        self.assertEqual(graphResized.nodes[2]['size'], 20)
+        self.assertEqual(graphResized.nodes[1]['size'], 9.4)
+        self.assertEqual(graphResized.nodes[3]['size'], 6.6)
+        self.assertEqual(graphResized.nodes[5]['size'], 4.0)
  
 if __name__ == '__main__':
     unittest.main()
