@@ -28,12 +28,41 @@ class testSumNetwork (unittest.TestCase):
         # Creates test array object
         covObject.multinet.array = self.multinetArray
 
-        # Creates sum array and then scales it
-        covObject.flatten()
+        # Flattens the covariance array
+        flattenedArray = covObject.flatten()
 
         # Assert that values are equal
-        self.assertEqual(covObject.flattenMulti.sizes['network'], 2)
-        self.assertEqual(covObject.flattenMulti.sizes['resiPair'], 9)
+        self.assertEqual(flattenedArray.sizes['network'], 2)
+        self.assertEqual(flattenedArray.sizes['resiPair'], 9)
+
+    def test_calculateCovarianceByResiPair (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=True, remove_weak_edges=None)
+        covObject = Covariance(args)
+        covObject.multinet = MultiNetwork(args)
+
+        # Creates test array object
+        covObject.multinet.array = self.multinetArray
+
+        # Calculates the covariance by resi pair
+        covObject.calculateCovarianceByResiPair()
+        
+        # Test case of two different vectors
+        # ResiPair Vectors are: (0,0) and (1,0)
+        # (0,0) Values: [0,9]
+        # (1,0) Values: [3,12]
+        meanX1 = (9+0)/2
+        meanY1 = (3+12)/2
+        covariance1 = ((0-meanX1)*(3-meanY1) + (9-meanX1)*(12-meanY1)) / (2-1)
+        
+        # Test case on the diagonal where the covariance = variance
+        # ResiPair Vectors are: (1,2) and (1,2)
+        # (1,2) Values: [5,14]
+        meanX2 = (5+14)/2
+        covariance2 = ((5-meanX2)*(5-meanX2) + (14-meanX2)*(14-meanX2)) / (2-1)
+
+        self.assertEqual(covObject.covarianceArray.loc[[(0,0)], [(1,0)]].item(), covariance1)
+        self.assertEqual(covObject.covarianceArray.loc[[(1,2)], [(1,2)]].item(), covariance2)
 
 if __name__ == '__main__':
     unittest.main()

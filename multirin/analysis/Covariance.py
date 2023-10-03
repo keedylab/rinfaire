@@ -1,4 +1,5 @@
 import xarray as xr
+import numpy as np
 import networkx as nx
 from pyvis.network import Network
 import logging
@@ -16,7 +17,25 @@ class Covariance:
             self.multinet = pickle.load(pickleFile)
 
     def flatten (self):
-        self.flattenMulti = self.multinet.array.stack(resiPair=("firstResi", "secondResi"))
+        return self.multinet.array.stack(resiPair=("firstResi", "secondResi"))
+
+    def calculateCovarianceByResiPair (self):
+        
+        # Flattens the array so that residues are now represented on a single axis as pairs such as (resi i, j)
+        flattenedArray = self.flatten()
+
+        # Converts the flattened array into a numpy array
+        # Then uses numpy to calculate the sample covariance
+        # - rowvar = false means that columns (residue pairs) are the variables instead of the rows (network/PDB)
+        covarianceArrayNP = np.cov(flattenedArray.to_numpy(), rowvar=False)
+
+        # Then wraps the numpy array back into an XArray dataset with the same labels as before
+        # Now a square matrix with dimension of: number of residue pairs x number of residue pairs
+        self.covarianceArray = xr.DataArray(
+            covarianceArrayNP, 
+            coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
+            dims=("firstPair", "secondPair")
+        )
 
     def exportPickle (self):
 
