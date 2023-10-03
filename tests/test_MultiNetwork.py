@@ -3,6 +3,8 @@ from argparse import Namespace
 import unittest
 import numpy as np
 import xarray as xr
+import pickle
+import os
 
 # Define class to test the program
 class testMultiNetwork (unittest.TestCase):
@@ -155,6 +157,38 @@ class testMultiNetwork (unittest.TestCase):
 
         self.assertEqual(multi.array.loc["2SHV", 1, 2].item(), (5/17) * 20)
         self.assertEqual(multi.array.loc["1ALI", 1, 2].item(), (14/17) * 20)
+
+    def test_exportPickle (self):
+        
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, multinet_scale=20, output='tests/data/multi_net_test/')
+        multi = MultiNetwork(args)
+        structList = ["2SHV","1ALI"]
+
+        # Creates test array object
+        multi.array = xr.DataArray(
+            np.arange(18).reshape(2, 3, 3), 
+            coords=dict(network=structList, firstResi=range(3), secondResi=range(3)), 
+            dims=("network", "firstResi", "secondResi")
+        )
+
+        # Creates pickle file
+        multi.exportPickle()
+
+        # Opens pickle file
+        filename = args.output + 'MultiNetwork.pkl'
+        with open(filename, 'rb') as pickleFile:
+            multiFromPickle = pickle.load(pickleFile)
+
+        # Tests whether the MultiNetwork object are the same before and after the pickling process
+        
+        # Asserts that the two XArray objects are the same
+        self.assertTrue(multi.array.equals(multiFromPickle.array))
+
+        # Asserts that the number of sequences in the alignments of both objects are the same
+        self.assertEqual(len(multi.seqaln), len(multiFromPickle.seqaln))
+
+        # Deletes the pickle file
+        os.remove(filename)
  
 if __name__ == '__main__':
     unittest.main()
