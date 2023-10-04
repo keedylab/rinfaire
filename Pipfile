@@ -12,6 +12,7 @@ biopython = "*"
 scipy = "*"
 matplotlib = "*"
 xarray = "*"
+seaborn = "*"
 
 [dev-packages]
 

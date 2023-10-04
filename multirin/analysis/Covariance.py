@@ -4,6 +4,8 @@ import networkx as nx
 from pyvis.network import Network
 import logging
 import pickle
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 class Covariance:
 
@@ -36,6 +38,21 @@ class Covariance:
             coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
             dims=("firstPair", "secondPair")
         )
+
+    def visualize (self):
+        
+        plt.figure(figsize=(10,10))
+        sns.set(font_scale=1.5)
+        hm = sns.heatmap(self.covarianceArray)
+            # cbar=True,
+            # square=True,
+            # fmt='.2f',
+            # annot_kws={'size': 12}
+            # yticklabels=cols,
+            # xticklabels=cols
+        plt.title('Covariance matrix')
+        plt.tight_layout()
+        plt.savefig('covarianceMatrix.png')
 
     def exportPickle (self):
 
