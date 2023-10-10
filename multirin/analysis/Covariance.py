@@ -52,7 +52,9 @@ class Covariance:
             # xticklabels=cols
         plt.title('Covariance matrix')
         plt.tight_layout()
-        plt.savefig('covarianceMatrix.png')
+        
+        outputpath = f'{self.args.outputname}.png'
+        plt.savefig(outputpath)
 
     def exportPickle (self):
 
