@@ -2,9 +2,7 @@
 # coding: utf-8
 
 import gemmi
-import numpy as np
 import networkx as nx
-import pyvis
 from pyvis.network import Network
 import copy
 import logging

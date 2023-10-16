@@ -1,8 +1,8 @@
 import argparse
 import os
-from Structure import Structure
-from IndividualNetwork import IndividualNetwork
-from MultiNetwork import MultiNetwork
+from .Structure import Structure
+from .IndividualNetwork import IndividualNetwork
+from .MultiNetwork import MultiNetwork
 
 def setupArguments (multiFlag):
 
@@ -174,12 +174,17 @@ def generateMultiNetwork (networkList, args):
     
     # Initializes an empty multi-network object 
     multi = MultiNetwork(args)
+
+    # Adds networks from the list of individual networks
     multi.addNetworks(networkList)
 
-    # Calculates the sum matrix of all the structures in the object
-    # Does this across each residue pairing
-    sumMatrix = multi.sum()
-    multi.visualize(sumMatrix, 'sumNetwork')
+    # Exports MultiNetwork object as a pickle file for further analysis
+    multi.exportPickle()
+
+    # # Calculates the sum matrix of all the structures in the object
+    # # Does this across each residue pairing
+    # sumMatrix = multi.sum()
+    # multi.visualize(sumMatrix, 'sumNetwork')
 
     return multi
     

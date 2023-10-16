@@ -1,11 +1,13 @@
-from multirin import MultiNetwork 
+from multirin.generate.MultiNetwork import MultiNetwork 
 from argparse import Namespace
 import unittest
 import numpy as np
 import xarray as xr
+import pickle
+import os
 
 # Define class to test the program
-class testGenerateMultiNetwork (unittest.TestCase):
+class testMultiNetwork (unittest.TestCase):
 
     @classmethod
     def setUpClass (self):
@@ -156,9 +158,9 @@ class testGenerateMultiNetwork (unittest.TestCase):
         self.assertEqual(multi.array.loc["2SHV", 1, 2].item(), (5/17) * 20)
         self.assertEqual(multi.array.loc["1ALI", 1, 2].item(), (14/17) * 20)
 
-    def test_scaleSumNetwork (self):
-
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, no_scale_sum_network=True, sum_network_scale=20)
+    def test_exportPickle (self):
+        
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, multinet_scale=20, output='tests/data/multi_net_test/')
         multi = MultiNetwork(args)
         structList = ["2SHV","1ALI"]
 
@@ -169,73 +171,24 @@ class testGenerateMultiNetwork (unittest.TestCase):
             dims=("network", "firstResi", "secondResi")
         )
 
-        # Creates sum array and then scales it
-        sumArray = multi.sum()
-        maxSumValue = sumArray.max().item()
-        scaledSumArray = multi.scaleSumNetwork(sumArray)
+        # Creates pickle file
+        multi.exportPickle()
 
-        # Assert that values are equal
-        self.assertEqual(sumArray[0][0].item(), multi.array[0][0][0] + multi.array[1][0][0])
-        self.assertEqual(sumArray[2][2].item(), multi.array[0][2][2] + multi.array[1][2][2])
-        self.assertEqual(scaledSumArray[0][0].item(), ((multi.array[0][0][0] + multi.array[1][0][0]) / maxSumValue) * args.sum_network_scale)
-        self.assertEqual(scaledSumArray[2][2].item(), ((multi.array[0][2][2] + multi.array[1][2][2]) / maxSumValue) * args.sum_network_scale)
+        # Opens pickle file
+        filename = args.output + 'MultiNetwork.pkl'
+        with open(filename, 'rb') as pickleFile:
+            multiFromPickle = pickle.load(pickleFile)
 
-    def test_sum (self):
+        # Tests whether the MultiNetwork object are the same before and after the pickling process
+        
+        # Asserts that the two XArray objects are the same
+        self.assertTrue(multi.array.equals(multiFromPickle.array))
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=True, no_scale_sum_network=True)
-        multi = MultiNetwork(args)
-        structList = ["2SHV","1ALI","2SJR"]
+        # Asserts that the number of sequences in the alignments of both objects are the same
+        self.assertEqual(len(multi.seqaln), len(multiFromPickle.seqaln))
 
-        multi.array = xr.DataArray(
-            0.0, 
-            coords=dict(network=structList, firstResi=range(multi.size), secondResi=range(multi.size)), 
-            dims=("network", "firstResi", "secondResi")
-        )
-
-        seqList1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        seqList2 = [0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-        seqList3 = [0, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222]
-
-        # Adds dict of dicts to MultiNetwork object
-        multi.add(self.Dict_2SHV, "2SHV", seqList1)
-        multi.add(self.Dict_1ALI, "1ALI", seqList2)
-        multi.add(self.Dict_2SJR, "2SJR", seqList3)
-
-        # Calculates the sum across these three networks
-        sumMulti = multi.sum()
-
-        # Tests that positions at analogous positions are summed up
-        self.assertEqual(round(sumMulti[1][3].item(), 1), 0.6)
-        self.assertEqual(round(sumMulti[3][1].item(), 1), 0.6)
-        self.assertEqual(round(sumMulti[1][6].item(), 1), 0.3)
-        self.assertEqual(round(sumMulti[12][13].item(), 1), 0.4)
-
-    def test_removeWeakEdges (self):
-
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_norm_struct=False, remove_weak_edges=20)
-        multi = MultiNetwork(args)
-        structList = ["2SHV","1ALI"]
-
-        # Creates test array object
-        # Two 5x5 arrays that have values from 0-50
-        multi.array = xr.DataArray(
-            np.arange(1,51,1).reshape(2, 5, 5), 
-            coords=dict(network=structList, firstResi=range(5), secondResi=range(5)), 
-            dims=("network", "firstResi", "secondResi")
-        )
-
-        # Gets original array's maximum value
-        maxValue = multi.array.max().item()
-
-        # Removes weak edges below 20% cutoff
-        removedArray = multi.removeWeakEdges(multi.array)
-
-        # Gets array of all values that are larger than zero but less than the cutoff
-        # Ideally this should be empty
-        cutoffArray = removedArray.where((removedArray < 0.2 * maxValue) & (removedArray > 0), drop=True)
-
-        # Asserts that this array is empty (since there should be no values after removal that fit criteria)
-        self.assertEqual(len(cutoffArray), 0)
+        # Deletes the pickle file
+        os.remove(filename)
  
 if __name__ == '__main__':
     unittest.main()
