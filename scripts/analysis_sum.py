@@ -1,4 +1,5 @@
 from multirin.analysis.SumNetwork import SumNetwork
+from multirin.generate.MainFunctions import checkExtension
 import argparse
 import logging
 
@@ -48,7 +49,22 @@ def setupArguments ():
         help='Option to remove weak edges by a percent cutoff factor specified'
     )
 
+    parser.add_argument( 
+        '--no_resize_by_degree', 
+        default=False,
+        action='store_true', 
+        help="Turns off node resizing by degree"
+    )
+
+    parser.add_argument( 
+        '--resize_by_degree_scale',
+        default=1,
+        type=int,
+        help='Maximum edge weight Sum Network should be scaled to'
+    )
+
     args = parser.parse_args()
+    checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 
     return args
 

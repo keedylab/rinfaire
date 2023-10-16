@@ -64,6 +64,10 @@ class SumNetwork:
         
         for i in G.nodes():
             G.nodes[i]['label'] = str(i)
+
+        # Resizing nodes by the degree of the node
+        if self.args.no_resize_by_degree == False:
+            G = self.resizeByDegree(G)    
         
         # widths = nx.get_edge_attributes(G, 'weight')
 
@@ -73,6 +77,18 @@ class SumNetwork:
         nts.from_nx(G)
         outputpath = f'{self.args.outputname}.html'
         nts.show(outputpath)
+
+    def resizeByDegree (self, G):
+
+        # Gets the degree of each node and stores this in a dict, then scales it by factor
+        # Code from: https://stackoverflow.com/questions/70438752/dynamic-node-sizes-in-pyvis
+        nodeDegrees = dict(G.degree(weight='weight')) 
+        nodeDegrees.update((x, self.args.resize_by_degree_scale * y) for x, y in nodeDegrees.items())
+
+        # Then sets the node attribute in networkX of size to be the degree
+        nx.set_node_attributes(G,nodeDegrees,'size')
+
+        return G
 
     def exportPickle (self):
 
