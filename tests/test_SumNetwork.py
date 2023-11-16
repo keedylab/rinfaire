@@ -94,6 +94,26 @@ class testSumNetwork (unittest.TestCase):
         self.assertEqual(graphResized.nodes[1]['size'], 9.4)
         self.assertEqual(graphResized.nodes[3]['size'], 6.6)
         self.assertEqual(graphResized.nodes[5]['size'], 4.0)
- 
+
+    def test_removeSubGraphs (self):
+
+        args = Namespace(remove_subgraphs=4)
+        sumNetwork = SumNetwork(args)
+
+        # Creates empty networkX graph and then populates it with edges of different weights
+        graph = nx.Graph()
+        graph.add_edge(2, 1, weight=4)
+        graph.add_edge(2, 3, weight=3)
+        graph.add_edge(2, 5, weight=2)
+        graph.add_edge(7, 9, weight=2)
+        graph.add_edge(9, 10, weight=2)
+        graph.add_edge(11, 12, weight=5)
+
+        # Removes subgraphs
+        graphRemoved = sumNetwork.removeSubGraphs(graph)
+
+        # Checks what nodes are present
+        self.assertEqual(sorted(list(graphRemoved.nodes)), sorted([1,2,3,5]))
+
 if __name__ == '__main__':
     unittest.main()

@@ -68,6 +68,10 @@ class SumNetwork:
         # Resizing nodes by the degree of the node
         if self.args.no_resize_by_degree == False:
             G = self.resizeByDegree(G)    
+
+        # Removes subgraphs with < n nodes
+        if self.args.remove_subgraphs != None:
+            self.removeSubGraphs(G)
         
         # widths = nx.get_edge_attributes(G, 'weight')
 
@@ -87,6 +91,17 @@ class SumNetwork:
 
         # Then sets the node attribute in networkX of size to be the degree
         nx.set_node_attributes(G,nodeDegrees,'size')
+
+        return G
+    
+    def removeSubGraphs (self, G):
+
+        # Removes components of length less than self.args.remove_subgraphs
+        # Code from: https://stackoverflow.com/questions/38308865/how-to-remove-small-components-from-a-graph
+        for component in list(nx.connected_components(G)):
+            if len(component) < self.args.remove_subgraphs:
+                for node in component:
+                    G.remove_node(node)
 
         return G
 
