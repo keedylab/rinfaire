@@ -63,6 +63,13 @@ def setupArguments ():
         help='Maximum edge weight Sum Network should be scaled to'
     )
 
+    parser.add_argument( 
+        '--remove_subgraphs',
+        default=5,
+        type=int,
+        help='Removes subgraphs that have less than specified number of residues. To turn off removal set this to 0'
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 

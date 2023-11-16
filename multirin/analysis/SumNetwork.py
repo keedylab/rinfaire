@@ -70,7 +70,7 @@ class SumNetwork:
             G = self.resizeByDegree(G)    
 
         # Removes subgraphs with < n nodes
-        if self.args.remove_subgraphs != None:
+        if self.args.remove_subgraphs != 0:
             self.removeSubGraphs(G)
         
         # widths = nx.get_edge_attributes(G, 'weight')
