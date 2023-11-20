@@ -117,22 +117,33 @@ class testSumNetwork (unittest.TestCase):
 
     def test_seqToRef (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=None, seq_to_ref='tests/data/sum_net_test/6B8Z_qFit_chainA.pdb')
+        args = Namespace(alignmentFile='tests/data/sum_net_test/PROMALS3D_PTPsAlignment_withoutArchael.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=None, seq_to_ref='tests/data/sum_net_test/6B8Z_qFit_chainA.pdb')
         sumNetwork = SumNetwork(args)
         sumNetwork.multinet = MultiNetwork(args)
 
         # Creates test array object
         sumNetwork.multinet.array = self.multinetArray
 
-        # Creates sum array and then scales it
-        sumNetwork.seqToRef() 
+        # Creates empty networkX graph and then populates it with edges of different weights
+        graph = nx.Graph()
+        graph.add_edge(180, 309, weight=4)
+        graph.add_edge(180, 310, weight=3)
+
+        labels_unshifted = []
+        for i in graph.nodes():
+            graph.nodes[i]['label'] = str(i)
+            labels_unshifted.append(graph.nodes[i]['label'])
+
+        # Uses seqToRef to backshift nodes to reference numbering
+        graph_backshifted = sumNetwork.seqToRef(graph) 
+
+        labels_backshifted = []
+        for i in graph_backshifted.nodes():
+            labels_backshifted.append(graph_backshifted.nodes[i]['label'])
 
         # Assert that values are equal
-        # maxValue = 25 # This is the maximum value in the array before scaling
-        # self.assertEqual(sumNetwork.sumArray[0][0].item(), ((sumNetwork.multinet.array[0][0][0].item() + sumNetwork.multinet.array[1][0][0].item()) / maxValue) * sumNetwork.args.sum_network_scale)
-        # self.assertEqual(sumNetwork.sumArray[2][2].item(), ((sumNetwork.multinet.array[0][2][2].item() + sumNetwork.multinet.array[1][2][2].item()) / maxValue) * sumNetwork.args.sum_network_scale)
-
-        
+        self.assertEqual(labels_unshifted, ['180','309','310'])
+        self.assertEqual(labels_backshifted, ['109','215','216'])    
 
 if __name__ == '__main__':
     unittest.main()
