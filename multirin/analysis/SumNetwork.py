@@ -75,18 +75,30 @@ class SumNetwork:
         if self.args.remove_subgraphs != 0:
             G = self.removeSubGraphs(G)
 
+        # Shifts sequence to reference sequence
         if self.args.seq_to_ref != None:
             G = self.seqToRef(G)
 
+        # Detects communities within sum graph
         if self.args.detect_communities == True:
             G = self.detectCommunities(G)
 
-        # widths = nx.get_edge_attributes(G, 'weight')
-
+        # Sets PyVis representation
         nts = Network(notebook=True)
-        
-        # populates the nodes and edges data structures
         nts.from_nx(G)
+
+        # Set deterministic network position using the Kamada-Kawai network layout
+        # Solution from: https://stackoverflow.com/questions/74108243/pyvis-is-there-a-way-to-disable-physics-without-losing-graphs-layout
+        pos = nx.kamada_kawai_layout(G, scale=2000)
+
+        for node in nts.get_nodes():
+            nts.get_node(node)['x']=pos[node][0]
+            nts.get_node(node)['y']=-pos[node][1] #the minus is needed here to respect networkx y-axis convention 
+            nts.get_node(node)['physics']=False
+            nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
+   
+        # Outputs the network graph
+        nts.toggle_physics(False)
         outputpath = f'{self.args.outputname}.html'
         nts.show(outputpath)
 
