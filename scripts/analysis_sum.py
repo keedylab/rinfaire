@@ -84,6 +84,19 @@ def setupArguments ():
         help="Detects communities within the sum graph"
     )
 
+    parser.add_argument( 
+        '--n_communities',
+        type=int,
+        help='Number of communities to be detected (must be used with -c flag)'
+    )
+
+    parser.add_argument( 
+        '--output_modularity', 
+        default=False,
+        action='store_true', 
+        help="Outputs .csv file with modularity values for every value of k (must be used with -c flag)"
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 

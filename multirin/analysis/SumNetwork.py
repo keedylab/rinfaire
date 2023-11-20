@@ -153,31 +153,51 @@ class SumNetwork:
             
     def detectCommunities (self, G):
 
+        # Community detection using the Girvan Newman method, returns a list of sets of communities for every k
         communities = list(nx.community.girvan_newman(G))
 
         # Modularity -> measures the strength of division of a network into modules
+        # Pandas DF that stores modularity for every number of communities (k)
+        # From networkX docs: https://networkx.org/documentation/stable/auto_examples/algorithms/plot_girvan_newman.html#sphx-glr-auto-examples-algorithms-plot-girvan-newman-py
         modularity_df = pd.DataFrame(
             [
-                [k + 1, nx.community.modularity(G, communities[k])]
+                [len(communities[k]), nx.community.modularity(G, communities[k])]
                 for k in range(len(communities))
             ],
             columns=["k", "modularity"],
         )
+        
+        # Outputs the modularity df as a csv file if the user specifies
+        if self.args.output_modularity == True:
+            modularity_df.to_csv(f"{self.args.outputname}_Modularity.csv")
 
+        # Only keeps rows that are smaller than the maximum number of groups (if specified by user)
+        if self.args.n_communities != None:
+            modularity_df = modularity_df[modularity_df['k'] == self.args.n_communities]
+
+        # Selects the classification with the highest modularity score
         idxModularityMax = modularity_df['modularity'].idxmax()
+        modularityMax = modularity_df['modularity'].max()
         selectedCommunities = communities[idxModularityMax]
 
+        # Then labels each node in each community with an associated group
+        # Pyvis then colors these groups separately during visualization
         communityCounter = 0
+
         for community in selectedCommunities:
-            print(f"Community {communityCounter}: {community}")
-            
+
+            nodeList = []
             for node in community:
                 G.nodes[node]['group'] = communityCounter
+                nodeList.append(int(G.nodes[node]['label']))
+
+            print(f'Community {communityCounter + 1}: {nodeList}')
 
             communityCounter += 1
+
+        print(f"Modularity of the communities: {modularityMax}")
         
         return G
-
 
     def exportPickle (self):
 
