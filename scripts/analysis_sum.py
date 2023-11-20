@@ -70,6 +70,12 @@ def setupArguments ():
         help='Removes subgraphs that have less than specified number of residues. To turn off removal set this to 0'
     )
 
+    parser.add_argument(
+        '-r',
+        '--seq_to_ref',
+        help='Sets a reference sequence for all the numbering'
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 

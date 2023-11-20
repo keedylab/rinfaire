@@ -3,6 +3,7 @@ import networkx as nx
 from pyvis.network import Network
 import logging
 import pickle
+from multirin.generate.Structure import Structure
 
 class SumNetwork:
 
@@ -71,8 +72,11 @@ class SumNetwork:
 
         # Removes subgraphs with < n nodes
         if self.args.remove_subgraphs != 0:
-            self.removeSubGraphs(G)
-        
+            G = self.removeSubGraphs(G)
+
+        if self.args.seq_to_ref != None:
+            G = self.seqToRef(G)
+
         # widths = nx.get_edge_attributes(G, 'weight')
 
         nts = Network(notebook=True)
@@ -104,6 +108,45 @@ class SumNetwork:
                     G.remove_node(node)
 
         return G
+    
+    def seqToRef (self, G):
+
+        # Creates new Structure object from inputted reference structure
+        # This is only needed because of the sequenceList attribute in Structure that is neccessary for AllToOne()
+        structName = self.args.seq_to_ref
+        struct = Structure(structName, self.args)
+        
+        # Iterates over each node in the graph
+        # Then uses the AllToOne function to shift residue numbering back from the alignment positions to the reference sequence numbers
+        for i in G.nodes:
+            G.nodes[i]['label'] = str(self.allToOne(self.multinet.seqaln, struct.name, struct.sequenceList, int(G.nodes[i]['label'])))
+
+        return G
+
+    def allToOne (self, seqaln, seqID, sequenceList, mainResidue):
+
+        mainCount = 0
+        seqIndex = 0
+        
+        # Iterates over each residue in the sequence of the structure being queried
+        for i in seqaln[seqID]:
+
+            # Increments the main count that counts the total number of positions it has passed on the alignment
+            mainCount = mainCount + 1
+
+            # If there is a residue present (not just a - used as a placeholder)
+            # Then increment the seq index that counts the total number of actual residue positions that have been passed
+            if i != '-':
+                seqIndex = seqIndex + 1
+                #print(seqIndex)
+
+            # Condition when it reaches the residue in question 
+            # (since seq index represents the position in the individual sequence and not the full alignment)
+            if mainCount == mainResidue:
+            
+                # Returns the main count which is the position on the full alignment
+                return(sequenceList[seqIndex])
+
 
     def exportPickle (self):
 

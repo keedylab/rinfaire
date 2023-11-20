@@ -115,5 +115,24 @@ class testSumNetwork (unittest.TestCase):
         # Checks what nodes are present
         self.assertEqual(sorted(list(graphRemoved.nodes)), sorted([1,2,3,5]))
 
+    def test_seqToRef (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=None, seq_to_ref='tests/data/sum_net_test/6B8Z_qFit_chainA.pdb')
+        sumNetwork = SumNetwork(args)
+        sumNetwork.multinet = MultiNetwork(args)
+
+        # Creates test array object
+        sumNetwork.multinet.array = self.multinetArray
+
+        # Creates sum array and then scales it
+        sumNetwork.seqToRef() 
+
+        # Assert that values are equal
+        # maxValue = 25 # This is the maximum value in the array before scaling
+        # self.assertEqual(sumNetwork.sumArray[0][0].item(), ((sumNetwork.multinet.array[0][0][0].item() + sumNetwork.multinet.array[1][0][0].item()) / maxValue) * sumNetwork.args.sum_network_scale)
+        # self.assertEqual(sumNetwork.sumArray[2][2].item(), ((sumNetwork.multinet.array[0][2][2].item() + sumNetwork.multinet.array[1][2][2].item()) / maxValue) * sumNetwork.args.sum_network_scale)
+
+        
+
 if __name__ == '__main__':
     unittest.main()
