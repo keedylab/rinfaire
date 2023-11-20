@@ -1,4 +1,5 @@
 import xarray as xr
+import pandas as pd
 import networkx as nx
 from pyvis.network import Network
 import logging
@@ -77,6 +78,9 @@ class SumNetwork:
         if self.args.seq_to_ref != None:
             G = self.seqToRef(G)
 
+        if self.args.detect_communities == True:
+            G = self.detectCommunities(G)
+
         # widths = nx.get_edge_attributes(G, 'weight')
 
         nts = Network(notebook=True)
@@ -146,6 +150,33 @@ class SumNetwork:
             
                 # Returns the main count which is the position on the full alignment
                 return(sequenceList[seqIndex])
+            
+    def detectCommunities (self, G):
+
+        communities = list(nx.community.girvan_newman(G))
+
+        # Modularity -> measures the strength of division of a network into modules
+        modularity_df = pd.DataFrame(
+            [
+                [k + 1, nx.community.modularity(G, communities[k])]
+                for k in range(len(communities))
+            ],
+            columns=["k", "modularity"],
+        )
+
+        idxModularityMax = modularity_df['modularity'].idxmax()
+        selectedCommunities = communities[idxModularityMax]
+
+        communityCounter = 0
+        for community in selectedCommunities:
+            print(f"Community {communityCounter}: {community}")
+            
+            for node in community:
+                G.nodes[node]['group'] = communityCounter
+
+            communityCounter += 1
+        
+        return G
 
 
     def exportPickle (self):

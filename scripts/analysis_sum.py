@@ -76,6 +76,14 @@ def setupArguments ():
         help='Sets a reference sequence for all the numbering'
     )
 
+    parser.add_argument( 
+        '-c',
+        '--detect_communities', 
+        default=False,
+        action='store_true', 
+        help="Detects communities within the sum graph"
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 
