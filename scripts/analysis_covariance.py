@@ -58,10 +58,10 @@ def main ():
     # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # If not then it gets visualized through PyVis which creates a .html output
     # Both files use the same file extension provided by the outputname argument
-    if args.output_pickle == True:
-        covarianceObject.exportPickle()
-    else:
-        covarianceObject.visualize()
+    # if args.output_pickle == True:
+    #     covarianceObject.exportPickle()
+    # else:
+    #     covarianceObject.visualize()
 
 if __name__ == "__main__":
     main()

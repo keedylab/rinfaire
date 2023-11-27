@@ -19,7 +19,18 @@ class Covariance:
             self.multinet = pickle.load(pickleFile)
 
     def flatten (self):
-        return self.multinet.array.stack(resiPair=("firstResi", "secondResi"))
+
+        # First stacks the array by creating a combined coordinate resiPair that combines firstResi and secondResi
+        stackedArray = self.multinet.array.stack(resiPair=("firstResi", "secondResi"))
+        stackedArray = stackedArray.dropna(dim="network", how="any")
+        
+        # Then calculates the sum of the stackedArray across the network dimension (ie the sum for each resiPair)
+        sumArray = stackedArray.sum(dim="network")
+
+        # Then drops indices where the corresponding index in the sumArray is = 0 (meaning that there are no edges for that pair)
+        # Creates a stackedArray with only columns with resiPairs that exist in the network
+        stackedArray = stackedArray.where(sumArray != 0, drop=True)
+        return stackedArray
 
     def calculateCovarianceByResiPair (self):
         
@@ -28,7 +39,7 @@ class Covariance:
 
         # Converts the flattened array into a numpy array
         # Then uses numpy to calculate the sample covariance
-        # - rowvar = false means that columns (residue pairs) are the variables instead of the rows (network/PDB)
+        # rowvar = false means that columns (residue pairs) are the variables instead of the rows (network/PDB)
         covarianceArrayNP = np.cov(flattenedArray.to_numpy(), rowvar=False)
 
         # Then wraps the numpy array back into an XArray dataset with the same labels as before
@@ -38,6 +49,8 @@ class Covariance:
             coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
             dims=("firstPair", "secondPair")
         )
+
+        print(self.covarianceArray)
 
     def visualize (self):
         
