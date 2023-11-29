@@ -67,8 +67,6 @@ class Covariance:
             dims=("firstPair", "secondPair")
         )
 
-        print(self.covarianceArray)
-
     def calculateCorrelationByResiPair (self):
         
         # Flattens the array so that residues are now represented on a single axis as pairs such as (resi i, j)
@@ -87,25 +85,38 @@ class Covariance:
             dims=("firstPair", "secondPair")
         )
 
-    def visualize (self):
-        
+    def visualizeMatrix (self, covOrCorrFlag):
+
+        # Creates plot
         plt.figure(figsize=(10,10))
         sns.set(font_scale=1.5)
-        hm = sns.heatmap(self.correlationArray)
+
+        # Chooses the input array depending on if it's the covariance or correlation matrix
+        if covOrCorrFlag == 'covariance':
+            visArray = self.covarianceArray
+            plt.title('Covariance matrix')
+            filename = self.args.outputdir + 'Covariance'
+        else:
+            visArray = self.correlationArray
+            plt.title('Correlation matrix')
+            filename = self.args.outputdir + 'Correlation'
+        
+        # Creates a heatmap for the matrix
+        hm = sns.heatmap(visArray)
             # cbar=True,
             # square=True,
             # fmt='.2f',
             # annot_kws={'size': 12}
             # yticklabels=cols,
             # xticklabels=cols
-        plt.title('Covariance matrix')
-        plt.tight_layout()
         
-        outputpath = f'{self.args.outputname}.png'
+        # Plots the heatmap and saves it to the specified directory
+        plt.tight_layout()
+        outputpath = f'{filename}.png'
         plt.savefig(outputpath)
 
     def exportPickle (self):
 
         # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
-        with open(f'{self.args.outputname}.pkl', 'wb') as pickleFile:
+        with open(f'{self.args.outputdir + "Covariance"}.pkl', 'wb') as pickleFile:
             pickle.dump(self, pickleFile)

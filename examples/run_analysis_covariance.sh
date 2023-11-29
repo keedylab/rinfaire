@@ -1,9 +1,9 @@
 
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/'
-outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/covarianceMatrix'
+outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/'
 
 pipenv run python ../scripts/analysis_covariance.py \
 	${inputdir}MultiNetwork.pkl \
-	${outputfilename} \
-	-r \
+	${outputdir} \
+	-c \
 	--remove_weak_edges 25
