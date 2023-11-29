@@ -52,11 +52,29 @@ class Covariance:
 
         print(self.covarianceArray)
 
+    def calculateCorrelationByResiPair (self):
+        
+        # Flattens the array so that residues are now represented on a single axis as pairs such as (resi i, j)
+        flattenedArray = self.flatten()
+
+        # Converts the flattened array into a numpy array
+        # Then uses numpy to calculate the Pearson correlation coefficient
+        # rowvar = false means that columns (residue pairs) are the variables instead of the rows (network/PDB)
+        correlationArrayNP = np.corrcoef(flattenedArray.to_numpy(), rowvar=False)
+
+        # Then wraps the numpy array back into an XArray dataset with the same labels as before
+        # Now a square matrix with dimension of: number of residue pairs x number of residue pairs
+        self.correlationArray = xr.DataArray(
+            correlationArrayNP, 
+            coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
+            dims=("firstPair", "secondPair")
+        )
+
     def visualize (self):
         
         plt.figure(figsize=(10,10))
         sns.set(font_scale=1.5)
-        hm = sns.heatmap(self.covarianceArray)
+        hm = sns.heatmap(self.correlationArray)
             # cbar=True,
             # square=True,
             # fmt='.2f',
