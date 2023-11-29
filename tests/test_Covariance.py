@@ -18,6 +18,12 @@ class testSumNetwork (unittest.TestCase):
             np.arange(18).reshape(2, 3, 3), 
             coords=dict(network=structList, firstResi=range(3), secondResi=range(3)), 
             dims=("network", "firstResi", "secondResi"))
+        
+        structList2 = ['a','b','c','d','e','f','g','h','i','j']
+        self.multinetArray2 = xr.DataArray(
+            np.random.rand(10, 3, 3), 
+            coords=dict(network=structList2, firstResi=range(3), secondResi=range(3)), 
+            dims=("network", "firstResi", "secondResi"))
 
     def test_flatten (self):
 
@@ -63,6 +69,26 @@ class testSumNetwork (unittest.TestCase):
 
         self.assertEqual(covObject.covarianceArray.loc[[(0,0)], [(1,0)]].item(), covariance1)
         self.assertEqual(covObject.covarianceArray.loc[[(1,2)], [(1,2)]].item(), covariance2)
+
+    def test_calculateCorrelationByResiPair (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=True, remove_weak_edges=None)
+        covObject = Covariance(args)
+        covObject.multinet = MultiNetwork(args)
+
+        # Creates test array object
+        covObject.multinet.array = self.multinetArray2
+
+        # Calculates the covariance by resi pair
+        covObject.calculateCorrelationByResiPair()
+
+        # Confirms that the matrix is symmetric (transpose = original)
+        self.assertTrue((covObject.correlationArray.T == covObject.correlationArray).all())
+
+        # Confirms diagonal elements = 1
+        diagValues = np.diag(covObject.correlationArray)
+        diagValues = np.rint(diagValues).astype(int)
+        self.assertTrue((diagValues == 1).all())
 
 if __name__ == '__main__':
     unittest.main()
