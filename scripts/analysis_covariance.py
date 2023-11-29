@@ -37,6 +37,12 @@ def setupArguments ():
         help="Calculates the covariance matrix based off of the residue-residue pairs across all networks"
     )
 
+    parser.add_argument( 
+        '--remove_weak_edges',
+        type=int,
+        help='Option to remove weak edges by a percent cutoff factor specified'
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 

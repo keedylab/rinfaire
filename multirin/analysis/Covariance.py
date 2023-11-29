@@ -18,6 +18,18 @@ class Covariance:
         with open(self.args.filename, 'rb') as pickleFile:
             self.multinet = pickle.load(pickleFile)
 
+    def removeWeakEdges (self, sumArray):
+        
+        # Get maximum value across the entire array
+        # Then multiply that by the percent cutoff threshold specified by user
+        percentCutoffValue = sumArray.max() * (self.args.remove_weak_edges / 100)
+
+        # Finds entries in the array where they are less than the percent cutoff threshold
+        # Then it replaces them with 0.0
+        # If not, then it keeps the original value
+        sumArray = xr.where(sumArray < percentCutoffValue, 0.0, sumArray)
+        return sumArray
+
     def flatten (self):
 
         # First stacks the array by creating a combined coordinate resiPair that combines firstResi and secondResi
@@ -26,6 +38,11 @@ class Covariance:
         
         # Then calculates the sum of the stackedArray across the network dimension (ie the sum for each resiPair)
         sumArray = stackedArray.sum(dim="network")
+
+        # Removes weak edges if option is specified
+        # Makes entries in array 0 if they fall below the threshold -> entries that are = 0 get removed in next step
+        if self.args.remove_weak_edges != None:
+            sumArray = self.removeWeakEdges(sumArray)
 
         # Then drops indices where the corresponding index in the sumArray is = 0 (meaning that there are no edges for that pair)
         # Creates a stackedArray with only columns with resiPairs that exist in the network
