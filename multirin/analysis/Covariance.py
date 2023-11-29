@@ -67,6 +67,17 @@ class Covariance:
             dims=("firstPair", "secondPair")
         )
 
+        # Gets largest and smallest covariance values that are not on the diagonal (variance with itself)
+        # Solution from: https://stackoverflow.com/questions/29394377/minimum-of-numpy-array-ignoring-diagonal
+        covarianceArrayNP_Print = covarianceArrayNP
+        np.fill_diagonal(covarianceArrayNP_Print, -np.inf)
+        max_value = covarianceArrayNP_Print.max()
+        np.fill_diagonal(covarianceArrayNP_Print, np.inf)
+        min_value = covarianceArrayNP_Print.min()
+
+        print(f"Minimum covariance (w/o diagonal entries): {str(min_value)}")
+        print(f"Maximum covariance (w/o diagonal entries): {str(max_value)}")
+
     def calculateCorrelationByResiPair (self):
         
         # Flattens the array so that residues are now represented on a single axis as pairs such as (resi i, j)
@@ -84,6 +95,17 @@ class Covariance:
             coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
             dims=("firstPair", "secondPair")
         )
+
+        # Gets largest and smallest correlation coefficients that are not on the diagonal (correlation with itself)
+        # Solution from: https://stackoverflow.com/questions/29394377/minimum-of-numpy-array-ignoring-diagonal
+        correlationArrayNP_Print = correlationArrayNP
+        np.fill_diagonal(correlationArrayNP_Print, -np.inf)
+        max_value = correlationArrayNP_Print.max()
+        np.fill_diagonal(correlationArrayNP_Print, np.inf)
+        min_value = correlationArrayNP_Print.min()
+
+        print(f"Minimum Pearson correlation coefficient (w/o diagonal entries): {str(min_value)}")
+        print(f"Maximum Pearson correlation coefficient (w/o diagonal entries): {str(max_value)}")
 
     def visualizeMatrix (self, covOrCorrFlag):
 
