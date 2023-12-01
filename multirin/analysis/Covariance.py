@@ -6,6 +6,8 @@ import logging
 import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from scipy.spatial.distance import squareform
 
 class Covariance:
 
@@ -86,19 +88,20 @@ class Covariance:
         # Converts the flattened array into a numpy array
         # Then uses numpy to calculate the Pearson correlation coefficient
         # rowvar = false means that columns (residue pairs) are the variables instead of the rows (network/PDB)
-        correlationArrayNP = np.corrcoef(flattenedArray.to_numpy(), rowvar=False)
+        self.correlationArrayNP = np.corrcoef(flattenedArray.to_numpy(), rowvar=False)
+        self.correlationArrayNP = np.around(self.correlationArrayNP, decimals=3) # Rounds this to nearest thousandth
 
         # Then wraps the numpy array back into an XArray dataset with the same labels as before
         # Now a square matrix with dimension of: number of residue pairs x number of residue pairs
         self.correlationArray = xr.DataArray(
-            correlationArrayNP, 
+            self.correlationArrayNP, 
             coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
             dims=("firstPair", "secondPair")
         )
 
         # Gets largest and smallest correlation coefficients that are not on the diagonal (correlation with itself)
         # Solution from: https://stackoverflow.com/questions/29394377/minimum-of-numpy-array-ignoring-diagonal
-        correlationArrayNP_Print = correlationArrayNP
+        correlationArrayNP_Print = self.correlationArrayNP.copy()
         np.fill_diagonal(correlationArrayNP_Print, -np.inf)
         max_value = correlationArrayNP_Print.max()
         np.fill_diagonal(correlationArrayNP_Print, np.inf)
@@ -106,6 +109,26 @@ class Covariance:
 
         print(f"Minimum Pearson correlation coefficient (w/o diagonal entries): {str(min_value)}")
         print(f"Maximum Pearson correlation coefficient (w/o diagonal entries): {str(max_value)}")
+
+    def clusterCorrMatrix (self):
+
+        # Overall solution from: https://www.kaggle.com/code/sgalella/correlation-heatmaps-with-hierarchical-clustering
+        # First creates a distance/dissimilarity matrix by taking 1 minus the abs val of each element in the correlation array
+        # This makes it so that highly correlated Pearson coefficient values (1 or -1) have a distance of 0
+        # And that Pearson coefficient values with no correlation (0) have a distance of 1 (maximum distance in this case)
+        dissimilarity = 1 - abs(self.correlationArrayNP)
+        print(dissimilarity)
+
+        # Then it creates a linkage matrix
+        linkageMatrix = linkage(squareform(dissimilarity), 'average')
+
+        plt.figure(figsize=(12,5))
+        dendrogramCorr = dendrogram(linkageMatrix, labels=self.correlationArray['firstPair'], orientation='top', 
+                leaf_rotation=90)
+        
+        filename = self.args.outputdir + 'CorrDendrogram'
+        outputpath = f'{filename}.png'
+        plt.savefig(outputpath)
 
     def visualizeMatrix (self, covOrCorrFlag):
 

@@ -51,6 +51,14 @@ def setupArguments ():
         help='Option to remove weak edges by a percent cutoff factor specified'
     )
 
+    parser.add_argument( 
+        '-l',
+        '--cluster_corr', 
+        default=False,
+        action='store_true', 
+        help="Clusters the correlation matrix using heirarchical clustering"
+    )
+
     parser.add_argument(
         '--vis_from_sum', 
         help='Maps the covariance/correlation values onto the SumNetwork (must also specify .pkl file of SumNetwork object)' 
@@ -80,6 +88,9 @@ def main ():
         # Calculates the covariance matrix
         else:
             covarianceObject.calculateCovarianceByResiPair()
+
+    if args.cluster_corr == True:
+        covarianceObject.clusterCorrMatrix()
 
     # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # If the user wants to map either matrix to the SumNetwork then it calls on visualizeFromSumNetwork
