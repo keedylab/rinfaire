@@ -13,6 +13,7 @@ scipy = "*"
 matplotlib = "*"
 xarray = "*"
 seaborn = "*"
+scikit-learn = "*"
 
 [dev-packages]
 

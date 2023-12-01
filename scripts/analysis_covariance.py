@@ -87,7 +87,7 @@ def main ():
         
         # Calculates the covariance matrix
         else:
-            covarianceObject.calculateCovarianceByResiPair()
+            covarianceObject.calculateCovarianceByResiPair(scaleFlag=False)
 
     if args.cluster_corr == True:
         covarianceObject.clusterCorrMatrix()

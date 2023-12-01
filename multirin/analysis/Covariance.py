@@ -8,6 +8,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 from scipy.spatial.distance import squareform
+from sklearn.preprocessing import StandardScaler
 
 class Covariance:
 
@@ -51,10 +52,14 @@ class Covariance:
         stackedArray = stackedArray.where(sumArray != 0, drop=True)
         return stackedArray
 
-    def calculateCovarianceByResiPair (self):
+    def calculateCovarianceByResiPair (self, scaleFlag):
         
         # Flattens the array so that residues are now represented on a single axis as pairs such as (resi i, j)
         flattenedArray = self.flatten()
+
+        # Does standard scaling for PCA implementation
+        if scaleFlag == True:
+            flattenedArray = (flattenedArray - flattenedArray.mean(axis = 0)) / flattenedArray.std(axis = 0)
 
         # Converts the flattened array into a numpy array
         # Then uses numpy to calculate the sample covariance
@@ -71,7 +76,7 @@ class Covariance:
 
         # Gets largest and smallest covariance values that are not on the diagonal (variance with itself)
         # Solution from: https://stackoverflow.com/questions/29394377/minimum-of-numpy-array-ignoring-diagonal
-        covarianceArrayNP_Print = covarianceArrayNP
+        covarianceArrayNP_Print = covarianceArrayNP.copy()
         np.fill_diagonal(covarianceArrayNP_Print, -np.inf)
         max_value = covarianceArrayNP_Print.max()
         np.fill_diagonal(covarianceArrayNP_Print, np.inf)
@@ -109,6 +114,14 @@ class Covariance:
 
         print(f"Minimum Pearson correlation coefficient (w/o diagonal entries): {str(min_value)}")
         print(f"Maximum Pearson correlation coefficient (w/o diagonal entries): {str(max_value)}")
+
+    def runPCA (self):
+
+        flattenedArray = self.flatten()
+        covArray = self.calculateCovarianceByResiPair(scaleFlag=True)
+        return covArray
+
+
 
     def clusterCorrMatrix (self):
 

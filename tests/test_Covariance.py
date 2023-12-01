@@ -51,7 +51,7 @@ class testSumNetwork (unittest.TestCase):
         covObject.multinet.array = self.multinetArray
 
         # Calculates the covariance by resi pair
-        covObject.calculateCovarianceByResiPair()
+        covObject.calculateCovarianceByResiPair(scaleFlag=False)
         
         # Test case of two different vectors
         # ResiPair Vectors are: (0,0) and (1,0)
@@ -89,6 +89,19 @@ class testSumNetwork (unittest.TestCase):
         diagValues = np.diag(covObject.correlationArray)
         diagValues = np.rint(diagValues).astype(int)
         self.assertTrue((diagValues == 1).all())
+
+    def test_runPCA (self):
+
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=True, remove_weak_edges=None)
+        covObject = Covariance(args)
+        covObject.multinet = MultiNetwork(args)
+
+        # Creates test array object
+        covObject.multinet.array = self.multinetArray2
+
+        pcaArray = covObject.runPCA()
+        # print(pcaArray[0])
+        # print(pcaArray[1:3])
 
 if __name__ == '__main__':
     unittest.main()
