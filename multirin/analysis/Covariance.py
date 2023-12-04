@@ -64,19 +64,19 @@ class Covariance:
         # Converts the flattened array into a numpy array
         # Then uses numpy to calculate the sample covariance
         # rowvar = false means that columns (residue pairs) are the variables instead of the rows (network/PDB)
-        covarianceArrayNP = np.cov(flattenedArray.to_numpy(), rowvar=False)
+        self.covarianceArrayNP = np.cov(flattenedArray.to_numpy(), rowvar=False)
 
         # Then wraps the numpy array back into an XArray dataset with the same labels as before
         # Now a square matrix with dimension of: number of residue pairs x number of residue pairs
         self.covarianceArray = xr.DataArray(
-            covarianceArrayNP, 
+            self.covarianceArrayNP, 
             coords=dict(firstPair=flattenedArray.resiPair.data, secondPair=flattenedArray.resiPair.data), 
             dims=("firstPair", "secondPair")
         )
 
         # Gets largest and smallest covariance values that are not on the diagonal (variance with itself)
         # Solution from: https://stackoverflow.com/questions/29394377/minimum-of-numpy-array-ignoring-diagonal
-        covarianceArrayNP_Print = covarianceArrayNP.copy()
+        covarianceArrayNP_Print = self.covarianceArrayNP.copy()
         np.fill_diagonal(covarianceArrayNP_Print, -np.inf)
         max_value = covarianceArrayNP_Print.max()
         np.fill_diagonal(covarianceArrayNP_Print, np.inf)
@@ -117,11 +117,44 @@ class Covariance:
 
     def runPCA (self):
 
-        flattenedArray = self.flatten()
-        covArray = self.calculateCovarianceByResiPair(scaleFlag=True)
-        return covArray
+        # Gets eigenvalues and eigenvectors of the covariance matrix
+        # This allows us to diagonalize the covariance array
+        # Uses np.linalg.eigh because we know it's a symmetric matrix and therefore has real eigenvalues
+        eigenvalues, eigenvectors = np.linalg.eigh(self.covarianceArrayNP)
 
+        # np.argsort can only provide lowest to highest; use [::-1] to reverse the list
+        order_of_importance = np.argsort(eigenvalues)[::-1] 
 
+        # utilize the sort order to sort eigenvalues and eigenvectors
+        sorted_eigenvalues = eigenvalues[order_of_importance]
+        sorted_eigenvectors = eigenvectors[:,order_of_importance] # sort the columns
+
+        # use sorted_eigenvalues to ensure the explained variances correspond to the eigenvectors
+        explained_variance = sorted_eigenvalues / np.sum(sorted_eigenvalues)
+        
+        # Gets the cumulative sum of % explained variance for increasing numbers of principal components (PCs)
+        cumSumVariance = np.cumsum(explained_variance)
+
+        # Gets the number of PCs required to explain 95% of the total variance
+        PCIndex = 0
+        for PC in cumSumVariance:
+            
+            PCIndex += 1
+            if PC >= 0.95:
+                print(PC, PCIndex)
+                break
+
+        # Plots the cumulative sum for increasing numbers of PCs
+        plt.plot(cumSumVariance)
+        filename = self.args.outputdir + 'PCA_ExplainedVariance'
+        outputpath = f'{filename}.png'
+        plt.savefig(outputpath)
+
+        # Multiply original matrix by eigenvector matrix
+        # This projects each datapoint onto eigenvectors that are chosen
+        covarianceArrayPCA = np.matmul(self.covarianceArrayNP, sorted_eigenvectors[:,:PCIndex])
+
+        return covarianceArrayPCA
 
     def clusterCorrMatrix (self):
 

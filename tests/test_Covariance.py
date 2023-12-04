@@ -100,8 +100,7 @@ class testSumNetwork (unittest.TestCase):
         covObject.multinet.array = self.multinetArray2
 
         pcaArray = covObject.runPCA()
-        # print(pcaArray[0])
-        # print(pcaArray[1:3])
+        print(pcaArray)
 
 if __name__ == '__main__':
     unittest.main()
