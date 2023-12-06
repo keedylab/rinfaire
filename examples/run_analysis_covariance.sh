@@ -6,5 +6,4 @@ pipenv run python ../scripts/analysis_covariance.py \
 	${inputdir}MultiNetwork.pkl \
 	${outputdir} \
 	--remove_weak_edges 25 \
-	-c \
 	-l

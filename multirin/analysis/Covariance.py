@@ -141,7 +141,6 @@ class Covariance:
             
             PCIndex += 1
             if PC >= 0.95:
-                print(PC, PCIndex)
                 break
 
         # Plots the cumulative sum for increasing numbers of PCs
@@ -153,6 +152,7 @@ class Covariance:
         # Multiply original matrix by eigenvector matrix
         # This projects each datapoint onto eigenvectors that are chosen
         covarianceArrayPCA = np.matmul(self.covarianceArrayNP, sorted_eigenvectors[:,:PCIndex])
+        print(covarianceArrayPCA.max(), covarianceArrayPCA.min())
 
         return covarianceArrayPCA
 

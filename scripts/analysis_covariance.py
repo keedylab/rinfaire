@@ -84,13 +84,14 @@ def main ():
         # Calculates the correlation matrix
         if args.correlation == True:
             covarianceObject.calculateCorrelationByResiPair()
+
+            # Clusters the correlation matrix
+            if args.cluster_corr == True:
+                covarianceObject.clusterCorrMatrix()
         
         # Calculates the covariance matrix
         else:
-            covarianceObject.calculateCovarianceByResiPair(scaleFlag=False)
-
-    if args.cluster_corr == True:
-        covarianceObject.clusterCorrMatrix()
+            covarianceObject.calculateCovarianceByResiPair(scaleFlag=True)
 
     # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # If the user wants to map either matrix to the SumNetwork then it calls on visualizeFromSumNetwork
