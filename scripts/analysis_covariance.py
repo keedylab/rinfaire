@@ -37,6 +37,14 @@ def setupArguments ():
         help='Flag to output pickle file instead of .html visualization' 
     )
 
+    parser.add_argument(
+        '-p',
+        '--output_variance_plot',
+        default=False,
+        action='store_true',
+        help='Flag to output variance plot for increasing eigenvalues' 
+    )
+
     parser.add_argument( 
         '-s',
         '--structure_pair', 

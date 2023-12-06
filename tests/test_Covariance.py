@@ -92,12 +92,14 @@ class testSumNetwork (unittest.TestCase):
 
     def test_runPCA (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=True, remove_weak_edges=None)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=True, remove_weak_edges=None, output_variance_plot=False)
         covObject = Covariance(args)
         covObject.multinet = MultiNetwork(args)
 
         # Creates test array object
         covObject.multinet.array = self.multinetArray2
+
+        covObject.calculateCovarianceByResiPair(scaleFlag=True)
 
         pcaArray = covObject.runPCA()
         print(pcaArray)

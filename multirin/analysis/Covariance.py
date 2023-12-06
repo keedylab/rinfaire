@@ -143,11 +143,12 @@ class Covariance:
             if PC >= 0.95:
                 break
 
-        # Plots the cumulative sum for increasing numbers of PCs
-        plt.plot(cumSumVariance)
-        filename = self.args.outputdir + 'PCA_ExplainedVariance'
-        outputpath = f'{filename}.png'
-        plt.savefig(outputpath)
+        if self.args.output_variance_plot == True:
+            # Plots the cumulative sum for increasing numbers of PCs
+            plt.plot(cumSumVariance)
+            filename = self.args.outputdir + 'PCA_ExplainedVariance'
+            outputpath = f'{filename}.png'
+            plt.savefig(outputpath)
 
         # Multiply original matrix by eigenvector matrix
         # This projects each datapoint onto eigenvectors that are chosen
