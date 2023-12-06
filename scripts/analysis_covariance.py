@@ -38,7 +38,6 @@ def setupArguments ():
     )
 
     parser.add_argument(
-        '-p',
         '--output_variance_plot',
         default=False,
         action='store_true',
