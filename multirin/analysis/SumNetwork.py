@@ -1,5 +1,6 @@
 import xarray as xr
 import networkx as nx
+import numpy as np
 from pyvis.network import Network
 import logging
 import pickle
@@ -43,14 +44,17 @@ class SumNetwork:
 
     def removeWeakEdges (self):
         
-        # Get maximum value across the entire array
-        # Then multiply that by the percent cutoff threshold specified by user
-        percentCutoffValue = self.sumArray.max() * (self.args.remove_weak_edges / 100)
+        # Sorts the array and finds the maximum index to keep (by taking size of array * percent to cutoff)
+        # Then gets value at this index
+        sortedArray = np.sort(self.sumArray, axis=None)
+        sortedArray = sortedArray[sortedArray != 0]
+        maxIndex = round(sortedArray.size * (self.args.remove_weak_edges / 100))
+        cutoffValue = sortedArray[maxIndex]
 
-        # Finds entries in the array where they are less than the percent cutoff threshold
+        # Finds entries in the array where they are less than the cutoff threshold
         # Then it replaces them with 0.0
         # If not, then it keeps the original value
-        self.sumArray = xr.where(self.sumArray < percentCutoffValue, 0.0, self.sumArray)
+        self.sumArray = xr.where(self.sumArray < cutoffValue, 0.0, self.sumArray)
 
     def visualize (self):
 

@@ -54,26 +54,30 @@ class testSumNetwork (unittest.TestCase):
 
     def test_removeWeakEdges (self):
 
-        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=20)
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=None)
         sumNetwork = SumNetwork(args)
         sumNetwork.multinet = MultiNetwork(args)
 
         # Creates test array object
         sumNetwork.multinet.array = self.multinetArray
-
-        # Creates sum array and then scales it
-        # This also will remove weak edges below 20% cutoff since the flag is on
         sumNetwork.calculateSum()
 
-        # Original array's maximum value (after scaling it should be 20)
-        maxValue = 20
+        sumNonRemoved = sumNetwork.sumArray.to_numpy().flatten()
+        lenNonRemoved = len(sumNonRemoved[sumNonRemoved != 0])
 
-        # Gets array of all values that are larger than zero but less than the cutoff
-        # Ideally this should be empty
-        cutoffArray = sumNetwork.sumArray.where((sumNetwork.sumArray < 0.2 * maxValue) & (sumNetwork.sumArray > 0), drop=True)
+        # Creates another test object for the removed edges case
+        args = Namespace(alignmentFile='tests/data/multi_net_test/PTP-KDY.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=20)
+        sumNetworkRemoved = SumNetwork(args)
+        sumNetworkRemoved.multinet = MultiNetwork(args)
 
-        # Asserts that this array is empty (since there should be no values after removal that fit criteria)
-        self.assertEqual(len(cutoffArray), 0)
+        # Creates test array object
+        sumNetworkRemoved.multinet.array = self.multinetArray
+        sumNetworkRemoved.calculateSum()
+
+        sumRemoved = sumNetworkRemoved.sumArray.to_numpy().flatten()
+        lenRemoved = len(sumRemoved[sumRemoved != 0])
+
+        self.assertEqual(lenRemoved, round(lenNonRemoved * ((100 - args.remove_weak_edges) / 100)))
 
     def test_resizeByDegree (self):
 

@@ -23,14 +23,17 @@ class Covariance:
 
     def removeWeakEdges (self, sumArray):
         
-        # Get maximum value across the entire array
-        # Then multiply that by the percent cutoff threshold specified by user
-        percentCutoffValue = sumArray.max() * (self.args.remove_weak_edges / 100)
+        # Sorts the array and finds the maximum index to keep (by taking size of array * percent to cutoff)
+        # Then gets value at this index
+        sortedArray = np.sort(sumArray, axis=None)
+        sortedArray = sortedArray[sortedArray != 0]
+        maxIndex = round(sortedArray.size * (self.args.remove_weak_edges / 100))
+        cutoffValue = sortedArray[maxIndex]
 
-        # Finds entries in the array where they are less than the percent cutoff threshold
+        # Finds entries in the array where they are less than the cutoff threshold
         # Then it replaces them with 0.0
         # If not, then it keeps the original value
-        sumArray = xr.where(sumArray < percentCutoffValue, 0.0, sumArray)
+        sumArray = xr.where(sumArray < cutoffValue, 0.0, sumArray)
         return sumArray
 
     def flatten (self):
@@ -206,6 +209,11 @@ class Covariance:
         plt.tight_layout()
         outputpath = f'{filename}.png'
         plt.savefig(outputpath)
+
+        # plt.figure(figsize=(10,10))
+        # hmCluster = sns.clustermap(visArray)
+        # outputpath = f'{filename}_Cluster.png'
+        # plt.savefig(outputpath)
 
     def exportPickle (self):
 
