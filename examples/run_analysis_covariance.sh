@@ -7,4 +7,4 @@ pipenv run python ../scripts/analysis_covariance.py \
 	${outputdir} \
 	--remove_weak_edges 0 \
 	-c \
-	-l
+	-l DBSCAN
