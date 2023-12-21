@@ -61,9 +61,8 @@ def setupArguments ():
     parser.add_argument( 
         '-l',
         '--cluster_corr', 
-        default=False,
-        action='store_true', 
-        help="Clusters the correlation matrix using heirarchical clustering"
+        default=False, 
+        help="Clusters the correlation matrix using heirarchical clustering. Choose between heirarchical, DBSCAN, ..."
     )
 
     parser.add_argument(
@@ -93,8 +92,8 @@ def main ():
             covarianceObject.calculateCorrelationByResiPair()
 
             # Clusters the correlation matrix
-            if args.cluster_corr == True:
-                covarianceObject.clusterCorrMatrix()
+            if args.cluster_corr != None:
+                covarianceObject.clusterCorrMatrix(args.cluster_corr)
         
         # Calculates the covariance matrix
         else:

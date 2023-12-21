@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 from scipy.spatial.distance import squareform
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN, HDBSCAN
+import sklearn as sk
 
 class Covariance:
 
@@ -160,25 +162,98 @@ class Covariance:
 
         return covarianceArrayPCA
 
-    def clusterCorrMatrix (self):
+    def clusterCorrMatrix (self, clusterType):
 
         # Overall solution from: https://www.kaggle.com/code/sgalella/correlation-heatmaps-with-hierarchical-clustering
         # First creates a distance/dissimilarity matrix by taking 1 minus the abs val of each element in the correlation array
         # This makes it so that highly correlated Pearson coefficient values (1 or -1) have a distance of 0
         # And that Pearson coefficient values with no correlation (0) have a distance of 1 (maximum distance in this case)
-        dissimilarity = 1 - abs(self.correlationArrayNP)
-        print(dissimilarity)
+        distanceMatrix = 1 - abs(self.correlationArrayNP)
 
-        # Then it creates a linkage matrix
-        linkageMatrix = linkage(squareform(dissimilarity), 'average')
+        if clusterType == "DBSCAN":
+            ## This is for DBSCAN
+            #clustering = DBSCAN(eps=0.01, min_samples=5, metric='precomputed').fit(distanceMatrix)
+            clustering = HDBSCAN(min_cluster_size=20, metric='precomputed').fit(distanceMatrix)
+            labels = clustering.labels_
 
-        plt.figure(figsize=(12,5))
-        dendrogramCorr = dendrogram(linkageMatrix, labels=self.correlationArray['firstPair'], orientation='top', 
-                leaf_rotation=90)
+            # Number of clusters in labels, ignoring noise if present.
+            n_clusters = len(set(labels))
+            n_clusters_withoutNoise = len(set(labels)) - (1 if -1 in labels else 0)
+            n_noise_ = list(labels).count(-1)
+
+            print("Estimated number of clusters: %d" % n_clusters_withoutNoise)
+            print("Estimated number of noise points: %d" % n_noise_)
+
+            print(f"Silhouette Coefficient: {sk.metrics.silhouette_score(distanceMatrix, labels):.3f}")
+            print(f"Calinski Harabasz Score: {sk.metrics.calinski_harabasz_score(distanceMatrix, labels):.3f}")
         
-        filename = self.args.outputdir + 'CorrDendrogram'
-        outputpath = f'{filename}.png'
-        plt.savefig(outputpath)
+        if clusterType == "heirarchical":
+            ### This is for heirarchical clustering
+
+            #Then it creates a linkage matrix
+            linkageMatrix = linkage(squareform(distanceMatrix), 'average')
+
+            # # Visualizes dendrogram
+            # plt.figure(figsize=(12,5))
+            # dendrogramCorr = dendrogram(linkageMatrix, labels=self.correlationArray['firstPair'], orientation='top', 
+            #         leaf_rotation=90)
+            
+            # filename = self.args.outputdir + 'CorrDendrogram'
+            # outputpath = f'{filename}.png'
+            # plt.savefig(outputpath)
+
+            # Clusterize the data
+            threshold = 0.8
+            labels = fcluster(linkageMatrix, threshold, criterion='distance')
+
+        # Keep the indices to sort labels
+        labels_order = np.argsort(labels)
+
+        # Then reorders correlation matrix
+        self.correlationArrayNP = self.correlationArrayNP[labels_order, :][:, labels_order]
+
+        # Flattens the array so that residues are now represented on a single axis as pairs such as (resi i, j)
+        flattenedArray = self.flatten()
+
+        # Then wraps the numpy array back into an XArray dataset with the same labels as before
+        # Now a square matrix with dimension of: number of residue pairs x number of residue pairs
+        self.correlationArray = xr.DataArray(
+            self.correlationArrayNP, 
+            coords=dict(firstPair=flattenedArray.resiPair.data[labels_order], secondPair=flattenedArray.resiPair.data[labels_order]), 
+            dims=("firstPair", "secondPair")
+        )
+
+        clusterDict = self.classifyClusters(labels, flattenedArray.resiPair.data)
+
+        self.graphClusters(clusterDict)
+
+    def classifyClusters (self, labels, resiPairData):
+
+        # Creates a dictionary with all the edges in each cluster
+        clusterDict = {}
+        
+        idxCounter = 0
+        for labelValue in labels:
+
+            if labelValue not in clusterDict.keys():
+                clusterDict[labelValue] = []
+            
+            clusterDict[labelValue].append(resiPairData[idxCounter])
+
+            idxCounter += 1
+
+        return clusterDict
+        
+    def graphClusters (self, clusterDict):
+        
+        networkList = []
+
+        for cluster in clusterDict:
+
+            clusterGraph = nx.Graph()
+
+            for resiPair in clusterDict[cluster]:
+                print(cluster, resiPair[0], resiPair[1])
 
     def visualizeMatrix (self, covOrCorrFlag):
 
@@ -197,14 +272,14 @@ class Covariance:
             filename = self.args.outputdir + 'Correlation'
         
         # Creates a heatmap for the matrix
-        hm = sns.heatmap(visArray)
-            # cbar=True,
-            # square=True,
+        hm = sns.heatmap(visArray,
+            cbar=True,
+            square=True,
             # fmt='.2f',
             # annot_kws={'size': 12}
             # yticklabels=cols,
             # xticklabels=cols
-        
+        )
         # Plots the heatmap and saves it to the specified directory
         plt.tight_layout()
         outputpath = f'{filename}.png'
