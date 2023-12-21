@@ -7,4 +7,5 @@ pipenv run python ../scripts/analysis_covariance.py \
 	${outputdir} \
 	--remove_weak_edges 0 \
 	-c \
-	-l DBSCAN
+	-l DBSCAN \
+	--visualize_clusters ${inputdir}SumNetwork_Pickle.pkl

@@ -66,6 +66,11 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '--visualize_clusters', 
+        help='Shows cluster subsets of the SumNetwork (must also specify .pkl file of SumNetwork object)' 
+    )
+
+    parser.add_argument(
         '--vis_from_sum', 
         help='Maps the covariance/correlation values onto the SumNetwork (must also specify .pkl file of SumNetwork object)' 
     )

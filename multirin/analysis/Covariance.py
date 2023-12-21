@@ -245,7 +245,9 @@ class Covariance:
         return clusterDict
         
     def graphClusters (self, clusterDict):
-        
+
+        sumNetwork = self.readPickleSumNetwork()
+        sumNetwork.visualize()
         networkList = []
 
         for cluster in clusterDict:
@@ -254,6 +256,14 @@ class Covariance:
 
             for resiPair in clusterDict[cluster]:
                 print(cluster, resiPair[0], resiPair[1])
+
+    def readPickleSumNetwork (self):
+        
+        # Opens pickle file
+        with open(self.args.visualize_clusters, 'rb') as pickleFile:
+            sumNetwork = pickle.load(pickleFile)
+
+        return sumNetwork
 
     def visualizeMatrix (self, covOrCorrFlag):
 
