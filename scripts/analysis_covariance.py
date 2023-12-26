@@ -75,6 +75,13 @@ def setupArguments ():
         help='Maps the covariance/correlation values onto the SumNetwork (must also specify .pkl file of SumNetwork object)' 
     )
 
+    parser.add_argument( 
+        '--remove_weak_edges_cluster',
+        type=int,
+        default=0,
+        help='Option to remove weak edges in cluster graphs for visualization. Value provided is the minimum edge weight to keep.'
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 

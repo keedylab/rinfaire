@@ -184,8 +184,8 @@ class Covariance:
             print("Estimated number of clusters: %d" % n_clusters_withoutNoise)
             print("Estimated number of noise points: %d" % n_noise_)
 
-            print(f"Silhouette Coefficient: {sk.metrics.silhouette_score(distanceMatrix, labels):.3f}")
-            print(f"Calinski Harabasz Score: {sk.metrics.calinski_harabasz_score(distanceMatrix, labels):.3f}")
+            #print(f"Silhouette Coefficient: {sk.metrics.silhouette_score(distanceMatrix, labels):.3f}")
+            #print(f"Calinski Harabasz Score: {sk.metrics.calinski_harabasz_score(distanceMatrix, labels):.3f}")
         
         if clusterType == "heirarchical":
             ### This is for heirarchical clustering
@@ -229,15 +229,18 @@ class Covariance:
 
     def classifyClusters (self, labels, resiPairData):
 
-        # Creates a dictionary with all the edges in each cluster
+        # Creates a dictionary of lists with all the edges in each cluster
         clusterDict = {}
         
+        # Loops through the array of labels that correspond to each entry resi pair entry
         idxCounter = 0
         for labelValue in labels:
 
+            # If it's a new label value then append a new list to the dictionary
             if labelValue not in clusterDict.keys():
                 clusterDict[labelValue] = []
             
+            # If not then just append the resi pair to the existing list for that dictionary key
             clusterDict[labelValue].append(resiPairData[idxCounter])
 
             idxCounter += 1
@@ -246,16 +249,27 @@ class Covariance:
         
     def graphClusters (self, clusterDict):
 
+        # Imports in the SumNetwork object that will be used to construct these graphs
+        # Essentially constructs subgraphs of each cluster on top of the SumNetwork 
         sumNetwork = self.readPickleSumNetwork()
-        sumNetwork.visualize()
-        networkList = []
 
+        # Loops through each cluster 
+        clusterCounter = 0
         for cluster in clusterDict:
 
-            clusterGraph = nx.Graph()
+            # Creates a subgraph using the list of edges within the cluster (resi pairs)
+            clusterGraph = sumNetwork.graph.edge_subgraph(clusterDict[cluster])
+            clusterGraph = nx.Graph(clusterGraph)
 
-            for resiPair in clusterDict[cluster]:
-                print(cluster, resiPair[0], resiPair[1])
+            if self.args.remove_weak_edges_cluster != None:
+                edgesToRemove = [(a,b) for a, b, attrs in clusterGraph.edges(data=True) if attrs["weight"] <= self.args.remove_weak_edges_cluster]
+                clusterGraph.remove_edges_from(edgesToRemove)
+            
+            # Then visualizes these graphs using PyVis
+            name = f'cluster_{clusterCounter}'
+            self.visualizeGraph(clusterGraph, name)
+
+            clusterCounter += 1
 
     def readPickleSumNetwork (self):
         
@@ -264,6 +278,16 @@ class Covariance:
             sumNetwork = pickle.load(pickleFile)
 
         return sumNetwork
+    
+    def visualizeGraph (self, graph, name):
+
+        # Creates pyVis object
+        nts = Network(notebook=True)
+        
+        # populates the nodes and edges data structures
+        nts.from_nx(graph)
+        outputpath = f'{self.args.outputdir}{name}.html'
+        nts.show(outputpath)
 
     def visualizeMatrix (self, covOrCorrFlag):
 

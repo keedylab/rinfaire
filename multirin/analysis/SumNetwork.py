@@ -56,29 +56,29 @@ class SumNetwork:
         # If not, then it keeps the original value
         self.sumArray = xr.where(self.sumArray < cutoffValue, 0.0, self.sumArray)
 
-    def visualize (self):
+    def constructGraph (self):
 
         # Converts XArray into Numpy array
         nparray = self.sumArray.to_numpy()
 
         # Creates graph from Numpy array
-        G = nx.from_numpy_array(nparray)
-        G.remove_nodes_from(list(nx.isolates(G)))
-        nx.convert_node_labels_to_integers(G)
+        self.graph = nx.from_numpy_array(nparray)
+        self.graph.remove_nodes_from(list(nx.isolates(self.graph)))
+        nx.convert_node_labels_to_integers(self.graph)
         
-        for i in G.nodes():
-            G.nodes[i]['label'] = str(i)
+        for i in self.graph.nodes():
+            self.graph.nodes[i]['label'] = str(i)
 
         # Resizing nodes by the degree of the node
         if self.args.no_resize_by_degree == False:
-            G = self.resizeByDegree(G)    
-        
-        # widths = nx.get_edge_attributes(G, 'weight')
+            self.graph = self.resizeByDegree(self.graph)
+
+    def visualize (self):    
 
         nts = Network(notebook=True)
         
         # populates the nodes and edges data structures
-        nts.from_nx(G)
+        nts.from_nx(self.graph)
         outputpath = f'{self.args.outputname}.html'
         nts.show(outputpath)
 

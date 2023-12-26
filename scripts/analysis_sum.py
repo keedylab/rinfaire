@@ -80,6 +80,9 @@ def main ():
     # Calculates the sum network and performs scaling and removal of weak edges if flags are specified
     sumNetObject.calculateSum()
 
+    # Creates the graph representation in networkX
+    sumNetObject.constructGraph()
+
     # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # If not then it gets visualized through PyVis which creates a .html output
     # Both files use the same file extension provided by the outputname argument
