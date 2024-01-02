@@ -1,6 +1,7 @@
 import xarray as xr
 import pandas as pd
 import networkx as nx
+import numpy as np
 from pyvis.network import Network
 import logging
 import pickle
@@ -45,51 +46,58 @@ class SumNetwork:
 
     def removeWeakEdges (self):
         
-        # Get maximum value across the entire array
-        # Then multiply that by the percent cutoff threshold specified by user
-        percentCutoffValue = self.sumArray.max() * (self.args.remove_weak_edges / 100)
+        # Sorts the array and finds the maximum index to keep (by taking size of array * percent to cutoff)
+        # Then gets value at this index
+        sortedArray = np.sort(self.sumArray, axis=None)
+        sortedArray = sortedArray[sortedArray != 0]
+        maxIndex = round(sortedArray.size * (self.args.remove_weak_edges / 100))
+        cutoffValue = sortedArray[maxIndex]
 
-        # Finds entries in the array where they are less than the percent cutoff threshold
+        # Finds entries in the array where they are less than the cutoff threshold
         # Then it replaces them with 0.0
         # If not, then it keeps the original value
-        self.sumArray = xr.where(self.sumArray < percentCutoffValue, 0.0, self.sumArray)
+        self.sumArray = xr.where(self.sumArray < cutoffValue, 0.0, self.sumArray)
 
-    def visualize (self):
+    def constructGraph (self):
 
         # Converts XArray into Numpy array
         nparray = self.sumArray.to_numpy()
 
         # Creates graph from Numpy array
-        G = nx.from_numpy_array(nparray)
-        G.remove_nodes_from(list(nx.isolates(G)))
-        nx.convert_node_labels_to_integers(G)
+        self.graph = nx.from_numpy_array(nparray)
+        self.graph.remove_nodes_from(list(nx.isolates(self.graph)))
+        nx.convert_node_labels_to_integers(self.graph)
         
-        for i in G.nodes():
-            G.nodes[i]['label'] = str(i)
+        for i in self.graph.nodes():
+            self.graph.nodes[i]['label'] = str(i)
 
         # Resizing nodes by the degree of the node
         if self.args.no_resize_by_degree == False:
-            G = self.resizeByDegree(G)    
-
+            self.graph = self.resizeByDegree(self.graph)
+            
         # Removes subgraphs with < n nodes
         if self.args.remove_subgraphs != 0:
-            G = self.removeSubGraphs(G)
+            self.graph = self.removeSubGraphs(self.graph)
 
         # Shifts sequence to reference sequence
         if self.args.seq_to_ref != None:
-            G = self.seqToRef(G)
+            self.graph = self.seqToRef(self.graph)
 
         # Detects communities within sum graph
         if self.args.detect_communities == True:
-            G = self.detectCommunities(G)
+            self.graph = self.detectCommunities(self.graph)   
 
+    def visualize (self):    
+ 
         # Sets PyVis representation
         nts = Network(notebook=True)
-        nts.from_nx(G)
+        
+        # populates the nodes and edges data structures
+        nts.from_nx(self.graph)
 
         # Set deterministic network position using the Kamada-Kawai network layout
         # Solution from: https://stackoverflow.com/questions/74108243/pyvis-is-there-a-way-to-disable-physics-without-losing-graphs-layout
-        pos = nx.kamada_kawai_layout(G, scale=2000)
+        pos = nx.kamada_kawai_layout(self.graph, scale=2000)
 
         for node in nts.get_nodes():
             nts.get_node(node)['x']=pos[node][0]
