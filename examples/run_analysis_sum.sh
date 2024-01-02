@@ -1,4 +1,3 @@
-
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/'
 outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/SumNetwork_Pickle'
 
@@ -7,3 +6,4 @@ pipenv run python ../scripts/analysis_sum.py \
 	${outputfilename} \
 	--remove_weak_edges 0 \
 	-p
+	--seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb

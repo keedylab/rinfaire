@@ -98,6 +98,56 @@ class testSumNetwork (unittest.TestCase):
         self.assertEqual(graphResized.nodes[1]['size'], 9.4)
         self.assertEqual(graphResized.nodes[3]['size'], 6.6)
         self.assertEqual(graphResized.nodes[5]['size'], 4.0)
- 
+
+    def test_removeSubGraphs (self):
+
+        args = Namespace(remove_subgraphs=4)
+        sumNetwork = SumNetwork(args)
+
+        # Creates empty networkX graph and then populates it with edges of different weights
+        graph = nx.Graph()
+        graph.add_edge(2, 1, weight=4)
+        graph.add_edge(2, 3, weight=3)
+        graph.add_edge(2, 5, weight=2)
+        graph.add_edge(7, 9, weight=2)
+        graph.add_edge(9, 10, weight=2)
+        graph.add_edge(11, 12, weight=5)
+
+        # Removes subgraphs
+        graphRemoved = sumNetwork.removeSubGraphs(graph)
+
+        # Checks what nodes are present
+        self.assertEqual(sorted(list(graphRemoved.nodes)), sorted([1,2,3,5]))
+
+    def test_seqToRef (self):
+
+        args = Namespace(alignmentFile='tests/data/sum_net_test/PROMALS3D_PTPsAlignment_withoutArchael.fa', no_scale_sum_network=False, sum_network_scale=20, remove_weak_edges=None, seq_to_ref='tests/data/sum_net_test/6B8Z_qFit_chainA.pdb')
+        sumNetwork = SumNetwork(args)
+        sumNetwork.multinet = MultiNetwork(args)
+
+        # Creates test array object
+        sumNetwork.multinet.array = self.multinetArray
+
+        # Creates empty networkX graph and then populates it with edges of different weights
+        graph = nx.Graph()
+        graph.add_edge(180, 309, weight=4)
+        graph.add_edge(180, 310, weight=3)
+
+        labels_unshifted = []
+        for i in graph.nodes():
+            graph.nodes[i]['label'] = str(i)
+            labels_unshifted.append(graph.nodes[i]['label'])
+
+        # Uses seqToRef to backshift nodes to reference numbering
+        graph_backshifted = sumNetwork.seqToRef(graph) 
+
+        labels_backshifted = []
+        for i in graph_backshifted.nodes():
+            labels_backshifted.append(graph_backshifted.nodes[i]['label'])
+
+        # Assert that values are equal
+        self.assertEqual(labels_unshifted, ['180','309','310'])
+        self.assertEqual(labels_backshifted, ['109','215','216'])    
+
 if __name__ == '__main__':
     unittest.main()
