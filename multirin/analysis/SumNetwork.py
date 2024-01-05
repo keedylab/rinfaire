@@ -82,6 +82,7 @@ class SumNetwork:
         # Shifts sequence to reference sequence
         if self.args.seq_to_ref != None:
             self.graph = self.seqToRef(self.graph)
+            print(self.graph.nodes)
 
         # Detects communities within sum graph
         if self.args.detect_communities == True:
@@ -106,7 +107,8 @@ class SumNetwork:
             nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
    
         # Outputs the network graph
-        nts.toggle_physics(False)
+        nts.toggle_physics(True)
+        nts.show_buttons(filter_=['nodes'])
         outputpath = f'{self.args.outputname}.html'
         nts.show(outputpath)
 
