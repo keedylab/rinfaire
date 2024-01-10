@@ -82,7 +82,6 @@ class SumNetwork:
         # Shifts sequence to reference sequence
         if self.args.seq_to_ref != None:
             self.graph = self.seqToRef(self.graph)
-            print(self.graph.nodes)
 
         # Detects communities within sum graph
         if self.args.detect_communities == True:
@@ -144,9 +143,15 @@ class SumNetwork:
         
         # Iterates over each node in the graph
         # Then uses the AllToOne function to shift residue numbering back from the alignment positions to the reference sequence numbers
+        mappingDict = {}
         for i in G.nodes:
-            G.nodes[i]['label'] = str(self.allToOne(self.multinet.seqaln, struct.name, struct.sequenceList, int(G.nodes[i]['label'])))
 
+            newLabel = int(self.allToOne(self.multinet.seqaln, struct.name, struct.sequenceList, int(G.nodes[i]['label'])))
+            mappingDict[int(G.nodes[i]['label'])] = newLabel
+            G.nodes[i]['label'] = newLabel
+
+        # Uses networkX relabel function to relabel nodes using this mapping dictionary
+        G = nx.relabel_nodes(G, mappingDict, copy=True)
         return G
 
     def allToOne (self, seqaln, seqID, sequenceList, mainResidue):
