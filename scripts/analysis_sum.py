@@ -97,6 +97,13 @@ def setupArguments ():
         help="Outputs .csv file with modularity values for every value of k (must be used with -c flag)"
     )
 
+    parser.add_argument( 
+        '--output_graph_info', 
+        default=False,
+        action='store_true', 
+        help="Outputs information about the graph including a .csv file with degrees of every node"
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 
@@ -116,6 +123,10 @@ def main ():
 
     # Creates the graph representation in networkX
     sumNetObject.constructGraph()
+
+    # If the user wants information about the graph to be printed
+    if args.output_graph_info == True:
+        sumNetObject.getNodeInfo()
 
     # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # If not then it gets visualized through PyVis which creates a .html output

@@ -5,6 +5,7 @@ import numpy as np
 from pyvis.network import Network
 import logging
 import pickle
+import csv
 from multirin.generate.Structure import Structure
 
 class SumNetwork:
@@ -225,6 +226,23 @@ class SumNetwork:
         print(f"Modularity of the communities: {modularityMax}")
         
         return G
+
+    def getNodeInfo (self):
+
+        # Gets degrees of every node and stores it as a dictionary
+        nodeDegrees = dict(self.graph.degree(weight='weight'))
+
+        # Writes a csv file of the dictionary
+        # Solution from: https://stackoverflow.com/questions/10373247/how-do-i-write-a-python-dictionary-to-a-csv-file
+        filenameCSV = f'{self.args.outputname}_DegreeInfo.csv'
+
+        # with open(filenameCSV, 'w') as f:
+        #     w = csv.DictWriter(f, nodeDegrees.keys())
+        #     w.writerow(nodeDegrees)
+
+        with open(filenameCSV,'w') as f:
+            w = csv.writer(f)
+            w.writerows(nodeDegrees.items())
 
     def exportPickle (self):
 

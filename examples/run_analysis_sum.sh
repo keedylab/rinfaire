@@ -1,5 +1,5 @@
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/'
-outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/SumNetwork_Removed95_Cluster_V5'
+outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run7/SumNetwork_Removed95_Cluster_Pickle'
 
 pipenv run python ../scripts/analysis_sum.py \
 	${inputdir}MultiNetwork.pkl \
@@ -9,5 +9,7 @@ pipenv run python ../scripts/analysis_sum.py \
 	--n_communities 5 \
 	--remove_subgraphs 10 \
 	--output_modularity \
-	--seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb \
+	--output_graph_info \
+	--output_pickle \
+	# --seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/3EAX_qFit_chainA.pdb \
 	# -p
