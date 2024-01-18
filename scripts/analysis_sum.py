@@ -126,7 +126,7 @@ def main ():
 
     # If the user wants information about the graph to be printed
     if args.output_graph_info == True:
-        sumNetObject.getNodeInfo()
+        sumNetObject.exportGraphInfo()
 
     # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # If not then it gets visualized through PyVis which creates a .html output

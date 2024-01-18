@@ -227,22 +227,71 @@ class SumNetwork:
         
         return G
 
-    def getNodeInfo (self):
+    def getDegreeInfo (self):
 
-        # Gets degrees of every node and stores it as a dictionary
-        nodeDegrees = dict(self.graph.degree(weight='weight'))
+        # Gets degrees of every node and stores it as a dataframe
+        nodeDegrees = list(self.graph.degree(weight='weight'))
+        nodeDegreesDF = pd.DataFrame.from_records(nodeDegrees, columns = ['Resi,', 'Degree'])
+        return nodeDegreesDF
+    
+    def getLabelInfo (self):
 
-        # Writes a csv file of the dictionary
-        # Solution from: https://stackoverflow.com/questions/10373247/how-do-i-write-a-python-dictionary-to-a-csv-file
-        filenameCSV = f'{self.args.outputname}_DegreeInfo.csv'
+        # Gets label (from clustering) of every node
+        nodeLabel = list(self.graph.nodes.data('group'))
+        nodeLabelDF = pd.DataFrame.from_records(nodeLabel, columns = ['Resi,', 'Label'])
+        return nodeLabelDF
 
-        # with open(filenameCSV, 'w') as f:
-        #     w = csv.DictWriter(f, nodeDegrees.keys())
-        #     w.writerow(nodeDegrees)
+    def getEdgeInfo (self):
 
-        with open(filenameCSV,'w') as f:
-            w = csv.writer(f)
-            w.writerows(nodeDegrees.items())
+        # Gets edge weights
+        graphWeights = list(self.graph.edges.data('weight'))
+        graphWeightsDF = pd.DataFrame.from_records(graphWeights, columns = ['Resi_1,', 'Resi_2', 'Weight'])
+        return graphWeightsDF
+
+    def exportGraphInfo (self):
+
+        import matplotlib.pyplot as plt
+
+        # Creates dataframes for each attribute
+        degreeInfo = self.getDegreeInfo()
+        edgeInfo = self.getEdgeInfo()
+        labelInfo = self.getLabelInfo()
+
+        # Exports these dataframes as CSV files
+        filenameDegree = f'{self.args.outputname}_DegreeInfo'
+        filenameEdge = f'{self.args.outputname}_EdgeInfo'
+        filenameLabel = f'{self.args.outputname}_LabelInfo'
+
+        degreeInfo.to_csv(filenameDegree + '.csv')
+        edgeInfo.to_csv(filenameEdge + '.csv')
+        labelInfo.to_csv(filenameLabel + '.csv')
+
+        # Plotting histograms for degree and edge weights
+        binWidth = 5
+        degreeInfo.hist(column='Degree', bins=np.arange(0, degreeInfo['Degree'].max() + binWidth, binWidth))
+        plt.savefig(filenameDegree + '.png')
+
+        binWidth = 1
+        edgeInfo.hist(column='Weight', bins=np.arange(0, edgeInfo['Weight'].max() + binWidth, binWidth))
+        plt.savefig(filenameEdge + '.png')
+
+
+        # # Writes a csv file of the degree dictionary
+        # # Solution from: https://stackoverflow.com/questions/10373247/how-do-i-write-a-python-dictionary-to-a-csv-file
+        # filenameCSVDegree = f'{self.args.outputname}_DegreeInfo.csv'
+
+        # with open(filenameCSVDegree,'w') as f:
+        #     degreeCSV = csv.writer(f)
+        #     degreeCSV.writerows(degreeInfo.items())
+
+        # # Writes a csv file of the edge list
+        # # Solution from: https://stackoverflow.com/questions/15578331/save-list-of-ordered-tuples-as-csv
+        # filenameCSVEdge = f'{self.args.outputname}_EdgeInfo.csv'    
+        
+        # with open(filenameCSVEdge,'wb') as out:
+        #     edgeCSV = csv.writer(out)
+        #     for row in edgeInfo:
+        #         edgeCSV.writerow(row)
 
     def exportPickle (self):
 
