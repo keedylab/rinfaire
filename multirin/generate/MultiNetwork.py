@@ -146,6 +146,20 @@ class MultiNetwork:
         logging.info(f'Finished adding networks to MultiNetwork object')
         print(self.array)
 
+    def getInfo (self):
+
+        import matplotlib.pyplot as plt
+
+        stackedArray = self.array.stack(allDims=[...])
+        stackedArray = stackedArray.where(stackedArray > 0, drop=True)
+
+        print(f'Minimum value in array is: {stackedArray.min().values}')
+        print(f'Maximun value in array is: {stackedArray.max().values}')
+
+        outputInfoName = f'{self.args.output}MultiNetwork_Info'
+        xr.plot.hist(stackedArray, bins=10)
+        plt.savefig(outputInfoName + '.png')
+
     def exportPickle (self):
         
         # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file

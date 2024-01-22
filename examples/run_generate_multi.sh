@@ -5,4 +5,5 @@ outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test20/'
 pipenv run python ../scripts/generate_multi.py \
 	${inputdir}InputPDBsTest.txt \
 	${inputdir}PROMALS3D_PTPsAlignment_withoutArchael.fa \
-	${outputdir}
+	${outputdir} \
+	--output_info
