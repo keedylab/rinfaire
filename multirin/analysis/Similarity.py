@@ -3,6 +3,7 @@ import numpy as np
 import xarray as xr
 from scipy.cluster.hierarchy import dendrogram, linkage, average
 from scipy.spatial.distance import pdist, squareform
+import netrd
 
 class Similarity:
 
@@ -25,19 +26,43 @@ class Similarity:
             dims=("firstPDB", "secondPDB")
         )
 
+        inputArray = self.multinet.array
+        # inputArray = self.multinet.array.where(self.multinet.array == 0, other=1)
+
         # Loops over every pair of PDBs in the network object
         for pdb1 in self.multinet.array.network:
             for pdb2 in self.multinet.array.network:
 
                 # Takes the absolute value of the difference of the two slices from each PDB
-                diffSlice = abs(self.multinet.array.loc[pdb1, :, :] - self.multinet.array.loc[pdb2, :, :])
+                diffSlice = abs(inputArray.loc[pdb1, :, :] - inputArray.loc[pdb2, :, :])
 
                 # Then sums the values across the array of differences at each position
-                diffSum = diffSlice.sum().values
+                diffValue = diffSlice.sum().values
 
                 # Appends the value of this sum to the corresponding location in the distance matrix
-                self.distanceArray.loc[pdb1, pdb2] = diffSum
+                self.distanceArray.loc[pdb1, pdb2] = diffValue
                 #print(pdb1.values, pdb2.values, diffSum)
+
+    def heirClustering (self):
+
+        import matplotlib.pyplot as plt
+
+        condensedMatrix = squareform(self.distanceArray.to_numpy())
+        
+        print(condensedMatrix)
+        
+        linkmatrix = average(condensedMatrix)
+        #linkmatrix = linkage(testcondensed, method='average')
+        
+        print(linkmatrix)
+        
+        plt.figure(figsize=(50, 50))
+        dn = dendrogram(linkmatrix)
+
+        plt.tight_layout()
+        filename = self.args.outputdir + 'HeirClustering'
+        outputpath = f'{filename}.png'
+        plt.savefig(outputpath)
     
     def visualizeMatrix (self):
 

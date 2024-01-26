@@ -14,6 +14,7 @@ matplotlib = "*"
 xarray = "*"
 seaborn = "*"
 scikit-learn = "*"
+netrd = "*"
 
 [dev-packages]
 
