@@ -1,9 +1,10 @@
 import pickle
 import numpy as np
 import xarray as xr
-from scipy.cluster.hierarchy import dendrogram, linkage, average
+from scipy.cluster.hierarchy import dendrogram, linkage, average, fcluster
 from scipy.spatial.distance import pdist, squareform
 import netrd
+import networkx as nx
 
 class Similarity:
 
@@ -20,49 +21,107 @@ class Similarity:
 
         self.multinet.normalizeStruct()
         
+        inputArray = self.multinet.array
+        inputArray = inputArray.fillna(0)
+
+        # Creates dictionary of networks from each adjacency matrix in the input array
+        self.networkDict = {}
+        
+        for pdb in self.multinet.array.network:
+            
+            pdbName = pdb.network.data.tolist()
+            netAdd = nx.from_numpy_array(inputArray.loc[pdb, :, :].to_numpy())
+
+            # Removes networks with fewer than 5 edges for this analysis
+            if netAdd.number_of_edges() >= 5:
+                self.networkDict[pdbName] = netAdd
+
         # Creates a new distance matrix in XArray
+        networkDictList = list(self.networkDict.keys())
+
         self.distanceArray = xr.DataArray( 
-            coords=dict(firstPDB=self.multinet.array.network.data, secondPDB=self.multinet.array.network.data), 
+            coords=dict(firstPDB = networkDictList, secondPDB = networkDictList), 
             dims=("firstPDB", "secondPDB")
         )
-
-        inputArray = self.multinet.array
-        # inputArray = self.multinet.array.where(self.multinet.array == 0, other=1)
-
+        
         # Loops over every pair of PDBs in the network object
-        for pdb1 in self.multinet.array.network:
-            for pdb2 in self.multinet.array.network:
+        searchedPDBs = []
 
-                # Takes the absolute value of the difference of the two slices from each PDB
-                diffSlice = abs(inputArray.loc[pdb1, :, :] - inputArray.loc[pdb2, :, :])
+        for pdb1 in networkDictList:
+            for pdb2 in networkDictList:
 
-                # Then sums the values across the array of differences at each position
-                diffValue = diffSlice.sum().values
+                # Sorts pair of PDBs so we can check if we searched it or not later on
+                sortedPair = sorted((pdb1, pdb2))
 
-                # Appends the value of this sum to the corresponding location in the distance matrix
-                self.distanceArray.loc[pdb1, pdb2] = diffValue
-                #print(pdb1.values, pdb2.values, diffSum)
+                # Sets the diagonal values of the matrix to be zero (distance to self = 0)
+                if (pdb1 == pdb2):
+                    self.distanceArray.loc[pdb1, pdb2] = 0
+
+                # Asserts that the two PDBs are not the same and that we haven't searched this pair already
+                elif (pdb1 != pdb2) and (sortedPair not in searchedPDBs):
+
+                    # Computes the Jaccard distance between these two networks
+                    deltaConObject = netrd.distance.JaccardDistance()
+                    graphDistance = deltaConObject.dist(self.networkDict[pdb1], self.networkDict[pdb2])
+
+                    # Add tuple to list of searched PDB pairs
+                    searchedPDBs.append(sortedPair)
+
+                    # Appends the value of this sum to the corresponding location in the distance matrix
+                    self.distanceArray.loc[pdb1, pdb2] = graphDistance
+                    self.distanceArray.loc[pdb2, pdb1] = graphDistance
 
     def heirClustering (self):
 
         import matplotlib.pyplot as plt
 
-        condensedMatrix = squareform(self.distanceArray.to_numpy())
-        
-        print(condensedMatrix)
-        
+        networkDictList = list(self.networkDict.keys())
+
+        condensedMatrix = squareform(self.distanceArray.to_numpy())        
         linkmatrix = average(condensedMatrix)
         #linkmatrix = linkage(testcondensed, method='average')
         
-        print(linkmatrix)
-        
-        plt.figure(figsize=(50, 50))
-        dn = dendrogram(linkmatrix)
+        plt.figure(figsize=(15, 15))
+        dn = dendrogram(linkmatrix, labels = networkDictList)
 
         plt.tight_layout()
         filename = self.args.outputdir + 'HeirClustering'
         outputpath = f'{filename}.png'
         plt.savefig(outputpath)
+
+        labels = fcluster(linkmatrix, 0.7, criterion='distance')
+        clusters = self.classifyClusters(labels, networkDictList)
+
+        # Removes clusters with only one element
+        listToDel = []
+        for key in clusters.keys():
+            if len(clusters[key]) == 1:
+                listToDel.append(key)
+        
+        for key in listToDel:
+            del clusters[key]
+
+        print(clusters)
+
+    def classifyClusters (self, labels, data):
+
+        # Creates a dictionary of lists with all the edges in each cluster
+        clusterDict = {}
+        
+        # Loops through the array of labels that correspond to each entry resi pair entry
+        idxCounter = 0
+        for labelValue in labels:
+
+            # If it's a new label value then append a new list to the dictionary
+            if labelValue not in clusterDict.keys():
+                clusterDict[labelValue] = []
+            
+            # If not then just append the resi pair to the existing list for that dictionary key
+            clusterDict[labelValue].append(data[idxCounter])
+
+            idxCounter += 1
+
+        return clusterDict
     
     def visualizeMatrix (self):
 
@@ -70,8 +129,8 @@ class Similarity:
         import matplotlib.pyplot as plt
 
         # Creates plot
-        plt.figure(figsize=(10,10))
-        sns.set(font_scale=1.5)
+        plt.figure(figsize=(25,25))
+        sns.set(font_scale=1.0)
 
         visArray = self.distanceArray
         plt.title('Distance matrix')
