@@ -73,21 +73,11 @@ class Similarity:
 
     def heirClustering (self):
 
-        import matplotlib.pyplot as plt
-
         networkDictList = list(self.networkDict.keys())
 
         condensedMatrix = squareform(self.distanceArray.to_numpy())        
         linkmatrix = average(condensedMatrix)
         #linkmatrix = linkage(testcondensed, method='average')
-        
-        plt.figure(figsize=(15, 15))
-        dn = dendrogram(linkmatrix, labels = networkDictList)
-
-        plt.tight_layout()
-        filename = self.args.outputdir + 'HeirClustering'
-        outputpath = f'{filename}.png'
-        plt.savefig(outputpath)
 
         labels = fcluster(linkmatrix, 0.7, criterion='distance')
         clusters = self.classifyClusters(labels, networkDictList)
@@ -102,6 +92,23 @@ class Similarity:
             del clusters[key]
 
         print(clusters)
+
+        # Visualizes the dendrogram from heirarchical clustering
+        self.visualizeDendrogram(linkmatrix)
+
+    def visualizeDendrogram (self,linkageMatrix):
+
+        import matplotlib.pyplot as plt
+
+        networkDictList = list(self.networkDict.keys())
+        
+        plt.figure(figsize=(15, 15))
+        dn = dendrogram(linkageMatrix, labels = networkDictList)
+
+        plt.tight_layout()
+        filename = self.args.outputdir + 'HeirClustering'
+        outputpath = f'{filename}.png'
+        plt.savefig(outputpath)
 
     def classifyClusters (self, labels, data):
 
