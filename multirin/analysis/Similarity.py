@@ -60,9 +60,15 @@ class Similarity:
                 # Asserts that the two PDBs are not the same and that we haven't searched this pair already
                 elif (pdb1 != pdb2) and (sortedPair not in searchedPDBs):
 
-                    # Computes the Jaccard distance between these two networks
-                    deltaConObject = netrd.distance.JaccardDistance()
-                    graphDistance = deltaConObject.dist(self.networkDict[pdb1], self.networkDict[pdb2])
+                    # Chooses the distance metric based on the flag provided
+                    if self.args.distance_metric == 'jaccard':
+                        distanceObject = netrd.distance.JaccardDistance()
+                    elif self.args.distance_metric == 'deltacon':
+                        distanceObject = netrd.distance.DeltaCon()
+                        
+                    # Computes the distance between these two networks
+                    graphDistance = distanceObject.dist(self.networkDict[pdb1], self.networkDict[pdb2])
+                    print(pdb1, pdb2, graphDistance)
 
                     # Add tuple to list of searched PDB pairs
                     searchedPDBs.append(sortedPair)

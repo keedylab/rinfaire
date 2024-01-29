@@ -29,6 +29,13 @@ def setupArguments ():
         help='Flag to output pickle file instead of .html visualization' 
     )
 
+    parser.add_argument(
+        '-d',
+        '--distance_metric',
+        default='jaccard',
+        help='Flag to change the distance function between graphs. Options are Jaccard, DeltaCon, ...' 
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 
