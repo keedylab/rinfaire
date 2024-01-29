@@ -44,8 +44,9 @@ def main ():
     similarityObject.readPickle()
 
     similarityObject.distanceMatrix()
-    similarityObject.visualizeMatrix()
     similarityObject.heirClustering()
+    similarityObject.visualizeMatrix()
+    
 
 if __name__ == "__main__":
     main()

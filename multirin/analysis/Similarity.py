@@ -93,6 +93,12 @@ class Similarity:
 
         print(clusters)
 
+        # Keep the indices to sort labels
+        labelsOrder = np.argsort(labels)
+
+        # Then reorders correlation matrix
+        self.distanceArray = self.distanceArray[labelsOrder, :][:, labelsOrder]
+
         # Visualizes the dendrogram from heirarchical clustering
         self.visualizeDendrogram(linkmatrix)
 
@@ -136,7 +142,7 @@ class Similarity:
         import matplotlib.pyplot as plt
 
         # Creates plot
-        plt.figure(figsize=(25,25))
+        plt.figure(figsize=(15,15))
         sns.set(font_scale=1.0)
 
         visArray = self.distanceArray
