@@ -143,6 +143,9 @@ class MultiNetwork:
             self.scaleMultiNet()
             logging.info(f'Scaled the MultiNetwork to values between 0 and 10')
 
+        # Replaces NaN values with zeroes
+        self.array = self.array.fillna(0)
+
         logging.info(f'Finished adding networks to MultiNetwork object')
         print(self.array)
 
