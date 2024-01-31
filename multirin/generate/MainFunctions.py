@@ -78,6 +78,13 @@ def setupArguments (multiFlag):
             type=int,
             help='Option to remove weak edges by a percent cutoff factor specified'
         )
+
+        parser.add_argument( 
+            '--output_info', 
+            default=False,
+            action='store_true', 
+            help="Outputs summary statistics of the Multi Network"
+        )
     
     # Options specific to single model inputs
     else:
@@ -180,6 +187,10 @@ def generateMultiNetwork (networkList, args):
 
     # Exports MultiNetwork object as a pickle file for further analysis
     multi.exportPickle()
+
+    # Gets info about edges in MultiNetwork
+    if args.output_info == True:
+        multi.getInfo()
 
     # # Calculates the sum matrix of all the structures in the object
     # # Does this across each residue pairing
