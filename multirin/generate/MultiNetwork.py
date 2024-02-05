@@ -1,4 +1,5 @@
 import xarray as xr
+import numpy as np
 from Bio import SeqIO
 import pickle
 import logging
@@ -151,17 +152,58 @@ class MultiNetwork:
 
     def getInfo (self):
 
+        self.getInfo_Edges()
+        self.getInfo_Structs()
+
+    def getInfo_Edges (self):
+
         import matplotlib.pyplot as plt
 
+        # Gets array into 1D list-like form, and then removes instances where's there's no value (0)
         stackedArray = self.array.stack(allDims=[...])
         stackedArray = stackedArray.where(stackedArray > 0, drop=True)
 
-        print(f'Minimum value in array is: {stackedArray.min().values}')
-        print(f'Maximun value in array is: {stackedArray.max().values}')
+        minValue = stackedArray.min().values
+        maxValue = stackedArray.max().values
 
-        outputInfoName = f'{self.args.output}MultiNetwork_Info'
-        xr.plot.hist(stackedArray, bins=10)
+        print(f'Minimum value in array is: {minValue}')
+        print(f'Maximum value in array is: {maxValue}')
+
+        # Plots histogram of edge distribution across the network
+        outputInfoName = f'{self.args.output}MultiNetwork_InfoEdges'
+        plt.figure(figsize=(10,10))
+        xr.plot.hist(stackedArray, bins=range(0, int(maxValue) + 1, 1), range=(0, maxValue))
         plt.savefig(outputInfoName + '.png')
+        plt.clf()
+
+    def getInfo_Structs (self):
+
+        import matplotlib.pyplot as plt
+
+        # Sums across both residue axes to get the sum value for each network
+        summedArray = self.array.sum(dim=['firstResi','secondResi'])
+
+        minValue = summedArray.min().values
+        maxValue = summedArray.max().values
+
+        print(f'Lowest weight network is: {summedArray.idxmin().values} with value of: {minValue}')
+        print(f'Highest weight network is: {summedArray.idxmax().values} with value of: {maxValue}')
+
+        # Plots histogram of network weight distribution
+        outputInfoName = f'{self.args.output}MultiNetwork_InfoStructs_Hist'
+        plt.figure(figsize=(10,10))
+        xr.plot.hist(summedArray, bins=range(0, int(maxValue) + 10, 10), range=(0, maxValue))
+        plt.savefig(outputInfoName + '.png')
+        plt.clf()
+
+        # Plots network weights by descending order
+        plt.figure(figsize=(50,50))
+        networkSeries = summedArray.to_series().sort_values(ascending=False)
+        networkSeries.plot.bar()
+
+        outputInfoName = f'{self.args.output}MultiNetwork_InfoStructs_Bar'
+        plt.savefig(outputInfoName + '.png')
+        plt.clf()
 
     def exportPickle (self):
         
