@@ -1,0 +1,66 @@
+from multirin.analysis.ResiduesOfInterest import ResiduesOfInterest
+from multirin.generate.MainFunctions import checkExtension
+import argparse
+import logging
+
+def setupArguments ():
+
+    # Creates argument parser object
+    parser = argparse.ArgumentParser(
+        description='Residues of Interest',
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+
+    parser.add_argument(
+        'filename', 
+        help='Pickle (.pkl) file of the SumNetwork object' 
+    )
+
+    parser.add_argument(
+        'outputname', 
+        help='Name of the output file' 
+    )
+
+    parser.add_argument(
+        '-i',
+        '--input_set', 
+        help='Name of the file with the set of residues to input and compare' 
+    )
+
+    parser.add_argument(
+        '-p',
+        '--output_pickle',
+        default=False,
+        action='store_true',
+        help='Flag to output pickle file instead of .html visualization' 
+    )
+
+    args = parser.parse_args()
+    checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
+
+    return args
+
+def main ():
+    
+    # Sets up arguments inputted from user
+    args = setupArguments()
+
+    # Creates ResiduesOfInterest object and imports user inputted pickle file 
+    resiObject = ResiduesOfInterest(args)
+    resiObject.readPickle()
+
+    # Reads in the input set of residues from file
+    resiObject.findOverlapInputSet()
+    
+
+
+    # # If the user wants to output a pickle file, then it calls on the outputPickle() function
+    # # If not then it gets visualized through PyVis which creates a .html output
+    # # Both files use the same file extension provided by the outputname argument
+    # if args.output_pickle == True:
+    #     sumNetObject.exportPickle()
+    # else:
+    #     sumNetObject.visualize()
+
+if __name__ == "__main__":
+    main()
