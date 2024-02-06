@@ -51,7 +51,8 @@ def main ():
 
     # Reads in the input set of residues from file
     resiObject.findOverlapInputSet()
-    
+    resiObject.labelGraphOverlap()
+    resiObject.visualize(resiObject.overlapGraph)
 
 
     # # If the user wants to output a pickle file, then it calls on the outputPickle() function
