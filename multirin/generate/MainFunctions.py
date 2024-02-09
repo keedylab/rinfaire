@@ -108,6 +108,14 @@ def setupArguments (multiFlag):
         help="Turns off the normalization of each residue-residue pair in the network by the size of the residue"
     )
 
+    parser.add_argument(
+        '-a', 
+        '--add_adjacent_residues', 
+        default=False,
+        action='store_true', 
+        help="Adds residues spatially adjacent to the determined network"
+    )
+
     args = parser.parse_args()
 
     # Checks of the file extension to ensure that it is the correct type
@@ -168,6 +176,9 @@ def generateIndividualNetworks (fileList, args):
         # Creates an individual network object from the structure object and then populates the network
         net = IndividualNetwork(struct, args)
         net.populateNetwork()
+
+        if args.add_adjacent_residues == True:
+            net.addAdjacentResidues()
 
         # Appends this to the list of networks
         networkList.append(net)

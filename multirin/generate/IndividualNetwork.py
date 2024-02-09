@@ -6,6 +6,7 @@ import networkx as nx
 from pyvis.network import Network
 import copy
 import logging
+from multirin.generate.Structure import Structure
 
 class IndividualNetwork:
     def __init__ (self, Structure, args, network=None):
@@ -67,7 +68,7 @@ class IndividualNetwork:
 
         return amideHOnlyList
     
-    def updateEdge (self, firstResi, secondResi, counterResiResi):
+    def updateEdge (self, firstResi, secondResi, counterResiResi, shape, edgeColor):
 
         # Conditional based on if normalizing the atom-atom pair numbers based on the residue type is toggled on/off
         # Normally normalization is: ON 
@@ -85,7 +86,7 @@ class IndividualNetwork:
             self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + addValue
         else:
             #print('Creating new connection between: ', firstResi, secondResi)
-            self.network.add_edge(firstResi, secondResi, weight=addValue) # Adds a new edge with a weight of 0.1
+            self.network.add_edge(firstResi, secondResi, weight=addValue, shape=shape, color=edgeColor) # Adds a new edge with a weight of 0.1
             counterResiResi += 1 #Increments the count of residue-residue connections by 1
         
         return counterResiResi
@@ -127,7 +128,7 @@ class IndividualNetwork:
                             if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
                                 
                                 #print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi)
+                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi, shape, edgeColor)
 
                             # If not, then calculate the distance between the two atoms
                             else:
@@ -144,12 +145,82 @@ class IndividualNetwork:
                                 # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
                                 elif distance < contactCutoffValue:
                                     #print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                    counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi)
+                                    counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi, shape, edgeColor)
 
                         # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
                         # ...between this pair and move on to the next pair of residues
                         if tooFarFlag == True or amideHFlag == True:
                             break
+
+    def addAdjacentResidues (self):
+
+        # Creates dictionary of lists of atoms for network residues as well as all residues in structure
+        netResisDict = self.createNetworkResidueDict(self.struct)
+        allResisDict = self.createAllResidueDict(self.struct)
+
+        # Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
+        for key in netResisDict:
+            del allResisDict[key]
+
+        # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
+        # Goal is to find adjacent residues to the network
+        print(self.network)
+        self.findContacts(netResisDict, allResisDict, [])
+        print(self.network)
+
+    def createNetworkResidueDict (self, inputStruct):
+
+        # Gets list of graph nodes
+        networkList = list(self.network.nodes)    
+
+        # Iterates over this list of nodes
+        netResisDict = {}
+        for netResi in networkList:
+
+            # Gets associated residue in structure
+            res = inputStruct.model[0][0][netResi-1]
+
+            # Ensures residue is not a HETATM
+            if res.het_flag == 'A':
+
+                # Iterates over all atoms in the residue
+                for n_atom, atom in enumerate(res):
+                    
+                    # Appends them to dictionary of lists of atoms
+                    if res.seqid.num in netResisDict.keys():
+                        # print('Resi present: ', res)
+                        netResisDict[res.seqid.num].append(atom)
+                        
+                    else:
+                        # print('New resi: ', res)
+                        netResisDict[res.seqid.num] = []
+                        netResisDict[res.seqid.num].append(atom)
+
+        return(netResisDict)
+    
+    def createAllResidueDict (self, inputStruct):
+    
+        # Iterates over all the residues in the model
+        allResisDict = {}
+        for n_res,res in enumerate(inputStruct.model[0][0]):
+            
+            # Ensures residue is not a HETATM
+            if res.het_flag == 'A':
+            
+                # Iterates over all atoms in the residue
+                for n_atom, atom in enumerate(res):
+                    
+                    # Appends them to dictionary of lists of atoms
+                    if res.seqid.num in allResisDict.keys():
+                        # print('Resi present: ', res)
+                        allResisDict[res.seqid.num].append(atom)
+                        
+                    else:
+                        # print('New resi: ', res)
+                        allResisDict[res.seqid.num] = []
+                        allResisDict[res.seqid.num].append(atom)
+
+        return(allResisDict)
     
     def visualize (self):
 
