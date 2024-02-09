@@ -72,60 +72,6 @@ class ResiduesOfInterest:
             # Appends list to overlap dictionary
             self.overlapDict[col] = intersectionList
 
-    # def createNetworkResidueDict (self, inputStruct):
-
-    #     # Gets list of graph nodes
-    #     networkList = list(self.sumNetwork.graph.nodes)    
-
-    #     # Iterates over this list of nodes
-    #     netResisDict = {}
-    #     for netResi in networkList:
-
-    #         # Gets associated residue in structure
-    #         res = inputStruct.model[0][0][netResi-1]
-
-    #         # Ensures residue is not a HETATM
-    #         if res.het_flag == 'A':
-
-    #             # Iterates over all atoms in the residue
-    #             for n_atom, atom in enumerate(res):
-                    
-    #                 # Appends them to dictionary of lists of atoms
-    #                 if res.seqid.num in netResisDict.keys():
-    #                     # print('Resi present: ', res)
-    #                     netResisDict[res.seqid.num].append(atom)
-                        
-    #                 else:
-    #                     # print('New resi: ', res)
-    #                     netResisDict[res.seqid.num] = []
-    #                     netResisDict[res.seqid.num].append(atom)
-
-    #     return(netResisDict)
-    
-    # def createAllResidueDict (self, inputStruct):
-    
-    #     # Iterates over all the residues in the model
-    #     allResisDict = {}
-    #     for n_res,res in enumerate(inputStruct.model[0][0]):
-            
-    #         # Ensures residue is not a HETATM
-    #         if res.het_flag == 'A':
-            
-    #             # Iterates over all atoms in the residue
-    #             for n_atom, atom in enumerate(res):
-                    
-    #                 # Appends them to dictionary of lists of atoms
-    #                 if res.seqid.num in allResisDict.keys():
-    #                     # print('Resi present: ', res)
-    #                     allResisDict[res.seqid.num].append(atom)
-                        
-    #                 else:
-    #                     # print('New resi: ', res)
-    #                     allResisDict[res.seqid.num] = []
-    #                     allResisDict[res.seqid.num].append(atom)
-
-    #     return(allResisDict)
-
     def labelGraphOverlap (self):
 
         # Creates a copy of the graph to plot the overlapping residues
