@@ -28,6 +28,12 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '-a',
+        '--include_adjacent_residues', 
+        help='Flag to check adjacent residues to network to check for hits. Must include reference structure file.' 
+    )
+
+    parser.add_argument(
         '-p',
         '--output_pickle',
         default=False,
@@ -52,7 +58,8 @@ def main ():
     # Reads in the input set of residues from file
     resiObject.findOverlapInputSet()
     resiObject.labelGraphOverlap()
-    resiObject.visualize(resiObject.overlapGraph)
+    resiObject.visualize(resiObject.overlapGraph, "overlapGraph")
+    resiObject.visualize(resiObject.adjResisNetwork.network, "adjacentResiNetwork")
 
 
     # # If the user wants to output a pickle file, then it calls on the outputPickle() function

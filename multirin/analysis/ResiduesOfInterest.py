@@ -1,10 +1,14 @@
 import networkx as nx
 import numpy as np
 import pandas as pd
+import gemmi
 from pyvis.network import Network
 import logging
 import pickle
 import csv
+from multirin.generate.Structure import Structure
+from multirin.generate.IndividualNetwork import IndividualNetwork
+from argparse import Namespace
 
 class ResiduesOfInterest:
 
@@ -26,7 +30,31 @@ class ResiduesOfInterest:
         self.overlapDict = {}
 
         # List of nodes from the network
-        networkList = list(self.sumNetwork.graph.nodes)
+        if self.args.include_adjacent_residues != None:
+
+            # Sets input structure file as Structure object
+            inputStruct = Structure(self.args.include_adjacent_residues, None)
+
+            # Creates dictionary of lists of atoms for network residues as well as all residues in structure
+            netResisDict = self.createNetworkResidueDict(inputStruct)
+            allResisDict = self.createAllResidueDict(inputStruct)
+
+            # Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
+            for key in netResisDict:
+                del allResisDict[key]
+
+            # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
+            # Goal is to find adjacent residues to the network
+            args = Namespace(no_norm_resi=False)
+            self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork.graph)
+            print(self.adjResisNetwork.network)
+            self.adjResisNetwork.findContacts(netResisDict, allResisDict, [])
+            print(self.adjResisNetwork.network)
+
+            networkList = list(self.adjResisNetwork.network.nodes)
+
+        else:
+            networkList = list(self.sumNetwork.graph.nodes)
 
         for col in dfInputSet.columns:
             
@@ -43,10 +71,70 @@ class ResiduesOfInterest:
 
             # Finds the percent overlap between the intersection and the total length of the input set
             overlapPercent = (len(intersectionList) / len(inputSetList)) * 100
-            print(f'{col}: \n   {overlapPercent}% of residues are found in network \n   Common residues are: {intersectionList} \n')
+
+            # Prints stats out
+            addString = ""
+            if self.args.include_adjacent_residues != None:
+                addString = "(and adjacent to)"
+
+            print(f'{col}: \n   {overlapPercent}% of residues are found in {addString} network \n   Common residues are: {intersectionList} \n')
 
             # Appends list to overlap dictionary
             self.overlapDict[col] = intersectionList
+
+    def createNetworkResidueDict (self, inputStruct):
+
+        # Gets list of graph nodes
+        networkList = list(self.sumNetwork.graph.nodes)    
+
+        # Iterates over this list of nodes
+        netResisDict = {}
+        for netResi in networkList:
+
+            # Gets associated residue in structure
+            res = inputStruct.model[0][0][netResi-1]
+
+            # Ensures residue is not a HETATM
+            if res.het_flag == 'A':
+
+                # Iterates over all atoms in the residue
+                for n_atom, atom in enumerate(res):
+                    
+                    # Appends them to dictionary of lists of atoms
+                    if res.seqid.num in netResisDict.keys():
+                        # print('Resi present: ', res)
+                        netResisDict[res.seqid.num].append(atom)
+                        
+                    else:
+                        # print('New resi: ', res)
+                        netResisDict[res.seqid.num] = []
+                        netResisDict[res.seqid.num].append(atom)
+
+        return(netResisDict)
+    
+    def createAllResidueDict (self, inputStruct):
+    
+        # Iterates over all the residues in the model
+        allResisDict = {}
+        for n_res,res in enumerate(inputStruct.model[0][0]):
+            
+            # Ensures residue is not a HETATM
+            if res.het_flag == 'A':
+            
+                # Iterates over all atoms in the residue
+                for n_atom, atom in enumerate(res):
+                    
+                    # Appends them to dictionary of lists of atoms
+                    if res.seqid.num in allResisDict.keys():
+                        # print('Resi present: ', res)
+                        allResisDict[res.seqid.num].append(atom)
+                        
+                    else:
+                        # print('New resi: ', res)
+                        allResisDict[res.seqid.num] = []
+                        allResisDict[res.seqid.num].append(atom)
+
+        return(allResisDict)
 
     def labelGraphOverlap (self):
 
@@ -70,7 +158,7 @@ class ResiduesOfInterest:
 
             communityCounter += 1
 
-    def visualize (self, graph):    
+    def visualize (self, graph, filename):    
  
         # Sets PyVis representation
         nts = Network(notebook=True, width="100%", height="50vw")
@@ -103,7 +191,7 @@ class ResiduesOfInterest:
             edge["color"] = '#BBBBBB'
 
         # Outputs the network graph
-        outputpath = f'{self.args.outputname}.html'
+        outputpath = f'{self.args.outputname}_{filename}.html'
         nts.show(outputpath)
 
     def exportPickle (self):

@@ -8,10 +8,15 @@ import copy
 import logging
 
 class IndividualNetwork:
-    def __init__ (self, Structure, args):
+    def __init__ (self, Structure, args, network=None):
         
         self.struct = Structure
-        self.network = nx.Graph() # Creates networkX graph object
+
+        if network != None:
+            self.network = network
+        else:
+            self.network = nx.Graph() # Creates networkX graph object
+
         self.args = args
     
     def findAltConfAtoms (self):
@@ -88,7 +93,9 @@ class IndividualNetwork:
     def populateNetwork (self):
         atomsWithAltConfsDict = self.findAltConfAtoms()
         amideHOnlyList = self.flagAmideHydrogenOnlyResidues(atomsWithAltConfsDict)
+        self.findContacts(atomsWithAltConfsDict, atomsWithAltConfsDict, amideHOnlyList)
         
+    def findContacts (self, firstResiDict, secondResiDict, amideHOnlyList, shape="circle", edgeColor='#BBBBBB'):
         contactCutoffValue = 4 # Distance cutoff value
         tooFarCutoffValue = 25 # Minimum distance for two atoms and therefore residues to be considered as too far from each other
 
@@ -97,8 +104,8 @@ class IndividualNetwork:
         #List of all backbone atoms in the protein structure
         backboneAtoms = ['N','CA','C','O','H','HA','HA2','HA3']
 
-        for firstResi in atomsWithAltConfsDict:
-            for secondResi in atomsWithAltConfsDict:
+        for firstResi in firstResiDict:
+            for secondResi in secondResiDict:
 
                 # Condition that satisfies both the fact that the first and second residues cannot be equal to each other
                 # And that we can prune duplicate connections by only looking at connection i,j and not j,i
@@ -107,8 +114,8 @@ class IndividualNetwork:
                     tooFarFlag = False
                     amideHFlag = False
                     
-                    for firstAtom in atomsWithAltConfsDict[firstResi]:
-                        for secondAtom in atomsWithAltConfsDict[secondResi]:
+                    for firstAtom in firstResiDict[firstResi]:
+                        for secondAtom in secondResiDict[secondResi]:
 
                             # Condition to remove any cases of residues with amide H alt confs having connections with adjacent residues on the backbone
                             if ((firstResi in amideHOnlyList) or (secondResi in amideHOnlyList)) and (firstResi + 1 == secondResi):
