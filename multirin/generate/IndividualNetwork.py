@@ -183,7 +183,7 @@ class IndividualNetwork:
         for netResi in networkList:
 
             # Gets associated residue in structure
-            res = inputStruct.model[0][0][netResi-1]
+            res = inputStruct.model[0][0][f'{netResi}'][0]
 
             # Ensures residue is not a HETATM
             if res.het_flag == 'A':

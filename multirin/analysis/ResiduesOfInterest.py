@@ -35,22 +35,8 @@ class ResiduesOfInterest:
             # Sets input structure file as Structure object
             inputStruct = Structure(self.args.include_adjacent_residues, None)
 
-            # # Creates dictionary of lists of atoms for network residues as well as all residues in structure
-            # netResisDict = self.createNetworkResidueDict(inputStruct)
-            # allResisDict = self.createAllResidueDict(inputStruct)
-
-            # # Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
-            # for key in netResisDict:
-            #     del allResisDict[key]
-
-            # # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
-            # # Goal is to find adjacent residues to the network
-            # args = Namespace(no_norm_resi=False)
-            # self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork.graph)
-            # print(self.adjResisNetwork.network)
-            # self.adjResisNetwork.findContacts(netResisDict, allResisDict, [])
-            # print(self.adjResisNetwork.network)
-
+            # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
+            # Then uses the addAdjacentResidues() method to find adjacent residues to the sumNetwork
             args = Namespace(no_norm_resi=False)
             self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork.graph)
             self.adjResisNetwork.addAdjacentResidues()
