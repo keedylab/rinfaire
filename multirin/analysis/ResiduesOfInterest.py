@@ -123,9 +123,6 @@ class ResiduesOfInterest:
             nts.get_node(node)['physics']=False
             nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
    
-        for edge in nts.get_edges():
-            edge["color"] = '#BBBBBB'
-
         # Outputs the network graph
         outputpath = f'{self.args.outputname}_{filename}.html'
         nts.show(outputpath)
