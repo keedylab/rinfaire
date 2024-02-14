@@ -56,6 +56,7 @@ def main ():
     resiObject.readPickle()
 
     # Reads in the input set of residues from file
+    resiObject.readInputSetFile()
     resiObject.findOverlapInputSet()
     resiObject.labelGraphOverlap()
     resiObject.visualize(resiObject.overlapGraph, "overlapGraph")

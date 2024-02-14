@@ -21,15 +21,29 @@ class ResiduesOfInterest:
         with open(self.args.filename, 'rb') as pickleFile:
             self.sumNetwork = pickle.load(pickleFile)
 
-    def findOverlapInputSet (self):
+    def readInputSetFile (self):
 
         # Opens .csv file as pandas dataframe
         dfInputSet = pd.read_csv(self.args.input_set)
 
+        # Creates dict of lists to store every set of residues
+        self.inputSetDict = {}
+
+        for col in dfInputSet.columns:
+            # Gets column, drops N/A values, and converts values to ints
+            setColumn = dfInputSet[col]
+            setColumn = setColumn.dropna()
+            setColumn = setColumn.astype(int)
+
+            # Converts to list and adds to the dictionary
+            self.inputSetDict[col] = setColumn.to_list()
+
+    def findOverlapInputSet (self):
+
         # Creates a dictionary to store intersecting residues
         self.overlapDict = {}
 
-        # List of nodes from the network
+        # Condition if to include adjacent residues to the network or not
         if self.args.include_adjacent_residues != None:
 
             # Sets input structure file as Structure object
@@ -46,21 +60,14 @@ class ResiduesOfInterest:
         else:
             networkList = list(self.sumNetwork.graph.nodes)
 
-        for col in dfInputSet.columns:
-            
-            # Gets column, drops N/A values, and converts values to ints
-            setColumn = dfInputSet[col]
-            setColumn = setColumn.dropna()
-            setColumn = setColumn.astype(int)
-
-            # Converts to list
-            inputSetList = setColumn.to_list()
+        # Iterates over each sector of residues in the input set dictionary
+        for col in self.inputSetDict:
 
             # Intersection between two lists
-            intersectionList = [value for value in inputSetList if value in networkList]
+            intersectionList = [value for value in self.inputSetDict[col] if value in networkList]
 
             # Finds the percent overlap between the intersection and the total length of the input set
-            overlapPercent = (len(intersectionList) / len(inputSetList)) * 100
+            overlapPercent = (len(intersectionList) / len(self.inputSetDict[col])) * 100
 
             # Prints stats out
             addString = ""
