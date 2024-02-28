@@ -173,6 +173,20 @@ class IndividualNetwork:
         self.findContacts(netResisDict, allResisDict, [], shape='square')
         print(self.network)
 
+    def addAllResidues (self):
+
+        """
+        This is a function that's used to find the contacts between all pairs of residues in the structure, not just those with alt-confs.
+        Used to create a traditional contact mapping of the protein structure.
+        """
+
+        # Creates dictionary of all residues in structure
+        allResisDict = self.createAllResidueDict(self.struct)
+
+        # Then finds all contacts between residues in this dict
+        self.findContacts(allResisDict, allResisDict, [], shape='square')
+        print(self.network)
+
     def createNetworkResidueDict (self, inputStruct):
 
         # Gets list of graph nodes
@@ -226,7 +240,7 @@ class IndividualNetwork:
                         allResisDict[res.seqid.num].append(atom)
 
         return(allResisDict)
-    
+        
     def visualize (self):
 
         # Creates a deep copy of self.network

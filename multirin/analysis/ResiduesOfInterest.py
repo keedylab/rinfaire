@@ -79,6 +79,86 @@ class ResiduesOfInterest:
             # Appends list to overlap dictionary
             self.overlapDict[col] = intersectionList
 
+    def compareInputSetToAll (self):
+
+        import scipy
+        import statistics
+        import matplotlib.pyplot as plt
+
+        ### First gets a network of all possible contacts between residues in input structure
+        # Sets input structure file as Structure object
+        inputStruct = Structure(self.args.include_adjacent_residues, None)
+
+        # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
+        # Then uses the addallResidues() method to find all possible residue - residue contacts
+        args = Namespace(no_norm_resi=False)
+        self.allResisNetwork = IndividualNetwork(inputStruct, args)
+        self.allResisNetwork.addAllResidues()
+
+        allNetworkList = list(self.allResisNetwork.network.nodes)
+
+        ### Then finds the fraction of residues to each input set residue that are close to network residues
+        closeInputResiCountList = self.findFractionCloseToNetwork(self.inputSetDict[self.args.col])
+
+        # Finds the set of residues that are not in the input set
+        nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
+
+        ### Then finds the fraction of residues to each non input set residue that are close to network residues
+        closeNonInputResiCountList = self.findFractionCloseToNetwork(nonInputResiList)
+
+        # Finds the statistical significance between all input set vs non input set residues' fraction of residues close to network
+        # Does this by a student's t-test
+        tStat, pValue = scipy.stats.ttest_ind(closeInputResiCountList, closeNonInputResiCountList)
+
+        print(f'Input set mean: {statistics.mean(closeInputResiCountList)}')
+        print(f'Non-input set mean: {statistics.mean(closeNonInputResiCountList)}')
+        print(f'The p value is: {pValue}')
+
+        # Now plots the two distributions as histograms
+        fig, ax1 = plt.subplots()
+    
+        color = 'blue'
+        ax1.set_ylabel('Input Set Count', color=color)
+        ax1.hist(closeInputResiCountList, label='Input Set', alpha=0.5, color=color, bins=np.arange(0.0, 1.0, 0.05))
+
+        ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+
+        color = 'red'
+        ax2.set_ylabel('Non-Input Set Count', color=color)
+        ax2.hist(closeNonInputResiCountList, label='Non-Input Set', alpha=0.5, color=color, bins=np.arange(0.0, 1.0, 0.05))
+
+        plt.title(self.args.col)
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram.png')
+
+    def findFractionCloseToNetwork (self, resiList):
+        
+        closeResiCountList = []
+        
+        # Loops over every residue of interest in the input set
+        for resi in resiList:
+            
+            # Checks if the graph has the node or not
+            # If the node is not present then it is not close to any of the network residues
+            if self.adjResisNetwork.network.has_node(resi) == False:
+                closeResiCountList.append(0)
+
+            # Otherwise, it has at least one connection, and the number of connections is the degree
+            else:
+
+                # Finds the degree of the adjacent residue network (to find number of network adjacent connections)
+                closeNetworkResiCount = self.adjResisNetwork.network.degree[resi]
+
+                # Then finds the degree of the total residue network (to find number of total connections)
+                closeTotalResiCount = self.allResisNetwork.network.degree[resi]
+
+                # Divides network adjacent count by total count, appends this to list
+                closeNormCount = closeNetworkResiCount / closeTotalResiCount
+                closeResiCountList.append(closeNormCount)
+
+        return(closeResiCountList)
+    
+    
+
     def labelGraphOverlap (self):
 
         # Creates a copy of the graph to plot the overlapping residues

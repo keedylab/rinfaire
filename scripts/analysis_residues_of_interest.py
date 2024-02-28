@@ -28,6 +28,13 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '-c',
+        '--col',
+        default=0,
+        help='Column of input csv to use' 
+    )
+
+    parser.add_argument(
         '-a',
         '--include_adjacent_residues', 
         help='Flag to check adjacent residues to network to check for hits. Must include reference structure file.' 
@@ -58,6 +65,7 @@ def main ():
     # Reads in the input set of residues from file
     resiObject.readInputSetFile()
     resiObject.findOverlapInputSet()
+    resiObject.compareInputSetToAll()
     resiObject.labelGraphOverlap()
     resiObject.visualize(resiObject.overlapGraph, "overlapGraph")
     resiObject.visualize(resiObject.adjResisNetwork.network, "adjacentResiNetwork")
