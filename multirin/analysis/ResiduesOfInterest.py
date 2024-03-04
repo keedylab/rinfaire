@@ -79,7 +79,7 @@ class ResiduesOfInterest:
             # Appends list to overlap dictionary
             self.overlapDict[col] = intersectionList
 
-    def compareInputSetToAll (self):
+    def findSignificance (self):
 
         import scipy
         import statistics
@@ -87,7 +87,7 @@ class ResiduesOfInterest:
 
         ### First gets a network of all possible contacts between residues in input structure
         # Sets input structure file as Structure object
-        inputStruct = Structure(self.args.include_adjacent_residues, None)
+        inputStruct = Structure(self.args.find_significance, None)
 
         # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
         # Then uses the addallResidues() method to find all possible residue - residue contacts
@@ -96,6 +96,12 @@ class ResiduesOfInterest:
         self.allResisNetwork.addAllResidues()
 
         allNetworkList = list(self.allResisNetwork.network.nodes)
+
+        ### Then finds adjacent network
+        # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
+        # Then uses the addAdjacentResidues() method to find adjacent residues to the sumNetwork
+        self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork.graph)
+        self.adjResisNetwork.addAdjacentResidues()
 
         ### Then finds the fraction of residues to each input set residue that are close to network residues
         closeInputResiCountList = self.findFractionCloseToNetwork(self.inputSetDict[self.args.col])
@@ -146,8 +152,8 @@ class ResiduesOfInterest:
             else:
 
                 # Finds the degree of the adjacent residue network (to find number of network adjacent connections)
-                closeNetworkResiCount = self.adjResisNetwork.network.degree[resi]
-
+                closeNetworkResiCount = self.conditionalDegree(self.adjResisNetwork.network, resi, 'edgeClass', None)
+                
                 # Then finds the degree of the total residue network (to find number of total connections)
                 closeTotalResiCount = self.allResisNetwork.network.degree[resi]
 
@@ -157,7 +163,21 @@ class ResiduesOfInterest:
 
         return(closeResiCountList)
     
-    
+    def conditionalDegree (self, G, inputNode, condition, conditionValue):
+
+        """
+        Function that gets the degree of a node where its edges must pass a certain condtion
+        Ex. get only degree of node to only network connections (network residues)
+
+        Based off of solution from: https://stackoverflow.com/questions/30077957/calculate-the-degree-of-nodes-only-including-edges-with-a-specific-attribute-in
+        """
+
+        degree = 0
+        for u,v,d in G.edges(inputNode, data=True):
+            if d[condition] == conditionValue:
+                degree += 1
+                
+        return degree
 
     def labelGraphOverlap (self):
 

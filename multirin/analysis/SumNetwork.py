@@ -72,6 +72,9 @@ class SumNetwork:
         for i in self.graph.nodes():
             self.graph.nodes[i]['label'] = str(i)
 
+        for i,j in self.graph.edges():
+            self.graph.edges[i,j]['edgeClass'] = None
+
         # Resizing nodes by the degree of the node
         if self.args.no_resize_by_degree == False:
             self.graph = self.resizeByDegree(self.graph)

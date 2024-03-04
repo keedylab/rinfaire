@@ -68,7 +68,15 @@ class IndividualNetwork:
 
         return amideHOnlyList
     
-    def updateEdge (self, firstResi, secondResi, counterResiResi, shape):
+    def updateEdge (self, firstResi, secondResi, counterResiResi, edgeClass):
+
+        # Sets the shape of the nodes based on the type of network
+        if edgeClass == 'original':
+            shape = None
+        if edgeClass == 'adjacent':
+            shape = 'square'
+        if edgeClass == 'all':
+            shape = 'triangle'
 
         # Conditional based on if normalizing the atom-atom pair numbers based on the residue type is toggled on/off
         # Normally normalization is: ON 
@@ -86,7 +94,7 @@ class IndividualNetwork:
             self.network[firstResi][secondResi]['weight'] = self.network[firstResi][secondResi]['weight'] + addValue
         else:
             #print('Creating new connection between: ', firstResi, secondResi)
-            self.network.add_edge(firstResi, secondResi, weight=addValue) # Adds a new edge with a weight of 0.1
+            self.network.add_edge(firstResi, secondResi, weight=addValue, edgeClass=edgeClass) # Adds a new edge with a weight of 0.1
             
             # Customizes the node shape
             if shape != None:
@@ -99,9 +107,10 @@ class IndividualNetwork:
     def populateNetwork (self):
         atomsWithAltConfsDict = self.findAltConfAtoms()
         amideHOnlyList = self.flagAmideHydrogenOnlyResidues(atomsWithAltConfsDict)
-        self.findContacts(atomsWithAltConfsDict, atomsWithAltConfsDict, amideHOnlyList)
+        self.findContacts(atomsWithAltConfsDict, atomsWithAltConfsDict, amideHOnlyList, edgeClass='original')
         
-    def findContacts (self, firstResiDict, secondResiDict, amideHOnlyList, shape=None):
+    def findContacts (self, firstResiDict, secondResiDict, amideHOnlyList, edgeClass='original'):
+
         contactCutoffValue = 4 # Distance cutoff value
         tooFarCutoffValue = 25 # Minimum distance for two atoms and therefore residues to be considered as too far from each other
 
@@ -133,7 +142,7 @@ class IndividualNetwork:
                             if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
                                 
                                 #print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi, shape)
+                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi, edgeClass)
 
                             # If not, then calculate the distance between the two atoms
                             else:
@@ -150,7 +159,7 @@ class IndividualNetwork:
                                 # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
                                 elif distance < contactCutoffValue:
                                     #print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                    counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi, shape)
+                                    counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi, edgeClass)
 
                         # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
                         # ...between this pair and move on to the next pair of residues
@@ -170,7 +179,7 @@ class IndividualNetwork:
         # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
         # Goal is to find adjacent residues to the network
         print(self.network)
-        self.findContacts(netResisDict, allResisDict, [], shape='square')
+        self.findContacts(netResisDict, allResisDict, [], edgeClass='adjacent')
         print(self.network)
 
     def addAllResidues (self):
@@ -184,7 +193,7 @@ class IndividualNetwork:
         allResisDict = self.createAllResidueDict(self.struct)
 
         # Then finds all contacts between residues in this dict
-        self.findContacts(allResisDict, allResisDict, [], shape='square')
+        self.findContacts(allResisDict, allResisDict, [], edgeClass='all')
         print(self.network)
 
     def createNetworkResidueDict (self, inputStruct):

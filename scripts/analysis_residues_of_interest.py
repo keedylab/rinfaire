@@ -41,6 +41,12 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '-s',
+        '--find_significance', 
+        help='Flag to find the significance of the overlap of the input set compared to all residues. Must include reference structure file.' 
+    )
+
+    parser.add_argument(
         '-p',
         '--output_pickle',
         default=False,
@@ -65,7 +71,10 @@ def main ():
     # Reads in the input set of residues from file
     resiObject.readInputSetFile()
     resiObject.findOverlapInputSet()
-    resiObject.compareInputSetToAll()
+    
+    if args.find_significance != None:
+        resiObject.findSignificance()
+
     resiObject.labelGraphOverlap()
     resiObject.visualize(resiObject.overlapGraph, "overlapGraph")
     resiObject.visualize(resiObject.adjResisNetwork.network, "adjacentResiNetwork")
