@@ -1,5 +1,6 @@
 import xarray as xr
 import numpy as np
+import pandas as pd
 from Bio import SeqIO
 import pickle
 import logging
@@ -11,13 +12,10 @@ class MultiNetwork:
         
         self.setSeqAlignment(args.alignmentFile)
         self.array = None
-        # self.array = np.zeros((0, self.size, self.size))
         self.args = args
 
-        # if args.labels is not None:
-        #     self.setMetaData(args.labels)
-            
-        #self.lookuptable = table with pdb indices and relevant information
+        if args.labels != None:
+            self.setMetaData(args.labels)
 
     # Set functions
 
@@ -37,10 +35,20 @@ class MultiNetwork:
         # Increments by one due to how indexing starts at 0 but residue numbering starts at 1
         self.size += 1
 
-    # TODO: Create metadata function
-    # def setMetaData (self, csvFile):
+    def setMetaData (self, csvFile):
 
-    #     self.metadata = None
+        """
+        Function that takes in a csv file of associated metadata and adds it as a pandas df to be a class variable of MultiNetwork
+        """
+
+        try:
+            self.metadata = pd.read_csv(csvFile, header=0)
+        except FileNotFoundError:
+            print(f"File not found: {csvFile}")
+            return
+        except Exception as e:
+            print(f"Error reading Excel file: {e}")
+            return
 
     def oneToAll (self, seqID, sequenceList, seqResidue):
         
