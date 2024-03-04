@@ -26,9 +26,9 @@ def setupArguments (multiFlag):
         )
 
         parser.add_argument(
-            '-l', 
-            '--labels',
-            help='File of metadata labels to classify structures in (.csv) format'
+            '-m', 
+            '--metadata',
+            help='Table of metadata information to classify structures in (.csv) format'
         )
 
         parser.add_argument(

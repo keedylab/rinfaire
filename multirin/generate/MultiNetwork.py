@@ -14,8 +14,8 @@ class MultiNetwork:
         self.array = None
         self.args = args
 
-        if args.labels != None:
-            self.setMetaData(args.labels)
+        if args.metadata != None:
+            self.setMetaData(args.metadata)
 
     # Set functions
 
@@ -47,7 +47,7 @@ class MultiNetwork:
             print(f"File not found: {csvFile}")
             return
         except Exception as e:
-            print(f"Error reading Excel file: {e}")
+            print(f"Error reading CSV file: {e}")
             return
 
     def oneToAll (self, seqID, sequenceList, seqResidue):
