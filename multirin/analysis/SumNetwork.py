@@ -7,6 +7,7 @@ import logging
 import pickle
 import csv
 from multirin.generate.Structure import Structure
+from multirin.generate.Subset import generateSubsets
 
 class SumNetwork:
 
@@ -34,31 +35,9 @@ class SumNetwork:
         Calculates the sum network for each subset. Main running function for sum networks of subsets.
         """
 
-        # Groups by the subset classifier and then creates groups from that 
-        dfGrouped = self.multinet.metadata.groupby(by=self.args.subset)
-        groups = dict(list(dfGrouped))
-
-        # Gets list of structures in the MultiNetwork
-        structsInMultiNet = set(self.multinet.array.get_index('network').to_list())
-
-        # Iterates over each group
-        for group in groups:
-
-            # Gets list of structures in the group, then finds intersection of this with MultiNetwork structures
-            structsInGroup = groups[group]['ID'].to_list()
-            interStructs = list(set(structsInMultiNet).intersection(set(structsInGroup)))
-            #print(group, interStructs)
-
-            # Checks if intersection is empty or not
-            if interStructs != []:
-                
-                # Selects subset of structures in group from the MultiNetwork object to create a smaller MultiNetwork array
-                subsetMultiArray = self.multinet.array.loc[interStructs, :, :]
-                #print(subsetMultiArray.shape)
-
-            else:
-                print(f"No structures in MultiNetwork for group: {group}")
-
+        # Generates subsets using the generateSubsets function in Subset.py
+        subsetArrays = generateSubsets(self.multinet, self.args.subset)
+        print(subsetArrays)
 
     def calculateSum (self, inputArray):
 
