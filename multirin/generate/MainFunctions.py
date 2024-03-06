@@ -118,8 +118,8 @@ def setupArguments (multiFlag):
         checkExtension(args.alignmentFile, '.fa', "Sequence file must be in .fa format")
 
         # Checks only if the user wants to use inputted labels
-        if args.labels is not None:
-            checkExtension(args.labels, '.csv', "Labels file must be in .csv format")
+        if args.metadata != None:
+            checkExtension(args.metadata, '.csv', "Labels file must be in .csv format")
 
     # For single model inputs
     else:

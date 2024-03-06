@@ -19,37 +19,87 @@ class SumNetwork:
         with open(self.args.filename, 'rb') as pickleFile:
             self.multinet = pickle.load(pickleFile)
 
-    def calculateSum (self):
+    def generateSumNetworkAll (self):
+
+        """
+        Calculates the sum network for all structures in the MultiNetwork. Main running function for sum network for all structures.
+        """
+
+        self.calculateSum(self.multinet.array)
+        logging.info(f'Created the sum matrix of all networks')
+
+    def generateSumNetworkSubset (self):
+
+        """
+        Calculates the sum network for each subset. Main running function for sum networks of subsets.
+        """
+
+        # Groups by the subset classifier and then creates groups from that 
+        dfGrouped = self.multinet.metadata.groupby(by=self.args.subset)
+        groups = dict(list(dfGrouped))
+
+        # Gets list of structures in the MultiNetwork
+        structsInMultiNet = set(self.multinet.array.get_index('network').to_list())
+
+        # Iterates over each group
+        for group in groups:
+
+            # Gets list of structures in the group, then finds intersection of this with MultiNetwork structures
+            structsInGroup = groups[group]['ID'].to_list()
+            interStructs = list(set(structsInMultiNet).intersection(set(structsInGroup)))
+            #print(group, interStructs)
+
+            # Checks if intersection is empty or not
+            if interStructs != []:
+                
+                # Selects subset of structures in group from the MultiNetwork object to create a smaller MultiNetwork array
+                subsetMultiArray = self.multinet.array.loc[interStructs, :, :]
+                #print(subsetMultiArray.shape)
+
+            else:
+                print(f"No structures in MultiNetwork for group: {group}")
+
+
+    def calculateSum (self, inputArray):
+
+        """
+        This function calculates the sum across all networks when given an input 3D array
+
+        Input: Three dimensional array with axes [network, resi1, resi2]
+        Output: Two dimensional array with axes [resi1, resi2] after summing across the network axis
+        """
 
         # Calculates the sum across the network dimension (i.e. for each i,j residue pair)
-        self.sumArray = self.multinet.array.sum(dim="network")
+        sumArray = inputArray.sum(dim="network")
 
         # Scales the sum array to all be values between 0 and 20
         if self.args.no_scale_sum_network == False:
-            self.scaleSumNetwork()
+            sumArray = self.scaleSumNetwork(sumArray)
             logging.info(f'Scaled the Sum Network to values between 0 and 20')
 
         # Removes weak edges so that the network is easier to visualize
         if self.args.remove_weak_edges != None:
-            self.removeWeakEdges()
+            sumArray = self.removeWeakEdges(sumArray)
             logging.info(f'Removed weak edges from array')
 
-        logging.info(f'Created the sum matrix of all networks')
+        return sumArray
 
-    def scaleSumNetwork (self):
+    def scaleSumNetwork (self, sumArray):
 
         # Gets maximum value across all dimensions
-        maxValue = self.sumArray.max(dim=['firstResi','secondResi']).item()
+        maxValue = sumArray.max(dim=['firstResi','secondResi']).item()
 
         # Then divides each network by max value
         # Scales to a set value (default 0 to 20)
-        self.sumArray = (self.sumArray / maxValue) * self.args.sum_network_scale
+        sumArray = (sumArray / maxValue) * self.args.sum_network_scale
 
-    def removeWeakEdges (self):
+        return sumArray
+
+    def removeWeakEdges (self, sumArray):
         
         # Sorts the array and finds the maximum index to keep (by taking size of array * percent to cutoff)
         # Then gets value at this index
-        sortedArray = np.sort(self.sumArray, axis=None)
+        sortedArray = np.sort(sumArray, axis=None)
         sortedArray = sortedArray[sortedArray != 0]
         maxIndex = round(sortedArray.size * (self.args.remove_weak_edges / 100))
         cutoffValue = sortedArray[maxIndex]
@@ -57,7 +107,9 @@ class SumNetwork:
         # Finds entries in the array where they are less than the cutoff threshold
         # Then it replaces them with 0.0
         # If not, then it keeps the original value
-        self.sumArray = xr.where(self.sumArray < cutoffValue, 0.0, self.sumArray)
+        sumArray = xr.where(sumArray < cutoffValue, 0.0, sumArray)
+
+        return sumArray
 
     def constructGraph (self):
 
