@@ -13,6 +13,7 @@ class SumNetwork:
 
     def __init__ (self, args):
         self.args = args
+        self.sumArrays = {}
 
     def readPickle (self):
         
@@ -24,20 +25,40 @@ class SumNetwork:
 
         """
         Calculates the sum network for all structures in the MultiNetwork. Main running function for sum network for all structures.
-        """
 
-        self.calculateSum(self.multinet.array)
-        logging.info(f'Created the sum matrix of all networks')
+        Input:
+        - self.multinet - object that has MultiNetwork of all structures
+
+        Output:
+        - Adds values to self.sumArrays with key 'All'
+        """
+        
+        # Calculates all network sum array and appends it to dictionary of sumArrays with key 'All'
+        self.sumArrays['All'] = self.calculateSum(self.multinet.array)
+        logging.info(f'Created the sum array of all networks')
 
     def generateSumNetworkSubset (self):
 
         """
         Calculates the sum network for each subset. Main running function for sum networks of subsets.
+
+        Inputs:
+        - self.multinet - object that has MultiNetwork of all structures
+        - self.args.subset - column of metadata to do subsetting by
+
+        Output:
+        - Adds values to self.sumArrays which are all the sum arrays with keys of the group
         """
 
         # Generates subsets using the generateSubsets function in Subset.py
-        subsetArrays = generateSubsets(self.multinet, self.args.subset)
-        print(subsetArrays)
+        subsetMultiNetworks = generateSubsets(self.multinet, self.args.subset)
+
+        # Loops over each subset MultiNetwork object in the list
+        for subsetMultiNetwork in subsetMultiNetworks:
+
+            # Calculates the sum array (takes into account all flags provided)
+            self.sumArrays[subsetMultiNetwork] = self.calculateSum(subsetMultiNetworks[subsetMultiNetwork].array)
+            logging.info(f'Created the subset sum array of {subsetMultiNetwork}')
 
     def calculateSum (self, inputArray):
 
