@@ -14,6 +14,7 @@ class SumNetwork:
     def __init__ (self, args):
         self.args = args
         self.sumArrays = {}
+        self.graphs = {}
 
     def readPickle (self):
         
@@ -111,34 +112,46 @@ class SumNetwork:
 
         return sumArray
 
-    def constructGraph (self):
+    def constructGraphs (self):
 
-        # Converts XArray into Numpy array
-        nparray = self.sumArray.to_numpy()
+        """
+        Function that generates networkx graphs for each sum array.
 
-        # Creates graph from Numpy array
-        self.graph = nx.from_numpy_array(nparray)
-        self.graph.remove_nodes_from(list(nx.isolates(self.graph)))
-        nx.convert_node_labels_to_integers(self.graph)
-        
-        for i in self.graph.nodes():
-            self.graph.nodes[i]['label'] = str(i)
+        Input: self.sumArrays dictionary with all the sumArrays
+        Output: New dictionary entries in self.graphs which are all the sum graphs
+        """
 
-        # Resizing nodes by the degree of the node
-        if self.args.no_resize_by_degree == False:
-            self.graph = self.resizeByDegree(self.graph)
+        # Loops over each sum array (in the event there's > 1 sum array in the case of subsets)
+        for sumArray in self.sumArrays:
+
+            # Converts XArray into Numpy array
+            nparray = self.sumArrays[sumArray].to_numpy()
+
+            # Creates graph from Numpy array
+            newGraph = nx.from_numpy_array(nparray)
+            newGraph.remove_nodes_from(list(nx.isolates(newGraph)))
             
-        # Removes subgraphs with < n nodes
-        if self.args.remove_subgraphs != 0:
-            self.graph = self.removeSubGraphs(self.graph)
+            for i in newGraph.nodes():
+                newGraph.nodes[i]['label'] = str(i)
 
-        # Shifts sequence to reference sequence
-        if self.args.seq_to_ref != None:
-            self.graph = self.seqToRef(self.graph)
+            # Resizing nodes by the degree of the node
+            if self.args.no_resize_by_degree == False:
+                newGraph = self.resizeByDegree(newGraph)
+                
+            # Removes subgraphs with < n nodes
+            if self.args.remove_subgraphs != 0:
+                newGraph = self.removeSubGraphs(newGraph)
 
-        # Detects communities within sum graph
-        if self.args.detect_communities == True:
-            self.graph = self.detectCommunities(self.graph)   
+            # Shifts sequence to reference sequence
+            if self.args.seq_to_ref != None:
+                newGraph = self.seqToRef(newGraph)
+
+            # Detects communities within sum graph
+            if self.args.detect_communities == True:
+                newGraph = self.detectCommunities(newGraph)   
+
+            # Appends this new graph to the dictionary of graphs for each sum array, with the key being the original name in the sumArrays dictionary
+            self.graphs[sumArray] = newGraph
 
     def visualize (self):    
  

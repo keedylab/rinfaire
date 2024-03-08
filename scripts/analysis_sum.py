@@ -131,7 +131,7 @@ def main ():
         sumNetObject.generateSumNetworkSubset()
 
     # Creates the graph representation in networkX
-    sumNetObject.constructGraph()
+    sumNetObject.constructGraphs()
 
     # If the user wants information about the graph to be printed
     if args.output_graph_info == True:
