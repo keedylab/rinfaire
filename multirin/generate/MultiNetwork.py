@@ -8,14 +8,51 @@ import logging
 class MultiNetwork:
     
     # Class constructor
-    def __init__ (self, args):
-        
-        self.setSeqAlignment(args.alignmentFile)
-        self.array = None
-        self.args = args
+    def __init__ (self, args=None, array=None, seqaln=None, metadata=None):
 
-        if args.metadata != None:
+        """
+        Function is the class constructor for MultiNetwork
+        """
+        
+        # Sets args as class variable
+        # Tests whether args are already provided or not
+        if args is not None:
+            self.args = args
+
+        else:
+            self.args = None
+
+        # Sets the XArray multidimensional array associated with the MultiNetwork
+        # Tests whether array is already provided or not
+        if array is not None:
+            self.array = array
+
+        else:
+            self.array = None
+
+        # Sets the sequence alignment
+        # Tests whether alignment is already provided or not
+        if seqaln is not None:
+            self.seqaln = seqaln
+
+        # Condition if alignment file is provided in args
+        elif args.alignmentFile is not None:
+            self.setSeqAlignment(args.alignmentFile)
+        
+        else:
+            self.seqaln = None
+
+        # Sets the metadata class variable
+        # Condition if metadata is provided as optional argument
+        if metadata is not None:
+            self.metadata = metadata
+        
+        # Condition if metadata file is provided in args
+        elif args.metadata is not None:
             self.setMetaData(args.metadata)
+        
+        else:
+            self.metadata = None
 
     # Set functions
 

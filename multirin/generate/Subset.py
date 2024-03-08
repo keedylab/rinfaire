@@ -1,5 +1,23 @@
 import xarray as xr
 import pandas as pd
+import pickle
+from multirin.generate.MultiNetwork import MultiNetwork
+
+def readPickle (inputFile):
+    
+    """
+    Function that opens MultiNetwork pickle file and returns it as object
+    """
+        
+    # Opens pickle file
+    with open(inputFile, 'rb') as pickleFile:
+        multinet = pickle.load(pickleFile)
+
+    if isinstance(multinet.metadata, pd.DataFrame) == False:
+        print("Error: Must have metadata associated with MultiNetwork!")
+        return
+
+    return multinet
 
 def generateSubsets (multinet, classifier):
 
@@ -15,7 +33,7 @@ def generateSubsets (multinet, classifier):
     """
 
     # Initializes dictionary of arrays that hold each subset array
-    subsetArrays = {}
+    subsetMultiNetworks = {}
 
     # Groups by the subset classifier and then creates groups from that 
     dfGrouped = multinet.metadata.groupby(by=classifier)
@@ -35,9 +53,32 @@ def generateSubsets (multinet, classifier):
         if interStructs != []:
             
             # Selects subset of structures in group from the MultiNetwork object to create a smaller MultiNetwork array
-            subsetArrays[group] = multinet.array.loc[interStructs, :, :]
+            subsetArray = multinet.array.loc[interStructs, :, :]
+
+            # Selects subset of metadata
+            subsetMetadata = multinet.metadata.loc[multinet.metadata['ID'].isin(interStructs)]
+
+            # Selects subset of sequence alignment
+            subsetSeqAln = {k: multinet.seqaln[k] for k in interStructs}
+
+            # Combines the subset array, metadata, and sequence alignment into a new MultiNetwork object
+            # Puts this in a dictionary of MultiNetworks
+            subsetMultiNetworks[group] = MultiNetwork(array=subsetArray, seqaln=subsetSeqAln, metadata=subsetMetadata)
 
         else:
             print(f"No structures in MultiNetwork for group: {group}")
 
-    return subsetArrays
+    return subsetMultiNetworks
+
+def exportPickle (subsetArrays, outputname):
+
+    """
+    Function that creates a pickle file for each subset array
+    """
+
+    # Loops through each subset array
+    for subset in subsetArrays:
+
+        # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
+        with open(f'{outputname}_{subset}.pkl', 'wb') as pickleFile:
+            pickle.dump(subsetArrays[subset], pickleFile)

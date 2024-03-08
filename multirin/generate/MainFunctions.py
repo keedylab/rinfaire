@@ -180,7 +180,7 @@ def generateIndividualNetworks (fileList, args):
 def generateMultiNetwork (networkList, args):
     
     # Initializes an empty multi-network object 
-    multi = MultiNetwork(args)
+    multi = MultiNetwork(args=args)
 
     # Adds networks from the list of individual networks
     multi.addNetworks(networkList)
