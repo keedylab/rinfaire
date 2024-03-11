@@ -1,6 +1,6 @@
 
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run13/'
-outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run13/SumNetwork_Subset_Removed50'
+outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run13/SumNetwork_Subset_Removed50_Fix_V3'
 
 pipenv run python ../scripts/analysis_sum.py \
 	${inputdir}MultiNetwork.pkl \

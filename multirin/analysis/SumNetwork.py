@@ -98,6 +98,12 @@ class SumNetwork:
             sumArray = self.removeWeakEdges(sumArray)
             logging.info(f'Removed weak edges from array')
 
+        # Confirming the sum array is symmetric with diagonal entries = 0
+        sumNPTest = sumArray.to_numpy()
+        if ((np.all(np.diag(sumNPTest)==0)) or (np.allclose(sumNPTest.T, sumNPTest))) == False:
+            print('Array is not symmetric with diagonal entries of zero')
+            return None
+
         return sumArray
 
     def scaleSumNetwork (self, sumArray):
@@ -237,7 +243,8 @@ class SumNetwork:
         mappingDict = {}
         for i in G.nodes:
 
-            newLabel = int(self.allToOne(self.multinet.seqaln, struct.name, struct.sequenceList, int(G.nodes[i]['label'])))
+            newLabel = self.allToOne(self.multinet.seqaln, struct.name, struct.sequenceList, int(G.nodes[i]['label']))
+            
             mappingDict[int(G.nodes[i]['label'])] = newLabel
             G.nodes[i]['label'] = newLabel
 
@@ -265,9 +272,13 @@ class SumNetwork:
             # Condition when it reaches the residue in question 
             # (since seq index represents the position in the individual sequence and not the full alignment)
             if mainCount == mainResidue:
-            
-                # Returns the main count which is the position on the full alignment
-                return(sequenceList[seqIndex])
+
+                if i == '-':
+                    return('_' + str(sequenceList[seqIndex]))
+
+                else:
+                    # Returns the main count which is the position on the full alignment
+                    return(sequenceList[seqIndex])
             
     def detectCommunities (self, G):
 
