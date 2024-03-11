@@ -19,7 +19,7 @@ def readPickle (inputFile):
 
     return multinet
 
-def generateSubsets (multinet, classifier):
+def generateSubsets (multinet, classifier, groupName=None):
 
     """
     Function that takes in a MultiNetwork object and splits them into subsets based on the classifier (column from metadata)
@@ -27,6 +27,7 @@ def generateSubsets (multinet, classifier):
     Inputs: 
     multinet – MultiNetwork object
     classifier – Label of column in the MultiNetwork metadata .csv that you want to group by
+    groupName – Specific group within the column that is of interest (optional argument)
 
     Output:
     subsetArrays – Dictionary of subset arrays with keys as groups
@@ -35,9 +36,19 @@ def generateSubsets (multinet, classifier):
     # Initializes dictionary of arrays that hold each subset array
     subsetMultiNetworks = {}
 
-    # Groups by the subset classifier and then creates groups from that 
-    dfGrouped = multinet.metadata.groupby(by=classifier)
-    groups = dict(list(dfGrouped))
+    # Condition when there is a specified group within the classifier column that is of interest
+    if groupName != None:
+
+        # Groups by the subset classifier and then creates groups, then gets specific group
+        dfGrouped = multinet.metadata.groupby(by=classifier).get_group(groupName)
+        
+        # Creates dictionary of group's name and dataframe associated with it 
+        groups = {groupName: dfGrouped}
+
+    # Otherwise this will generate subsets for all instances in that classifier column
+    else:
+        dfGrouped = multinet.metadata.groupby(by=classifier)
+        groups = dict(list(dfGrouped))
 
     # Gets list of structures in the MultiNetwork
     structsInMultiNet = set(multinet.array.get_index('network').to_list())

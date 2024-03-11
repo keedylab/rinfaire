@@ -32,7 +32,13 @@ def setupArguments ():
     parser.add_argument( 
         '-s',
         '--subset',
-        help='Specifies to calculate sum based on a specific subset of the metadata (note: MUST have included metadata to MultiNetwork)'
+        nargs = 2,
+        help='Specifies to calculate sum based on a specific subset of the metadata. Takes in two arguments, the first is the column to subset by and the second is the group of interest within that subset. (note: MUST have included metadata to MultiNetwork)'
+    )
+
+    parser.add_argument( 
+        '--subset_all',
+        help='Same as subset but does this for all groups in the column. (note: MUST have included metadata to MultiNetwork)'
     )
 
     parser.add_argument( 
@@ -125,8 +131,10 @@ def main ():
     sumNetObject.readPickle()
 
     # Calculates the sum network and performs scaling and removal of weak edges if flags are specified
-    if args.subset == None:
-        sumNetObject.generateSumNetworkAll()
+    if args.subset != None:
+        sumNetObject.generateSumNetworkSubset(args.subset[0], groupName=args.subset[1])
+    elif args.subset_all != None:
+        sumNetObject.generateSumNetworkSubset(args.subset_all)
     else:
         sumNetObject.generateSumNetworkSubset()
 

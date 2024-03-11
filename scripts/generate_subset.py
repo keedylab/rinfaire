@@ -18,13 +18,19 @@ def setupArguments ():
     )
 
     parser.add_argument(
-        'classifier', 
+        'subset', 
         help='Name of the metadata column to subset by' 
     )
 
     parser.add_argument(
         'outputname', 
         help='Name of the output file' 
+    )
+
+    parser.add_argument(
+        '-g',
+        '--group',
+        help='Specific group within the column to select' 
     )
 
     args = parser.parse_args()
@@ -41,7 +47,10 @@ def main ():
     multinet = readPickle(args.filename)
 
     # Generates subset arrays by subsetting by the classifier
-    subsetArrays = generateSubsets(multinet, args.classifier)
+    if args.group != None:
+        subsetArrays = generateSubsets(multinet, args.subset, groupName=args.group)
+    else:
+        subsetArrays = generateSubsets(multinet, args.subset)
 
     # Exports a series of pickle files
     exportPickle(subsetArrays, args.outputname)

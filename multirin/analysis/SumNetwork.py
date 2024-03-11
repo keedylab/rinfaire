@@ -38,21 +38,22 @@ class SumNetwork:
         self.sumArrays['All'] = self.calculateSum(self.multinet.array)
         logging.info(f'Created the sum array of all networks')
 
-    def generateSumNetworkSubset (self):
+    def generateSumNetworkSubset (self, classifier, groupName=None):
 
         """
         Calculates the sum network for each subset. Main running function for sum networks of subsets.
 
         Inputs:
         - self.multinet - object that has MultiNetwork of all structures
-        - self.args.subset - column of metadata to do subsetting by
+        - classifier - column of metadata to do subsetting by
+        - groupName – name of the specific group in the column that is of interest (optional argument)
 
         Output:
         - Adds values to self.sumArrays which are all the sum arrays with keys of the group
         """
 
         # Generates subsets using the generateSubsets function in Subset.py
-        subsetMultiNetworks = generateSubsets(self.multinet, self.args.subset)
+        subsetMultiNetworks = generateSubsets(self.multinet, classifier, groupName=groupName)
 
         # Loops over each subset MultiNetwork object in the list
         for subsetMultiNetwork in list(subsetMultiNetworks):
