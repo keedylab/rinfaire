@@ -55,11 +55,21 @@ class SumNetwork:
         subsetMultiNetworks = generateSubsets(self.multinet, self.args.subset)
 
         # Loops over each subset MultiNetwork object in the list
-        for subsetMultiNetwork in subsetMultiNetworks:
+        for subsetMultiNetwork in list(subsetMultiNetworks):
 
             # Calculates the sum array (takes into account all flags provided)
             self.sumArrays[subsetMultiNetwork] = self.calculateSum(subsetMultiNetworks[subsetMultiNetwork].array)
-            logging.info(f'Created the subset sum array of {subsetMultiNetwork}')
+            
+            # Tests whether the output from calculateSum is None (meaning the sumArray was empty)
+            if self.sumArrays[subsetMultiNetwork] is None:
+
+                # If so, then delete MultiNetwork and sumArray related to that group
+                print(f'Sum Array for {subsetMultiNetwork} is empty, removing from dictionary')
+                del subsetMultiNetworks[subsetMultiNetwork]
+                del self.sumArrays[subsetMultiNetwork]
+
+            else:
+                logging.info(f'Created the subset sum array of {subsetMultiNetwork}')
 
     def calculateSum (self, inputArray):
 
@@ -72,6 +82,11 @@ class SumNetwork:
 
         # Calculates the sum across the network dimension (i.e. for each i,j residue pair)
         sumArray = inputArray.sum(dim="network")
+
+        # Tests if the sum of the entire sumArray = 0 (array is empty with no values)
+        # If so, function ends and returns None
+        if sumArray.sum() == 0:
+            return None
 
         # Scales the sum array to all be values between 0 and 20
         if self.args.no_scale_sum_network == False:
@@ -153,29 +168,39 @@ class SumNetwork:
             # Appends this new graph to the dictionary of graphs for each sum array, with the key being the original name in the sumArrays dictionary
             self.graphs[sumArray] = newGraph
 
-    def visualize (self):    
- 
-        # Sets PyVis representation
-        nts = Network(notebook=True)
+    def visualize (self):
+
+        """
+        Function that generates the PyVis visualization of each networkx graph.
         
-        # populates the nodes and edges data structures
-        nts.from_nx(self.graph)
+        Input: self.graphs dictionary of networkx graphs
+        Output: .html file visualizations of each network
+        """
 
-        # Set deterministic network position using the Kamada-Kawai network layout
-        # Solution from: https://stackoverflow.com/questions/74108243/pyvis-is-there-a-way-to-disable-physics-without-losing-graphs-layout
-        pos = nx.kamada_kawai_layout(self.graph, scale=2000)
+        # Iterates over each networkx sum graph
+        for graph in self.graphs:    
+ 
+            # Sets PyVis representation
+            nts = Network(notebook=True)
+            
+            # populates the nodes and edges data structures
+            nts.from_nx(self.graphs[graph])
 
-        for node in nts.get_nodes():
-            nts.get_node(node)['x']=pos[node][0]
-            nts.get_node(node)['y']=-pos[node][1] #the minus is needed here to respect networkx y-axis convention 
-            nts.get_node(node)['physics']=False
-            nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
-   
-        # Outputs the network graph
-        nts.toggle_physics(True)
-        nts.show_buttons(filter_=['nodes'])
-        outputpath = f'{self.args.outputname}.html'
-        nts.show(outputpath)
+            # Set deterministic network position using the Kamada-Kawai network layout
+            # Solution from: https://stackoverflow.com/questions/74108243/pyvis-is-there-a-way-to-disable-physics-without-losing-graphs-layout
+            pos = nx.kamada_kawai_layout(self.graphs[graph], scale=2000)
+
+            for node in nts.get_nodes():
+                nts.get_node(node)['x']=pos[node][0]
+                nts.get_node(node)['y']=-pos[node][1] #the minus is needed here to respect networkx y-axis convention 
+                nts.get_node(node)['physics']=False
+                nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
+    
+            # Outputs the network graph
+            nts.toggle_physics(True)
+            nts.show_buttons(filter_=['nodes'])
+            outputpath = f'{self.args.outputname}_{graph}.html'
+            nts.show(outputpath)
 
     def resizeByDegree (self, G):
 
