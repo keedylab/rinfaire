@@ -136,7 +136,7 @@ def main ():
     elif args.subset_all != None:
         sumNetObject.generateSumNetworkSubset(args.subset_all)
     else:
-        sumNetObject.generateSumNetworkSubset()
+        sumNetObject.generateSumNetworkAll()
 
     # Creates the graph representation in networkX
     sumNetObject.constructGraphs()
