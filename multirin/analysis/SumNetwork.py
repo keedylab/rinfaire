@@ -329,71 +329,60 @@ class SumNetwork:
         
         return G
 
-    def getDegreeInfo (self):
+    def getDegreeInfo (self, graph):
 
         # Gets degrees of every node and stores it as a dataframe
-        nodeDegrees = list(self.graph.degree(weight='weight'))
+        nodeDegrees = list(graph.degree(weight='weight'))
         nodeDegreesDF = pd.DataFrame.from_records(nodeDegrees, columns = ['Resi,', 'Degree'])
         return nodeDegreesDF
     
-    def getLabelInfo (self):
+    def getLabelInfo (self, graph):
 
         # Gets label (from clustering) of every node
-        nodeLabel = list(self.graph.nodes.data('group'))
+        nodeLabel = list(graph.nodes.data('group'))
         nodeLabelDF = pd.DataFrame.from_records(nodeLabel, columns = ['Resi,', 'Label'])
         return nodeLabelDF
 
-    def getEdgeInfo (self):
+    def getEdgeInfo (self, graph):
 
         # Gets edge weights
-        graphWeights = list(self.graph.edges.data('weight'))
+        graphWeights = list(graph.edges.data('weight'))
         graphWeightsDF = pd.DataFrame.from_records(graphWeights, columns = ['Resi_1,', 'Resi_2', 'Weight'])
         return graphWeightsDF
 
     def exportGraphInfo (self):
 
+        """
+        This function exports information about the sum network graphs (such as node degree, edges, and labels)
+        """
+
         import matplotlib.pyplot as plt
 
-        # Creates dataframes for each attribute
-        degreeInfo = self.getDegreeInfo()
-        edgeInfo = self.getEdgeInfo()
-        labelInfo = self.getLabelInfo()
+        # Loops over all graphs
+        for graph in self.graphs:
 
-        # Exports these dataframes as CSV files
-        filenameDegree = f'{self.args.outputname}_DegreeInfo'
-        filenameEdge = f'{self.args.outputname}_EdgeInfo'
-        filenameLabel = f'{self.args.outputname}_LabelInfo'
+            # Creates dataframes for each attribute
+            degreeInfo = self.getDegreeInfo(self.graphs[graph])
+            edgeInfo = self.getEdgeInfo(self.graphs[graph])
+            labelInfo = self.getLabelInfo(self.graphs[graph])
 
-        degreeInfo.to_csv(filenameDegree + '.csv')
-        edgeInfo.to_csv(filenameEdge + '.csv')
-        labelInfo.to_csv(filenameLabel + '.csv')
+            # Exports these dataframes as CSV files
+            filenameDegree = f'{self.args.outputname}_{graph}_DegreeInfo'
+            filenameEdge = f'{self.args.outputname}_{graph}_EdgeInfo'
+            filenameLabel = f'{self.args.outputname}_{graph}_LabelInfo'
 
-        # Plotting histograms for degree and edge weights
-        binWidth = 5
-        degreeInfo.hist(column='Degree', bins=np.arange(0, degreeInfo['Degree'].max() + binWidth, binWidth))
-        plt.savefig(filenameDegree + '.png')
+            degreeInfo.to_csv(filenameDegree + '.csv')
+            edgeInfo.to_csv(filenameEdge + '.csv')
+            labelInfo.to_csv(filenameLabel + '.csv')
 
-        binWidth = 1
-        edgeInfo.hist(column='Weight', bins=np.arange(0, edgeInfo['Weight'].max() + binWidth, binWidth))
-        plt.savefig(filenameEdge + '.png')
+            # Plotting histograms for degree and edge weights
+            binWidth = 5
+            degreeInfo.hist(column='Degree', bins=np.arange(0, degreeInfo['Degree'].max() + binWidth, binWidth))
+            plt.savefig(filenameDegree + '.png')
 
-
-        # # Writes a csv file of the degree dictionary
-        # # Solution from: https://stackoverflow.com/questions/10373247/how-do-i-write-a-python-dictionary-to-a-csv-file
-        # filenameCSVDegree = f'{self.args.outputname}_DegreeInfo.csv'
-
-        # with open(filenameCSVDegree,'w') as f:
-        #     degreeCSV = csv.writer(f)
-        #     degreeCSV.writerows(degreeInfo.items())
-
-        # # Writes a csv file of the edge list
-        # # Solution from: https://stackoverflow.com/questions/15578331/save-list-of-ordered-tuples-as-csv
-        # filenameCSVEdge = f'{self.args.outputname}_EdgeInfo.csv'    
-        
-        # with open(filenameCSVEdge,'wb') as out:
-        #     edgeCSV = csv.writer(out)
-        #     for row in edgeInfo:
-        #         edgeCSV.writerow(row)
+            binWidth = 1
+            edgeInfo.hist(column='Weight', bins=np.arange(0, edgeInfo['Weight'].max() + binWidth, binWidth))
+            plt.savefig(filenameEdge + '.png')
 
     def exportPickle (self):
 

@@ -7,5 +7,5 @@ pipenv run python ../scripts/analysis_sum.py \
 	${outputfilename} \
     --subset 'Protein_Name' 'STEP' \
 	--remove_weak_edges 50 \
-	--seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/6H8R_qFit_chainA.pdb \
+	--seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/2BIJ_qFit_chainA.pdb \
 	# --seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb \
