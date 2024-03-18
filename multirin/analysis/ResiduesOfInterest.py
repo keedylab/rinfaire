@@ -122,16 +122,25 @@ class ResiduesOfInterest:
 
         # Now plots the two distributions as histograms
         fig, ax1 = plt.subplots()
+
+        # Sets the bin range for the histogram
+        if self.args.no_normalize_by_total == False:
+            binRange = np.arange(0.0, 1.0, 0.05)
+        
+        else:
+            maxData = max([max(closeInputResiCountList),max(closeNonInputResiCountList)])
+            binWidth = 1
+            binRange = np.arange(0, maxData+binWidth, binWidth)
     
         color = 'blue'
         ax1.set_ylabel('Input Set Count', color=color)
-        ax1.hist(closeInputResiCountList, label='Input Set', alpha=0.5, color=color, bins=np.arange(0.0, 1.0, 0.05))
+        ax1.hist(closeInputResiCountList, label='Input Set', alpha=0.5, color=color, bins=binRange)
 
         ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 
         color = 'red'
         ax2.set_ylabel('Non-Input Set Count', color=color)
-        ax2.hist(closeNonInputResiCountList, label='Non-Input Set', alpha=0.5, color=color, bins=np.arange(0.0, 1.0, 0.05))
+        ax2.hist(closeNonInputResiCountList, label='Non-Input Set', alpha=0.5, color=color, bins=binRange)
 
         plt.title(self.args.col)
         plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram.png')
@@ -154,12 +163,19 @@ class ResiduesOfInterest:
                 # Finds the degree of the adjacent residue network (to find number of network adjacent connections)
                 closeNetworkResiCount = self.conditionalDegree(self.adjResisNetwork.network, resi, 'edgeClass', None)
                 
-                # Then finds the degree of the total residue network (to find number of total connections)
-                closeTotalResiCount = self.allResisNetwork.network.degree[resi]
+                # By default, this is true, telling the program to normalize the count of adjacent network residues by the total number of residues
+                if self.args.no_normalize_by_total == False:
 
-                # Divides network adjacent count by total count, appends this to list
-                closeNormCount = closeNetworkResiCount / closeTotalResiCount
-                closeResiCountList.append(closeNormCount)
+                    # Then finds the degree of the total residue network (to find number of total connections)
+                    closeTotalResiCount = self.allResisNetwork.network.degree[resi]
+
+                    # Divides network adjacent count by total count, appends this to list
+                    closeNormCount = closeNetworkResiCount / closeTotalResiCount
+                    closeResiCountList.append(closeNormCount)
+                
+                # Otherwise just add in the number of adjacent network residues
+                else:
+                    closeResiCountList.append(closeNetworkResiCount)
 
         return(closeResiCountList)
     

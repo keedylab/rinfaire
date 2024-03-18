@@ -47,6 +47,13 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '--no_normalize_by_total', 
+        default=False,
+        action='store_true',
+        help='To be used with find_significance. Does not normalize number of adjacent network residues by total number of residues.' 
+    )
+
+    parser.add_argument(
         '-p',
         '--output_pickle',
         default=False,
