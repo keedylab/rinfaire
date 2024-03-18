@@ -275,7 +275,7 @@ class SumNetwork:
             if mainCount == mainResidue:
 
                 if i == '-':
-                    return('_' + str(sequenceList[seqIndex]))
+                    return('NaN_' + str(sequenceList[seqIndex]))
 
                 else:
                     # Returns the main count which is the position on the full alignment
