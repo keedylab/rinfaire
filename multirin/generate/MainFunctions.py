@@ -26,9 +26,9 @@ def setupArguments (multiFlag):
         )
 
         parser.add_argument(
-            '-l', 
-            '--labels',
-            help='File of metadata labels to classify structures in (.csv) format'
+            '-m', 
+            '--metadata',
+            help='Table of metadata information to classify structures in (.csv) format'
         )
 
         parser.add_argument(
@@ -118,8 +118,8 @@ def setupArguments (multiFlag):
         checkExtension(args.alignmentFile, '.fa', "Sequence file must be in .fa format")
 
         # Checks only if the user wants to use inputted labels
-        if args.labels is not None:
-            checkExtension(args.labels, '.csv', "Labels file must be in .csv format")
+        if args.metadata != None:
+            checkExtension(args.metadata, '.csv', "Labels file must be in .csv format")
 
     # For single model inputs
     else:
@@ -180,7 +180,7 @@ def generateIndividualNetworks (fileList, args):
 def generateMultiNetwork (networkList, args):
     
     # Initializes an empty multi-network object 
-    multi = MultiNetwork(args)
+    multi = MultiNetwork(args=args)
 
     # Adds networks from the list of individual networks
     multi.addNetworks(networkList)
