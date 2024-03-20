@@ -13,7 +13,7 @@ pipenv run python ../scripts/analysis_residues_of_interest.py \
 	${inputdir}SumNetwork_Removed95.pkl \
 	${outputfilename} \
 	--input_set ${inputsetpath} \
-	--col Sector_B \
+	--col Sector_A \
 	--find_significance /data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb \
 	--cumulative_histogram \
 	# --no_normalize_by_total \

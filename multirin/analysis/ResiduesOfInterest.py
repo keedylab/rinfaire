@@ -64,7 +64,16 @@ class ResiduesOfInterest:
         for col in self.inputSetDict:
 
             # Intersection between two lists
-            intersectionList = [value for value in self.inputSetDict[col] if value in networkList]
+            inputSet = set(self.inputSetDict[col])
+            networkSet = set(networkList)
+            intersectionSet = inputSet.intersection(networkSet)
+            intersectionList = sorted(list(intersectionSet))
+
+            # Find values not in each respective set
+            networkNotInputList = sorted(list(networkSet.difference(intersectionSet)))
+            inputNotNetworkList = sorted(list(inputSet.difference(intersectionSet)))
+            
+            #intersectionList = [value for value in self.inputSetDict[col] if value in networkList]
 
             # Finds the percent overlap between the intersection and the total length of the input set
             overlapPercent = (len(intersectionList) / len(self.inputSetDict[col])) * 100
@@ -74,7 +83,13 @@ class ResiduesOfInterest:
             if self.args.include_adjacent_residues != None:
                 addString = "(and adjacent to)"
 
-            print(f'{col}: \n   {overlapPercent}% of residues are found in {addString} network \n   Common residues are: {intersectionList} \n')
+            print(f'''
+{col}: \n   
+    {overlapPercent}% of residues are found in {addString} network \n   
+    Has {len(intersectionList)} residues in common: {intersectionList} \n
+    Has {len(networkNotInputList)} residues in network but not input set: {networkNotInputList} \n
+    Has {len(inputNotNetworkList)} residues in input set but not network: {inputNotNetworkList} \n
+            ''')
 
             # Appends list to overlap dictionary
             self.overlapDict[col] = intersectionList
