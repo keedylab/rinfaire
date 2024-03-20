@@ -54,6 +54,20 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '--histogram', 
+        default=False,
+        action='store_true',
+        help='To be used with find_significance. Outputs traditional histogram of the distributions.' 
+    )
+    
+    parser.add_argument(
+        '--cumulative_histogram', 
+        default=False,
+        action='store_true',
+        help='To be used with find_significance. Outputs the cumulative instead of traditional histogram.' 
+    )
+
+    parser.add_argument(
         '-p',
         '--output_pickle',
         default=False,

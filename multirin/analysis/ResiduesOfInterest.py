@@ -83,7 +83,6 @@ class ResiduesOfInterest:
 
         import scipy
         import statistics
-        import matplotlib.pyplot as plt
 
         ### First gets a network of all possible contacts between residues in input structure
         # Sets input structure file as Structure object
@@ -120,8 +119,28 @@ class ResiduesOfInterest:
         print(f'Non-input set mean: {statistics.mean(closeNonInputResiCountList)}')
         print(f'The p value is: {pValue}')
 
-        # Now plots the two distributions as histograms
-        fig, ax1 = plt.subplots()
+        # Plots histograms if either flag is provided
+        if (self.args.cumulative_histogram or self.args.histogram) == True:
+            self.plotHistogram(closeInputResiCountList, closeNonInputResiCountList)
+    
+    def plotHistogram (self, closeInputResiCountList, closeNonInputResiCountList):
+
+        """
+        This function plots the histograms between the input set given and non input set
+        It is with respect to the fraction/number of residues that are adjacent to the network in the input vs non-input set
+
+        Inputs:
+        - closeInputResiCountList: The list of fractions/numbers of the number of adjacent residues that are in the network for each residue in the input set
+        - closeNonInputResiCountList: Same as closeInputResiCountList but for the non-input set
+
+        Outputs:
+        - Matplotlib plots of both histograms as .png files
+        """
+
+        import matplotlib.pyplot as plt
+
+        # # Now plots the two distributions as histograms
+        # fig, ax1 = plt.subplots()
 
         # Sets the bin range for the histogram
         if self.args.no_normalize_by_total == False:
@@ -132,16 +151,29 @@ class ResiduesOfInterest:
             binWidth = 1
             binRange = np.arange(0, maxData+binWidth, binWidth)
     
+        # Creates two histogram plots
         color = 'blue'
-        ax1.set_ylabel('Input Set Count', color=color)
-        ax1.hist(closeInputResiCountList, label='Input Set', alpha=0.5, color=color, bins=binRange)
-
-        ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-
+        plt.hist(closeInputResiCountList, label=f'{self.args.col} Residues', color=color, bins=binRange, density=True, cumulative=self.args.cumulative_histogram, histtype='step', linewidth=1.5)
+        
         color = 'red'
-        ax2.set_ylabel('Non-Input Set Count', color=color)
-        ax2.hist(closeNonInputResiCountList, label='Non-Input Set', alpha=0.5, color=color, bins=binRange)
+        plt.hist(closeNonInputResiCountList, label=f'Non {self.args.col} Residues', color=color, bins=binRange, density=True, cumulative=self.args.cumulative_histogram, histtype='step', linewidth=1.5)
 
+        # Adds the axis labels and figure legend
+        if self.args.no_normalize_by_total == False:
+            plt.xlabel("Fraction of adjacent residues (within 4Å) in network")
+    
+        else:
+            plt.xlabel("Number of adjacent residues (within 4Å) in network")
+
+        if self.args.cumulative_histogram == True:
+            plt.ylabel("Cumulative Fraction")
+            plt.legend(loc="center right")
+
+        else:
+            plt.ylabel("Total Fraction")
+            plt.legend(loc="upper right")
+
+        # Saving figure
         plt.title(self.args.col)
         plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram.png')
 
