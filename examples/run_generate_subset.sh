@@ -4,7 +4,8 @@ outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run13/SubNetwor
 
 pipenv run python ../scripts/generate_subset.py \
 	${inputdir}MultiNetwork.pkl \
-	'Protein_Name' \
+	'Resolution' \
 	${outputfilename} \
-	# --group 'STEP' \
+	--make_discrete 0.5 1.0 1.5 \
+	# --group '1.0-1.5' \
 
