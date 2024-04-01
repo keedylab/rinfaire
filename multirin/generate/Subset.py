@@ -14,9 +14,8 @@ def readPickle (inputFile):
     with open(inputFile, 'rb') as pickleFile:
         multinet = pickle.load(pickleFile)
 
-    if isinstance(multinet.metadata, pd.DataFrame) == False:
-        print("Error: Must have metadata associated with MultiNetwork!")
-        return
+    if multinet.metadata is None:
+        raise FileNotFoundError('Must have metadata associated with MultiNetwork!')
 
     return multinet
 
