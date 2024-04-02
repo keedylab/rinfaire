@@ -45,12 +45,12 @@ def generateSubsets (multinet, classifier, groupName=None, makeDiscreteValue=Non
             
             # Groups by column after first using pandas' cut function to split column into discrete bins
             # makeDiscreteValue list is the user specified parameters for bins supplied by the make_discrete flag. Element 0 is interval, 1 is lower bound, and 2 is upper bound
-            groupNameInterval = pd.Interval(left=groupName.split('-')[0], right=groupName.split('-')[1], closed='right')
-            dfGrouped = multinet.metadata.groupby(pd.cut(multinet.metadata[classifier], np.arange(makeDiscreteValue[1], makeDiscreteValue[2] + makeDiscreteValue[0], makeDiscreteValue[0])), observed=True).get_group(groupNameInterval)
+            groupNameInterval = pd.Interval(left=float(groupName.split('-')[0]), right=float(groupName.split('-')[1]), closed='right')
+            dfGrouped = multinet.metadata.explode(classifier).groupby(pd.cut(multinet.metadata[classifier].explode().astype(float), np.arange(makeDiscreteValue[1], makeDiscreteValue[2] + makeDiscreteValue[0], makeDiscreteValue[0])), observed=True).get_group(groupNameInterval)
         
         else:
             # Groups by the subset classifier and then creates groups, then gets specific group
-            dfGrouped = multinet.metadata.groupby(by=classifier, observed=True).get_group(groupName)
+            dfGrouped = multinet.metadata.explode(classifier).groupby(by=classifier, observed=True).get_group(groupName)
         
         # Creates dictionary of group's name and dataframe associated with it 
         groups = {groupName: dfGrouped}
@@ -63,10 +63,10 @@ def generateSubsets (multinet, classifier, groupName=None, makeDiscreteValue=Non
 
             # Groups by column after first using pandas' cut function to split column into discrete bins
             # makeDiscreteValue list is the user specified parameters for bins supplied by the make_discrete flag. Element 0 is interval, 1 is lower bound, and 2 is upper bound
-            dfGrouped = multinet.metadata.groupby(pd.cut(multinet.metadata[classifier], np.arange(makeDiscreteValue[1], makeDiscreteValue[2] + makeDiscreteValue[0], makeDiscreteValue[0])), observed=True)
+            dfGrouped = multinet.metadata.explode(classifier).groupby(pd.cut(multinet.metadata[classifier].explode().astype(float), np.arange(makeDiscreteValue[1], makeDiscreteValue[2] + makeDiscreteValue[0], makeDiscreteValue[0])), observed=True)
 
         else:
-            dfGrouped = multinet.metadata.groupby(by=classifier, observed=True)
+            dfGrouped = multinet.metadata.explode(classifier).groupby(by=classifier, observed=True)
 
         groups = dict(list(dfGrouped))
 
@@ -76,8 +76,11 @@ def generateSubsets (multinet, classifier, groupName=None, makeDiscreteValue=Non
     # Iterates over each group
     for group in groups:
 
-        # Gets list of structures in the group, then finds intersection of this with MultiNetwork structures
+        # Gets list of structures in the group, flattens it using list comprehension
         structsInGroup = groups[group]['ID'].to_list()
+        structsInGroup = [item for subList in structsInGroup for item in subList]
+
+        # Then finds intersection of this with MultiNetwork structures
         interStructs = list(set(structsInMultiNet).intersection(set(structsInGroup)))
 
         # Checks if intersection is empty or not
@@ -101,7 +104,7 @@ def generateSubsets (multinet, classifier, groupName=None, makeDiscreteValue=Non
 
     return subsetMultiNetworks
 
-def exportPickle (subsetMultiNetworks, outputname):
+def exportPickle (subsetMultiNetworks, classifier, outputname):
 
     """
     Function that creates a pickle file for each subset array
@@ -114,5 +117,5 @@ def exportPickle (subsetMultiNetworks, outputname):
         subsetString = str(subset).replace(', ','-').replace('(','').replace(']','')
 
         # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
-        with open(f'{outputname}_{subsetString}.pkl', 'wb') as pickleFile:
+        with open(f'{outputname}_{classifier}_{subsetString}.pkl', 'wb') as pickleFile:
             pickle.dump(subsetMultiNetworks[subset], pickleFile)

@@ -62,7 +62,7 @@ def main ():
         subsetMultiNetworks = generateSubsets(multinet, args.subset, makeDiscreteValue=args.make_discrete)
 
     # Exports a series of pickle files
-    exportPickle(subsetMultiNetworks, args.outputname)
+    exportPickle(subsetMultiNetworks, args.subset, args.outputname)
 
 if __name__ == "__main__":
     main()

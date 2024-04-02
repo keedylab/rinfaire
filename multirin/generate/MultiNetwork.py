@@ -78,6 +78,7 @@ class MultiNetwork:
         Function that takes in a csv file of associated metadata and adds it as a pandas df to be a class variable of MultiNetwork
         """
 
+        # Imports the csv and stores it as Pandas dataframe
         try:
             self.metadata = pd.read_csv(csvFile, header=0)
         except FileNotFoundError:
@@ -86,6 +87,16 @@ class MultiNetwork:
         except Exception as e:
             print(f"Error reading CSV file: {e}")
             return
+           
+        # Converts all entries in pandas table into a string (for now)
+        self.metadata = self.metadata.astype(str)
+
+        # Iterates over each column
+        for metadataColumn in self.metadata.columns:
+
+            # Splits values delimited as ; into a list
+            kwargs = {metadataColumn : self.metadata[metadataColumn].str.split('; ')}
+            self.metadata = self.metadata.assign(**kwargs)
 
     def oneToAll (self, seqID, sequenceList, seqResidue):
         
