@@ -133,6 +133,45 @@ class SumNetwork:
         sumArray = xr.where(sumArray < cutoffValue, 0.0, sumArray)
 
         return sumArray
+    
+    def constructMaxSpanningTrees (self):
+
+        """
+        Function that creates the maximum spanning tree as a way to visualize the sum network. Done instead of the traditional method of visualizing the sum network that shows all edges.
+
+        Inputs:
+        - self.sumArrays: Dictionary of sum arrays for each subset
+
+        Outputs:
+        - self.graphs: Dictionary with entries being the graphs for each subset
+        """
+
+        # Loops through each sum array across all subsets (if no subsets it just iterates once on the full sum array)
+        for sumArray in self.sumArrays:
+
+            # Converts XArray into Numpy array
+            nparray = self.sumArrays[sumArray].to_numpy()
+
+            # Creates graph from Numpy array
+            newGraph = nx.from_numpy_array(nparray)
+            newGraph.remove_nodes_from(list(nx.isolates(newGraph)))
+
+            for i in newGraph.nodes():
+                newGraph.nodes[i]['label'] = str(i)
+
+            # Finds maximum spanning tree
+            MSTGraph = nx.maximum_spanning_tree(newGraph)
+
+            # Resizing nodes by the degree of the node
+            if self.args.no_resize_by_degree == False:
+                MSTGraph = self.resizeByDegree(MSTGraph)
+
+            # Shifts sequence to reference sequence
+            if self.args.seq_to_ref != None:
+                MSTGraph = self.seqToRef(MSTGraph)
+
+            # Appends this new graph to the dictionary of graphs for each sum array, with the key being the original name in the sumArrays dictionary
+            self.graphs[sumArray] = MSTGraph
 
     def constructGraphs (self):
 
@@ -251,6 +290,12 @@ class SumNetwork:
 
         # Uses networkX relabel function to relabel nodes using this mapping dictionary
         G = nx.relabel_nodes(G, mappingDict, copy=True)
+
+        # Removes nodes that didn't map to residue in structure
+        if self.args.keep_nan == False:
+            remove = [node for node in G.nodes if str(node)[0:3] == 'NaN']
+            G.remove_nodes_from(remove)
+
         return G
 
     def allToOne (self, seqaln, seqID, sequenceList, mainResidue):
@@ -275,7 +320,7 @@ class SumNetwork:
             if mainCount == mainResidue:
 
                 if i == '-':
-                    return('NaN_' + str(sequenceList[seqIndex]))
+                    return(f'NaN_{str(sequenceList[seqIndex])}_{str(mainCount)}')
 
                 else:
                     # Returns the main count which is the position on the full alignment

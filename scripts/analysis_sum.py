@@ -116,6 +116,20 @@ def setupArguments ():
         help="Outputs information about the graph including a .csv file with degrees of every node"
     )
 
+    parser.add_argument( 
+        '--mst', 
+        default=False,
+        action='store_true', 
+        help="Outputs Maximum Spanning Tree instead of regular graph"
+    )
+
+    parser.add_argument( 
+        '--keep_nan', 
+        default=False,
+        action='store_true', 
+        help="Used with --seq_to_ref. Keeps nodes that don't shift to any residue in input structure."
+    )
+
     args = parser.parse_args()
     checkExtension(args.filename, '.pkl', "Input file must be in .pkl format")
 
@@ -138,8 +152,13 @@ def main ():
     else:
         sumNetObject.generateSumNetworkAll()
 
-    # Creates the graph representation in networkX
-    sumNetObject.constructGraphs()
+    # Constructs Maximum Spanning Tree as graph output if specified, if not then just outputs normal graph
+    if args.mst == True:
+        sumNetObject.constructMaxSpanningTrees()
+
+    else:
+        # Creates the graph representation in networkX
+        sumNetObject.constructGraphs()
 
     # If the user wants information about the graph to be printed
     if args.output_graph_info == True:
