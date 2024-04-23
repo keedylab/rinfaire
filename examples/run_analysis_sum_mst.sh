@@ -4,5 +4,6 @@ outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run19/SumNetwor
 pipenv run python ../scripts/analysis_sum.py \
 	${inputdir}MultiNetwork.pkl \
 	${outputfilename} \
-	--seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb \
-    --mst
+	--seq_to_ref /data/araju/ptpsinpdb/FinalProcessing/Final/1SUG_qFit_chainA.pdb \
+    --mst \
+	--output_graph_info \

@@ -170,6 +170,10 @@ class SumNetwork:
             if self.args.seq_to_ref != None:
                 MSTGraph = self.seqToRef(MSTGraph)
 
+            # Detects communities within sum graph
+            if self.args.detect_communities == True:
+                MSTGraph = self.detectCommunities(MSTGraph) 
+
             # Appends this new graph to the dictionary of graphs for each sum array, with the key being the original name in the sumArrays dictionary
             self.graphs[sumArray] = MSTGraph
 
@@ -358,19 +362,35 @@ class SumNetwork:
         # Then labels each node in each community with an associated group
         # Pyvis then colors these groups separately during visualization
         communityCounter = 0
+        communityList = []
+        nodeList = []
 
+        # Iterates over each community
         for community in selectedCommunities:
 
-            nodeList = []
+            # Iterates over each residue in community
+            communityNodeList = []
             for node in community:
+
+                # Sets the nodes' group attribute to the be the community number
                 G.nodes[node]['group'] = communityCounter
-                nodeList.append(int(G.nodes[node]['label']))
 
-            print(f'Community {communityCounter + 1}: {nodeList}')
+                # Adds to lists to output
+                communityNodeList.append(int(G.nodes[node]['label']))
+                nodeList.append(node)
+                communityList.append(communityCounter + 1)
 
+            # Prints community with list of residues in it plus adds it to dictionary
+            print(f'Community {communityCounter + 1}: {communityNodeList}')
+
+            # updates community number
             communityCounter += 1
 
         print(f"Modularity of the communities: {modularityMax}")
+
+        # Output communities as csv file
+        communityDF = pd.DataFrame.from_dict({'Residue': nodeList, 'Community':communityList}).set_index('Residue')
+        communityDF.to_csv(f'{self.args.outputname}Communities.csv')
         
         return G
 
