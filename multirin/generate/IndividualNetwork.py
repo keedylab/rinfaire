@@ -100,21 +100,19 @@ class IndividualNetwork:
         for firstResi in atomsWithAltConfsDict:
             for secondResi in atomsWithAltConfsDict:
 
+                # Condition to remove any cases of residues with amide H alt confs having connections with adjacent residues on the backbone
+                if ((firstResi in amideHOnlyList) or (secondResi in amideHOnlyList)) and (firstResi + 1 == secondResi):
+                    #print("These residues' connections:", firstResi, secondResi, "are not being searched because they are adjacent and one has amide H's")
+                    continue
+
                 # Condition that satisfies both the fact that the first and second residues cannot be equal to each other
                 # And that we can prune duplicate connections by only looking at connection i,j and not j,i
                 if firstResi < secondResi:
 
                     tooFarFlag = False
-                    amideHFlag = False
                     
                     for firstAtom in atomsWithAltConfsDict[firstResi]:
                         for secondAtom in atomsWithAltConfsDict[secondResi]:
-
-                            # Condition to remove any cases of residues with amide H alt confs having connections with adjacent residues on the backbone
-                            if ((firstResi in amideHOnlyList) or (secondResi in amideHOnlyList)) and (firstResi + 1 == secondResi):
-                                amideHFlag = True
-                                #print("These residues' connections:", firstResi, secondResi, "are not being searched because they are adjacent and one has amide H's")
-                                break
 
                             # First condition to test if the two residues are adjacent residues that have coupled backbone alt-confs
                             if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
@@ -141,7 +139,7 @@ class IndividualNetwork:
 
                         # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
                         # ...between this pair and move on to the next pair of residues
-                        if tooFarFlag == True or amideHFlag == True:
+                        if tooFarFlag == True:
                             break
     
     def visualize (self):
