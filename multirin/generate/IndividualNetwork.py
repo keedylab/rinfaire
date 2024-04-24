@@ -62,14 +62,21 @@ class IndividualNetwork:
 
         return amideHOnlyList
     
-    def updateEdge (self, firstResi, secondResi, counterResiResi):
+    def updateEdge (self, firstResi, secondResi, counterResiResi, backboneAtoms=None):
 
         # Conditional based on if normalizing the atom-atom pair numbers based on the residue type is toggled on/off
         # Normally normalization is: ON 
         if self.args.no_norm_resi == False:
+
             # Normalizes by taking each atom-atom pair added and dividing it by the total # of atoms
-            # Equivalent to taking the full count of atom-atom pairs for this residue pair and dividign by total # of atoms
-            addValue = 10 / (self.struct.sequence[firstResi]['atomcount'] + self.struct.sequence[secondResi]['atomcount'])
+            # Equivalent to taking the full count of atom-atom pairs for this residue pair and dividing by total # of atoms
+
+            # Condition if this is called from backbone
+            if backboneAtoms is not None:
+                # avgNumberAtomsInResidue = 15
+                addValue = 10 / (len(backboneAtoms) * 4)
+            else:
+                addValue = 10 / (self.struct.sequence[firstResi]['atomcount'] + self.struct.sequence[secondResi]['atomcount'])
         else:
             addValue = 0.1
 
@@ -95,7 +102,7 @@ class IndividualNetwork:
         counterResiResi = 0
 
         #List of all backbone atoms in the protein structure
-        backboneAtoms = ['N','CA','C','O','H','HA','HA2','HA3']
+        backboneAtoms = ['N','CA','C','O'] # 'H','HA','HA2','HA3'
 
         for firstResi in atomsWithAltConfsDict:
             for secondResi in atomsWithAltConfsDict:
@@ -110,18 +117,37 @@ class IndividualNetwork:
                 if firstResi < secondResi:
 
                     tooFarFlag = False
-                    
-                    for firstAtom in atomsWithAltConfsDict[firstResi]:
-                        for secondAtom in atomsWithAltConfsDict[secondResi]:
 
-                            # First condition to test if the two residues are adjacent residues that have coupled backbone alt-confs
-                            if (firstResi + 1 == secondResi) and (firstAtom.name in backboneAtoms) and (secondAtom.name in backboneAtoms):
-                                
+                    # Finds atom names for all atoms in first and second residues
+                    atomsWithAltConfsNamesFirstResi = []
+                    for atom in atomsWithAltConfsDict[firstResi]:
+                        atomsWithAltConfsNamesFirstResi.append(atom.name)
+
+                    atomsWithAltConfsNamesSecondResi = []
+                    for atom in atomsWithAltConfsDict[secondResi]:
+                        atomsWithAltConfsNamesSecondResi.append(atom.name)
+
+                    # First condition to test if the two residues are adjacent residues that have coupled backbone alt-confs
+                    if (firstResi + 1 == secondResi) and (set(backboneAtoms).issubset(set(atomsWithAltConfsNamesSecondResi)) and set(backboneAtoms).issubset(set(atomsWithAltConfsNamesFirstResi))):
+
+                        print(atomsWithAltConfsNamesSecondResi)
+                        backboneAtomsFirstResi = [i in backboneAtoms for i in atomsWithAltConfsNamesFirstResi]
+                        filtered = list(filter(lambda x: backboneAtomsFirstResi, atomsWithAltConfsNamesFirstResi))
+                        print(filtered)
+
+                        print(firstResi, secondResi, self.struct.name)
+
+                        for firstAtom in backboneAtoms:
+                            for secondAtom in backboneAtoms:
                                 #print("Found backbone connection between: ", firstResi, secondResi, firstAtom, secondAtom)
-                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi)
+                                counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi,backboneAtoms=backboneAtoms)
+                    
+                    # All other cases when not backbone alt confs
+                    else:
+                        for firstAtom in atomsWithAltConfsDict[firstResi]:
+                            for secondAtom in atomsWithAltConfsDict[secondResi]:
 
-                            # If not, then calculate the distance between the two atoms
-                            else:
+                                # If not, then calculate the distance between the two atoms
                                 # Calculates distance between the two atoms using Gemmi dist() function
                                 distance = firstAtom.pos.dist(secondAtom.pos)  
 
@@ -137,10 +163,10 @@ class IndividualNetwork:
                                     #print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
                                     counterResiResi = self.updateEdge(firstResi, secondResi, counterResiResi)
 
-                        # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
-                        # ...between this pair and move on to the next pair of residues
-                        if tooFarFlag == True:
-                            break
+                            # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
+                            # ...between this pair and move on to the next pair of residues
+                            if tooFarFlag == True:
+                                break
     
     def visualize (self):
 
