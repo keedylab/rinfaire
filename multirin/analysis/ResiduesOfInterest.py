@@ -52,13 +52,13 @@ class ResiduesOfInterest:
             # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
             # Then uses the addAdjacentResidues() method to find adjacent residues to the sumNetwork
             args = Namespace(no_norm_resi=False)
-            self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork.graph)
+            self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork)
             self.adjResisNetwork.addAdjacentResidues()
 
             networkList = list(self.adjResisNetwork.network.nodes)
 
         else:
-            networkList = list(self.sumNetwork.graph.nodes)
+            networkList = list(self.sumNetwork.nodes)
 
         # Iterates over each sector of residues in the input set dictionary
         for col in self.inputSetDict:
@@ -114,7 +114,7 @@ class ResiduesOfInterest:
         ### Then finds adjacent network
         # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
         # Then uses the addAdjacentResidues() method to find adjacent residues to the sumNetwork
-        self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork.graph)
+        self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork)
         self.adjResisNetwork.addAdjacentResidues()
 
         ### Then finds the fraction of residues to each input set residue that are close to network residues
@@ -245,7 +245,7 @@ class ResiduesOfInterest:
     def labelGraphOverlap (self):
 
         # Creates a copy of the graph to plot the overlapping residues
-        self.overlapGraph = self.sumNetwork.graph
+        self.overlapGraph = self.sumNetwork
 
         # Then labels each node in each community with an associated group
         # Pyvis then colors these groups separately during visualization

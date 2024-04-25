@@ -30,6 +30,18 @@ def setupArguments ():
     )
 
     parser.add_argument( 
+        '-s',
+        '--subset',
+        nargs = 2,
+        help='Specifies to calculate sum based on a specific subset of the metadata. Takes in two arguments, the first is the column to subset by and the second is the group of interest within that subset. (note: MUST have included metadata to MultiNetwork)'
+    )
+
+    parser.add_argument( 
+        '--subset_all',
+        help='Same as subset but does this for all groups in the column. (note: MUST have included metadata to MultiNetwork)'
+    )
+
+    parser.add_argument( 
         '--no_scale_sum_network', 
         default=False,
         action='store_true', 
@@ -65,7 +77,7 @@ def setupArguments ():
 
     parser.add_argument( 
         '--remove_subgraphs',
-        default=5,
+        default=0,
         type=int,
         help='Removes subgraphs that have less than specified number of residues. To turn off removal set this to 0'
     )
@@ -119,10 +131,15 @@ def main ():
     sumNetObject.readPickle()
 
     # Calculates the sum network and performs scaling and removal of weak edges if flags are specified
-    sumNetObject.calculateSum()
+    if args.subset != None:
+        sumNetObject.generateSumNetworkSubset(args.subset[0], groupName=args.subset[1])
+    elif args.subset_all != None:
+        sumNetObject.generateSumNetworkSubset(args.subset_all)
+    else:
+        sumNetObject.generateSumNetworkAll()
 
     # Creates the graph representation in networkX
-    sumNetObject.constructGraph()
+    sumNetObject.constructGraphs()
 
     # If the user wants information about the graph to be printed
     if args.output_graph_info == True:

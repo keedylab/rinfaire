@@ -1,5 +1,6 @@
 import xarray as xr
 import numpy as np
+import pandas as pd
 from Bio import SeqIO
 import pickle
 import logging
@@ -7,17 +8,51 @@ import logging
 class MultiNetwork:
     
     # Class constructor
-    def __init__ (self, args):
-        
-        self.setSeqAlignment(args.alignmentFile)
-        self.array = None
-        # self.array = np.zeros((0, self.size, self.size))
-        self.args = args
+    def __init__ (self, args=None, array=None, seqaln=None, metadata=None):
 
-        # if args.labels is not None:
-        #     self.setMetaData(args.labels)
-            
-        #self.lookuptable = table with pdb indices and relevant information
+        """
+        Function is the class constructor for MultiNetwork
+        """
+        
+        # Sets args as class variable
+        # Tests whether args are already provided or not
+        if args is not None:
+            self.args = args
+
+        else:
+            self.args = None
+
+        # Sets the XArray multidimensional array associated with the MultiNetwork
+        # Tests whether array is already provided or not
+        if array is not None:
+            self.array = array
+
+        else:
+            self.array = None
+
+        # Sets the sequence alignment
+        # Tests whether alignment is already provided or not
+        if seqaln is not None:
+            self.seqaln = seqaln
+
+        # Condition if alignment file is provided in args
+        elif args.alignmentFile is not None:
+            self.setSeqAlignment(args.alignmentFile)
+        
+        else:
+            self.seqaln = None
+
+        # Sets the metadata class variable
+        # Condition if metadata is provided as optional argument
+        if metadata is not None:
+            self.metadata = metadata
+        
+        # Condition if metadata file is provided in args
+        elif args.metadata is not None:
+            self.setMetaData(args.metadata)
+        
+        else:
+            self.metadata = None
 
     # Set functions
 
@@ -37,10 +72,31 @@ class MultiNetwork:
         # Increments by one due to how indexing starts at 0 but residue numbering starts at 1
         self.size += 1
 
-    # TODO: Create metadata function
-    # def setMetaData (self, csvFile):
+    def setMetaData (self, csvFile):
 
-    #     self.metadata = None
+        """
+        Function that takes in a csv file of associated metadata and adds it as a pandas df to be a class variable of MultiNetwork
+        """
+
+        # Imports the csv and stores it as Pandas dataframe
+        try:
+            self.metadata = pd.read_csv(csvFile, header=0)
+        except FileNotFoundError:
+            print(f"File not found: {csvFile}")
+            return
+        except Exception as e:
+            print(f"Error reading CSV file: {e}")
+            return
+           
+        # Converts all entries in pandas table into a string (for now)
+        self.metadata = self.metadata.astype(str)
+
+        # Iterates over each column
+        for metadataColumn in self.metadata.columns:
+
+            # Splits values delimited as ; into a list
+            kwargs = {metadataColumn : self.metadata[metadataColumn].str.split('; ')}
+            self.metadata = self.metadata.assign(**kwargs)
 
     def oneToAll (self, seqID, sequenceList, seqResidue):
         
