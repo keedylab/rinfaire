@@ -1,6 +1,6 @@
 
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/'
-outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test27/'
+outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test30/'
 
 pipenv run python ../scripts/generate_multi.py \
 	${inputdir}InputPDBsTest.txt \

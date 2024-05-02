@@ -25,6 +25,14 @@ def setupArguments (multiFlag):
             help='Sequence alignment file in fasta (.fa) format'
         )
 
+        parser.add_argument( 
+            '-s',
+            '--only_sidechain', 
+            default=False,
+            action='store_true', 
+            help="Only looks at sidechain alt confs"
+        )
+
         parser.add_argument(
             '-m', 
             '--metadata',
@@ -187,15 +195,6 @@ def generateMultiNetwork (networkList, args):
 
     # Exports MultiNetwork object as a pickle file for further analysis
     multi.exportPickle()
-
-    # Gets info about edges in MultiNetwork
-    if args.output_info == True:
-        multi.getInfo()
-
-    # # Calculates the sum matrix of all the structures in the object
-    # # Does this across each residue pairing
-    # sumMatrix = multi.sum()
-    # multi.visualize(sumMatrix, 'sumNetwork')
 
     return multi
     

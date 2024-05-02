@@ -4,6 +4,7 @@ import pandas as pd
 from Bio import SeqIO
 import pickle
 import logging
+import statistics
 
 class MultiNetwork:
     
@@ -204,12 +205,85 @@ class MultiNetwork:
         self.array = self.array.fillna(0)
 
         logging.info(f'Finished adding networks to MultiNetwork object')
-        print(self.array)
+        
+        # Gets info about edges in MultiNetwork
+        if self.args.output_info == True:
+            self.getInfo(networkList)
 
-    def getInfo (self):
+    def getInfo (self, networkList):
 
+        self.getInfo_IndNetEdges(networkList)
         self.getInfo_Edges()
         self.getInfo_Structs()
+
+    def getInfo_IndNetEdges (self, networkList):
+
+        import matplotlib.pyplot as plt
+
+        # Creates lists of weights to store for all individual networks
+        weightsRecordAll = {'adjResi': {'BB_BB': [], 'SC_BB': [], 'SC_SC': [], 'total': []},
+                            'nonAdjResi': {'total': []}}
+        weightsRecordAllStats = {'adjResi': {'total': {}, 'BB_BB': {}, 'SC_BB': {}, 'SC_SC': {}},
+                                 'nonAdjResi': {'total': {}}}
+
+        # Iterates over each network, adds individual network's edge weights to list of all weights
+        for net in networkList:
+
+            for resiType in weightsRecordAll:
+                for BBorSCType in weightsRecordAll[resiType]:
+                    weightsRecordAll[resiType][BBorSCType] += net.weightsRecord[resiType][BBorSCType]
+
+        # Gets min, max, and average values for each list
+        for resiType in weightsRecordAll:
+            for BBorSCType in weightsRecordAll[resiType]:
+
+                # Updates stats
+                weightsRecordAllStats[resiType][BBorSCType]['min'] = min(weightsRecordAll[resiType][BBorSCType])
+                weightsRecordAllStats[resiType][BBorSCType]['max'] = max(weightsRecordAll[resiType][BBorSCType])
+                weightsRecordAllStats[resiType][BBorSCType]['average'] = statistics.mean(weightsRecordAll[resiType][BBorSCType])
+                weightsRecordAllStats[resiType][BBorSCType]['mode'] = statistics.mode(weightsRecordAll[resiType][BBorSCType])
+                
+                print(f"{resiType} residue {BBorSCType} edge weight for all Individual Networks: \n    Min: {weightsRecordAllStats[resiType][BBorSCType]['min']}   Max: {weightsRecordAllStats[resiType][BBorSCType]['max']}  Average: {weightsRecordAllStats[resiType][BBorSCType]['average']}")
+
+        # Gets min, max, and average values for each list
+        for resiType in weightsRecordAll:
+            for BBorSCType in weightsRecordAll[resiType]:
+
+                # Plots histogram of edge distribution across the network
+                outputInfoName = f'{self.args.output}MultiNetwork_Info_IndNetEdges_{resiType}_{BBorSCType}'
+                
+                # Modifies bin size depending on the plot
+                if BBorSCType == 'total':
+                    binSize = 5
+
+                    maxValueBin = 0
+                    maxValueFreq = 0
+                    for resiType2 in weightsRecordAllStats:
+                        if maxValueBin < weightsRecordAllStats[resiType2]['total']['max']:
+                            maxValueBin = weightsRecordAllStats[resiType2]['total']['max']
+
+                        if maxValueFreq < weightsRecordAllStats[resiType2]['total']['mode']:
+                            maxValueFreq = weightsRecordAllStats[resiType2]['total']['mode']
+                else:
+                    binSize = 1
+
+                    maxValueBin = 0
+                    maxValueFreq = 0
+                    for BBorSCType2 in weightsRecordAllStats['adjResi']:
+                        if BBorSCType2 != 'total':
+                            if maxValueBin < weightsRecordAllStats['adjResi'][BBorSCType2]['max']:
+                                maxValueBin = weightsRecordAllStats['adjResi'][BBorSCType2]['max']
+
+                            if maxValueFreq < weightsRecordAllStats['adjResi'][BBorSCType2]['mode']:
+                                maxValueFreq = weightsRecordAllStats['adjResi'][BBorSCType2]['mode']
+
+                plt.figure(figsize=(10,10))
+                plt.hist(weightsRecordAll[resiType][BBorSCType], bins=range(0, int(maxValueBin) + (binSize*2), binSize), range=(0, int(maxValueBin) + (binSize*2)))
+                plt.xticks(range(0, int(maxValueBin) + (binSize*2), binSize))
+                plt.xlabel(f'{resiType} Residue {BBorSCType} Edge Weight')
+                plt.ylabel('Frequency')
+                plt.savefig(outputInfoName + '.png')
+                plt.clf()
 
     def getInfo_Edges (self):
 
@@ -226,7 +300,7 @@ class MultiNetwork:
         print(f'Maximum value in array is: {maxValue}')
 
         # Plots histogram of edge distribution across the network
-        outputInfoName = f'{self.args.output}MultiNetwork_InfoEdges'
+        outputInfoName = f'{self.args.output}MultiNetwork_Info_Edges'
         plt.figure(figsize=(10,10))
         xr.plot.hist(stackedArray, bins=range(0, int(maxValue) + 1, 1), range=(0, maxValue))
         plt.savefig(outputInfoName + '.png')
@@ -246,7 +320,7 @@ class MultiNetwork:
         print(f'Highest weight network is: {summedArray.idxmax().values} with value of: {maxValue}')
 
         # Plots histogram of network weight distribution
-        outputInfoName = f'{self.args.output}MultiNetwork_InfoStructs_Hist'
+        outputInfoName = f'{self.args.output}MultiNetwork_Info_Structs_Hist'
         plt.figure(figsize=(10,10))
         xr.plot.hist(summedArray, bins=range(0, int(maxValue) + 10, 10), range=(0, maxValue))
         plt.savefig(outputInfoName + '.png')
@@ -257,7 +331,7 @@ class MultiNetwork:
         networkSeries = summedArray.to_series().sort_values(ascending=False)
         networkSeries.plot.bar()
 
-        outputInfoName = f'{self.args.output}MultiNetwork_InfoStructs_Bar'
+        outputInfoName = f'{self.args.output}MultiNetwork_Info_Structs_Bar'
         plt.savefig(outputInfoName + '.png')
         plt.clf()
 
