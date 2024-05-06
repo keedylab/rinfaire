@@ -86,6 +86,9 @@ class IndividualNetwork:
         # Creates lists for tracking the weights of all the following types of connections
         self.weightsRecord = {'adjResi': {'total': [], 'BB_BB': [], 'SC_BB': [], 'SC_SC': []},
                               'nonAdjResi': {'total': []}}
+        
+        self.distancesRecord = {'adjResi': {'total': [], 'SC_BB': [], 'SC_SC': []},
+                              'nonAdjResi': {'total': []}}
 
         # Iterates over all pairs of residues that have alt-confs
         for firstResi in atomsWithAltConfsDict:
@@ -97,6 +100,9 @@ class IndividualNetwork:
 
                     # Sets total connections
                     totalConnections = 0
+
+                    # Sets the normalization factor
+                    normalizationFactor = (self.struct.sequence[firstResi]['atomcount'] + self.struct.sequence[secondResi]['atomcount']) / 10
 
                     # Condition to remove any cases of residues with amide H alt confs having connections with adjacent residues on the backbone
                     if ((firstResi in amideHOnlyList) or (secondResi in amideHOnlyList)) and (firstResi + 1 == secondResi):
@@ -215,46 +221,62 @@ class IndividualNetwork:
                                 # Normally normalization is: ON, therefore this is FALSE
                                 if self.args.no_norm_resi == False:
                                     # backboneConnections = (backboneConnections / (len(set(backboneAtomsFirstResiNames)) + len(set(backboneAtomsSecondResiNames)))) * 10
-                                    BB_BB_Connections = (BB_BB_Connections / (len(backboneAtomsFirstResi) + len(backboneAtomsSecondResi))) * 10
+                                    BB_BB_Connections = BB_BB_Connections / normalizationFactor
 
                             # STEP 2: Check sidechain atoms for connections with other sidechain atoms in adjacent residue
 
                             # If there are sidechain alt confs present
                             if (len(sidechainAtomsFirstResi) + len(sidechainAtomsSecondResi)) > 0:
-                                SC_SC_Connections = self.findConnections(sidechainAtomsFirstResi,sidechainAtomsSecondResi)
-                                SC_BB_Connections = self.findConnections(sidechainAtomsFirstResi,backboneAtomsSecondResi)
-                                BB_SC_Connections = self.findConnections(backboneAtomsFirstResi,sidechainAtomsSecondResi)
+                                SC_SC_Connections, SC_SC_distancesRecord = self.findConnections(sidechainAtomsFirstResi,sidechainAtomsSecondResi)
+                                SC_BB_Connections, SC_BB_distancesRecord = self.findConnections(sidechainAtomsFirstResi,backboneAtomsSecondResi) #excludeAtoms=['CB']
+                                BB_SC_Connections, BB_SC_distancesRecord = self.findConnections(backboneAtomsFirstResi,sidechainAtomsSecondResi) #excludeAtoms=['CB']
                                 
+                                # Updates distance records
+                                self.distancesRecord['adjResi']['SC_SC'] += SC_SC_distancesRecord
+                                self.distancesRecord['adjResi']['SC_BB'] += SC_BB_distancesRecord + BB_SC_distancesRecord
+                                self.distancesRecord['adjResi']['total'] += SC_SC_distancesRecord + SC_BB_distancesRecord + BB_SC_distancesRecord
+
                                 # Same normalization as above
                                 if self.args.no_norm_resi == False:
-                                    SC_SC_Connections = (SC_SC_Connections / (len(sidechainAtomsFirstResi) + len(sidechainAtomsSecondResi))) * 10
-                                    SC_BB_Connections = (SC_BB_Connections / (len(sidechainAtomsFirstResi) + len(backboneAtomsSecondResi))) * 10
-                                    BB_SC_Connections = (BB_SC_Connections / (len(backboneAtomsFirstResi) + len(sidechainAtomsSecondResi))) * 10
+                                    SC_SC_Connections = SC_SC_Connections / normalizationFactor
+                                    SC_BB_Connections = SC_BB_Connections / normalizationFactor
+                                    BB_SC_Connections = BB_SC_Connections / normalizationFactor
+
+                            if BB_BB_Connections != 0:
+                                self.weightsRecord['adjResi']['BB_BB'].append(BB_BB_Connections)
+                            if (SC_BB_Connections + BB_SC_Connections) != 0:    
+                                self.weightsRecord['adjResi']['SC_BB'].append(SC_BB_Connections + BB_SC_Connections) # Since BB-SC and SC-BB are the same case just swapped in residue order
+                            if SC_SC_Connections != 0:
+                                self.weightsRecord['adjResi']['SC_SC'].append(SC_SC_Connections)
 
                             # Adds together the backbone and sidechain connections
                             totalConnections = BB_BB_Connections + BB_SC_Connections + SC_BB_Connections + SC_SC_Connections
+
+                            # # Same normalization as above
+                            # if self.args.no_norm_resi == False:
+                            #     totalConnections = totalConnections / normalizationFactor
 
                             # Adds connection in the network between the two residues, with the weight being the total atom-atom connections
                             if totalConnections != 0:
                                 self.network.add_edge(firstResi, secondResi, weight=totalConnections)
 
                                 # Appends these weights to overall list of weights for tracking and subsequent plotting
-                                self.weightsRecord['adjResi']['BB_BB'].append(BB_BB_Connections)
-                                self.weightsRecord['adjResi']['SC_BB'].append(SC_BB_Connections + BB_SC_Connections) # Since BB-SC and SC-BB are the same case just swapped in residue order
-                                self.weightsRecord['adjResi']['SC_SC'].append(SC_SC_Connections)
+                                # self.weightsRecord['adjResi']['BB_BB'].append(BB_BB_Connections)
+                                # self.weightsRecord['adjResi']['SC_BB'].append(SC_BB_Connections + BB_SC_Connections) # Since BB-SC and SC-BB are the same case just swapped in residue order
+                                # self.weightsRecord['adjResi']['SC_SC'].append(SC_SC_Connections)
                                 self.weightsRecord['adjResi']['total'].append(totalConnections)
 
                         # Case when they are not adjacent residues
                         else:
 
                             # Finds connections between all atoms regardless of whether it's a backbone or sidechain atom 
-                            allAtomsFirstResi = sidechainAtomsFirstResi + backboneAtomsFirstResi
-                            allAtomsSecondResi = sidechainAtomsSecondResi + backboneAtomsSecondResi
-                            totalConnections = self.findConnections(allAtomsFirstResi,allAtomsSecondResi)
+                            totalConnections, nonAdj_distanceRecord = self.findConnections(atomsWithAltConfsDict[firstResi],atomsWithAltConfsDict[secondResi])
+
+                            self.distancesRecord['nonAdjResi']['total'] += nonAdj_distanceRecord
 
                             # Same normalization as above
                             if self.args.no_norm_resi == False:
-                                totalConnections = (totalConnections / (len(allAtomsFirstResi) + len(allAtomsSecondResi))) * 10
+                                totalConnections = totalConnections / normalizationFactor
 
                             # Adds connection in the network between the two residues, with the weight being the total atom-atom connections
                             if totalConnections != 0:
@@ -272,15 +294,27 @@ class IndividualNetwork:
         print(f"Average Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['adjResi']['total'])}")
         print(f"Average Non-Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['nonAdjResi']['total'])}")
     
-    def findConnections (self, firstResiAltConfAtoms, secondResiAltConfAtoms):
+    def findConnections (self, firstResiAltConfAtoms, secondResiAltConfAtoms, minDist=0, maxDist=4, tooFarDist=25, excludeAtoms=[]):
 
         """
-        """
+        Function that finds distance connections between two residue's alt conf atoms.
 
-        contactCutoffValue = 4 # Distance cutoff value (A)
-        tooFarCutoffValue = 25 # Minimum distance (A) for two atoms and therefore residues to be considered as too far from each other
+        Inputs:
+        - firstResiAltConfAtoms: List of alt conf atoms in first residue
+        - secondResiAltConfAtoms: Same but for second residue
+        - minDist: Minimum distance cutoff value (A)
+        - maxDist: Maximum distance cutoff value (A)
+        - tooFarDist: Minimum distance (A) for two atoms and therefore residues to be considered as too far from each other
+        
+        Outputs:
+        - connections: Count of total number of connections
+        - distancesRecord: List of the distances for each connection
+        """
 
         connections = 0
+
+        # List to keep track of distances
+        distancesRecord = []
 
         for firstAtom in firstResiAltConfAtoms:
             for secondAtom in secondResiAltConfAtoms:
@@ -291,16 +325,21 @@ class IndividualNetwork:
 
                 # Condition that checks if the distance between atoms is greater than the threshold
                 # If it is, then they are considered to be too far to even both checking the rest of the residue
-                if distance > tooFarCutoffValue:
+                if distance > tooFarDist:
                     # print("These residues are too far to warrant a full atom-atom search: ", firstResi, secondResi, "checking next connection")
-                    return 0
+                    return 0, []
                 
                 # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
-                elif distance < contactCutoffValue:
-                    connections += 1
-                    #print("Found distance connection between: ", firstResi, secondResi, firstAtom, secondAtom)
+                elif (distance < maxDist) and (distance > minDist):
+                    if (firstAtom.name not in excludeAtoms) and (secondAtom.name not in excludeAtoms):
+                        
+                        connections += 1
+                        distancesRecord.append(distance)
 
-        return connections
+                    else:
+                        print(firstAtom.name,secondAtom.name)
+        
+        return connections, distancesRecord
 
     def findBackboneConnections (self, firstResiAltConfAtomNames, secondResiAltConfAtomNames, backboneGraph, startingResidue='N_2', count=1):
 
