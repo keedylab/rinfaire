@@ -260,7 +260,7 @@ class MultiNetwork:
                 RecordAllStats[resiType][BBorSCType]['count'] = len(RecordAll[resiType][BBorSCType])
 
                 print(f"""
-{resiType} residue {BBorSCType} distances for all Individual Networks:    
+{resiType} residue {BBorSCType} {axisName} for all Individual Networks:    
     Count: {RecordAllStats[resiType][BBorSCType]['count']}    
     Min: {RecordAllStats[resiType][BBorSCType]['min']}   
     Max: {RecordAllStats[resiType][BBorSCType]['max']}  

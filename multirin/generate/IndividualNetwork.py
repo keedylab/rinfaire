@@ -228,8 +228,8 @@ class IndividualNetwork:
                             # If there are sidechain alt confs present
                             if (len(sidechainAtomsFirstResi) + len(sidechainAtomsSecondResi)) > 0:
                                 SC_SC_Connections, SC_SC_distancesRecord = self.findConnections(sidechainAtomsFirstResi,sidechainAtomsSecondResi)
-                                SC_BB_Connections, SC_BB_distancesRecord = self.findConnections(sidechainAtomsFirstResi,backboneAtomsSecondResi) #excludeAtoms=['CB']
-                                BB_SC_Connections, BB_SC_distancesRecord = self.findConnections(backboneAtomsFirstResi,sidechainAtomsSecondResi) #excludeAtoms=['CB']
+                                SC_BB_Connections, SC_BB_distancesRecord = self.findConnections(sidechainAtomsFirstResi,backboneAtomsSecondResi, excludeAtoms=['CB','HB','HB2','HB3']) #, maxDist=3.0
+                                BB_SC_Connections, BB_SC_distancesRecord = self.findConnections(backboneAtomsFirstResi,sidechainAtomsSecondResi, excludeAtoms=['CB','HB','HB2','HB3']) #, maxDist=3.0
                                 
                                 # Updates distance records
                                 self.distancesRecord['adjResi']['SC_SC'] += SC_SC_distancesRecord
@@ -335,9 +335,6 @@ class IndividualNetwork:
                         
                         connections += 1
                         distancesRecord.append(distance)
-
-                    else:
-                        print(firstAtom.name,secondAtom.name)
         
         return connections, distancesRecord
 
