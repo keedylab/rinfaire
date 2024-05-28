@@ -147,13 +147,46 @@ class MultiNetwork:
     # TODO: Update unit test to make sure this function works
     def normalizeStruct (self):
 
-        # Creates a vector of maximum values across the first and second residue
-        # Essentially a maximum value for each network
-        maxValues = self.array.max(dim=['firstResi','secondResi'])
+        # Sums across both residue axes to get the sum value for each network
+        totalValues = self.array.sum(dim=['firstResi','secondResi'])
 
-        # Then divides each network by the corresponding value in the vector of max values
-        # Scales from 0 - 10
-        self.array = (self.array / maxValues[:]) * 10
+        if self.args.norm_type == 'log':
+
+            # Does log normalization
+            totalValuesLogNorm = np.log(totalValues + 1) * 100
+            self.array = self.array * (totalValuesLogNorm[:] / totalValues[:])
+
+            # Clips edge weights by the xth (default 99th) percentile
+            stackedArray = self.array.stack(allDims=[...])
+            stackedArray = stackedArray.where(stackedArray > 0, drop=True)
+            maxValue = np.percentile(stackedArray, self.args.log_norm_threshold)
+            self.array = self.array.clip(max=maxValue)
+
+        elif self.args.norm_type == 'total':
+
+            self.array = (self.array / totalValues[:]) * 1000
+
+        elif self.args.norm_type == 'clip':
+
+            # Only looks at non-zero values
+            totalValues = totalValues.where(totalValues > 0, drop=True)
+
+            # Gets xth (default 90th) percentile of values and sets that as the clip value
+            maxValue = np.percentile(totalValues, self.args.clip_norm_threshold)
+
+            # Then clips self.array accordingly
+            clipTotalValues = totalValues.clip(max=maxValue)
+            self.array = self.array * (clipTotalValues[:] / totalValues[:])
+
+        elif self.args.norm_type == 'max':
+
+            # Creates a vector of maximum values across the first and second residue
+            # Essentially a maximum value for each network
+            maxValues = self.array.max(dim=['firstResi','secondResi'])
+
+            # Then divides each network by the corresponding value in the vector of max values
+            # Scales from 0 - 10
+            self.array = (self.array / maxValues[:]) * 10
 
     def scaleMultiNet (self):
 
@@ -344,7 +377,7 @@ class MultiNetwork:
         # Plots histogram of network weight distribution
         outputInfoName = f'{self.args.output}MultiNetwork_Info_Structs_Hist'
         plt.figure(figsize=(10,10))
-        xr.plot.hist(summedArray, bins=range(0, int(maxValue) + 10, 10), range=(0, maxValue))
+        xr.plot.hist(summedArray, bins=range(0, int(maxValue) + 100, 100), range=(0, maxValue))
         plt.savefig(outputInfoName + '.png')
         plt.clf()
 

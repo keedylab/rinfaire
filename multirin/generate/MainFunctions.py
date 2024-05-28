@@ -54,6 +54,24 @@ def setupArguments (multiFlag):
         )
 
         parser.add_argument( 
+            '--norm_type', 
+            default='log',
+            help="Can choose the normalization of structures method (either log, total, etc.)"
+        )
+
+        parser.add_argument( 
+            '--log_norm_threshold', 
+            default=99,
+            help="Edge weight clip threshold for log normalization. By default it clips at the 99th percentile."
+        )
+
+        parser.add_argument( 
+            '--clip_norm_threshold', 
+            default=90,
+            help="Total edge weight threshold for clip normalization. By default it clips at the 90th percentile."
+        )
+
+        parser.add_argument( 
             '--scale_multinet', 
             default=False,
             action='store_true', 

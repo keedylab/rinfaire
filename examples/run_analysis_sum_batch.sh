@@ -1,6 +1,6 @@
 
-inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run20/'
-outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run20/SumNetwork_Removed95'
+inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run39/'
+outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run39/SumNetwork_Removed95_Mod7'
 
 pipenv run python ../scripts/analysis_sum.py \
 	${inputdir}MultiNetwork.pkl \
@@ -10,5 +10,5 @@ pipenv run python ../scripts/analysis_sum.py \
 	--remove_subgraphs 5 \
 	--detect_communities \
 	--output_modularity \
-	--n_communities 2 \
-	--output_pickle 
+	--n_communities 7 \
+	# --output_pickle 
