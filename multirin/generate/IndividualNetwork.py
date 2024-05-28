@@ -252,18 +252,11 @@ class IndividualNetwork:
                             # Adds together the backbone and sidechain connections
                             totalConnections = BB_BB_Connections + BB_SC_Connections + SC_BB_Connections + SC_SC_Connections
 
-                            # # Same normalization as above
-                            # if self.args.no_norm_resi == False:
-                            #     totalConnections = totalConnections / normalizationFactor
-
                             # Adds connection in the network between the two residues, with the weight being the total atom-atom connections
                             if totalConnections != 0:
                                 self.network.add_edge(firstResi, secondResi, weight=totalConnections)
 
                                 # Appends these weights to overall list of weights for tracking and subsequent plotting
-                                # self.weightsRecord['adjResi']['BB_BB'].append(BB_BB_Connections)
-                                # self.weightsRecord['adjResi']['SC_BB'].append(SC_BB_Connections + BB_SC_Connections) # Since BB-SC and SC-BB are the same case just swapped in residue order
-                                # self.weightsRecord['adjResi']['SC_SC'].append(SC_SC_Connections)
                                 self.weightsRecord['adjResi']['total'].append(totalConnections)
 
                         # Case when they are not adjacent residues
@@ -284,12 +277,6 @@ class IndividualNetwork:
                             
                                 # Appends this weight to tracking list
                                 self.weightsRecord['nonAdjResi']['total'].append(totalConnections)
-
-        # # Uses list comprehension to remove null values in these tracking/bookkeeping lists
-        # self.adjResiBackboneWeights = [i for i in adjResiBackboneWeights if i != 0]
-        # self.adjResiSidechainWeights = [i for i in adjResiSidechainWeights if i != 0]
-        # self.adjResiTotalWeights = [i for i in adjResiTotalWeights if i != 0]
-        # self.allAtomWeights = [i for i in allAtomWeights if i != 0]
 
         print(f"Average Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['adjResi']['total'])}")
         print(f"Average Non-Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['nonAdjResi']['total'])}")
