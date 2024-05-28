@@ -243,7 +243,7 @@ class SumNetwork:
             for node in nts.get_nodes():
                 nts.get_node(node)['x']=pos[node][0]
                 nts.get_node(node)['y']=-pos[node][1] #the minus is needed here to respect networkx y-axis convention 
-                nts.get_node(node)['physics']=False
+                # nts.get_node(node)['physics']=False
                 nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
     
             # Outputs the network graph
