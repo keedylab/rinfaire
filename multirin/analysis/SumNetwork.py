@@ -90,9 +90,17 @@ class SumNetwork:
             return None
 
         # Scales the sum array to all be values between 0 and 20
-        if self.args.no_scale_sum_network == False:
-            sumArray = self.scaleSumNetwork(sumArray)
+        # if self.args.no_scale_sum_network == False:
+        if self.args.scale_sum_network == 'max':
+            sumArray = self.scaleSumNetworkMax(sumArray)
             logging.info(f'Scaled the Sum Network to values between 0 and 20')
+        elif self.args.scale_sum_network == 'struct':
+            sumArray = self.scaleSumNetworkStruct(sumArray, inputArray)
+            logging.info(f'Scaled the Sum Network by total number of structures')
+        elif self.args.scale_sum_network == 'none':
+            pass
+        else:
+            raise NameError("Scaling type not found")
 
         # Removes weak edges so that the network is easier to visualize
         if self.args.remove_weak_edges != None:
@@ -107,14 +115,32 @@ class SumNetwork:
 
         return sumArray
 
-    def scaleSumNetwork (self, sumArray):
+    def scaleSumNetworkMax (self, sumArray):
+
+        """
+        Scales the Sum Network by the maximum value so max value is the scaling factor
+        """
 
         # Gets maximum value across all dimensions
         maxValue = sumArray.max(dim=['firstResi','secondResi']).item()
 
         # Then divides each network by max value
         # Scales to a set value (default 0 to 20)
-        sumArray = (sumArray / maxValue) * self.args.sum_network_scale
+        sumArray = (sumArray / maxValue) * self.args.sum_network_scaling_factor
+
+        return sumArray
+    
+    def scaleSumNetworkStruct (self, sumArray, originalArray):
+
+        """
+        Scales the Sum Network by the number of total structures that were summed
+        """
+
+        # Gets total number of structures/networks
+        numberOfStructures = originalArray.sizes['network']
+        
+        # Then divides each network by total number of structures, also scales by scaling factor
+        sumArray = (sumArray / numberOfStructures) * self.args.sum_network_scaling_factor
 
         return sumArray
 

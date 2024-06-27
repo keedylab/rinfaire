@@ -42,15 +42,14 @@ def setupArguments ():
     )
 
     parser.add_argument( 
-        '--no_scale_sum_network', 
-        default=False,
-        action='store_true', 
-        help="Turns off the scaling of the Sum Network"
+        '--scale_sum_network', 
+        default='struct',
+        help="Sets the scaling type for the sum network. Can be either struct (default), max, or none"
     )
 
     parser.add_argument( 
-        '--sum_network_scale',
-        default=20,
+        '--sum_network_scaling_factor',
+        default=1,
         type=int,
         help='Maximum edge weight Sum Network should be scaled to'
     )
