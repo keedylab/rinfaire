@@ -9,6 +9,7 @@ import csv
 from multirin.generate.Structure import Structure
 from multirin.generate.IndividualNetwork import IndividualNetwork
 from argparse import Namespace
+import random
 
 class ResiduesOfInterest:
 
@@ -120,23 +121,43 @@ class ResiduesOfInterest:
         ### Then finds the fraction of residues to each input set residue that are close to network residues
         closeInputResiCountList = self.findFractionCloseToNetwork(self.inputSetDict[self.args.col])
 
-        # Finds the set of residues that are not in the input set
-        nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
+        # # Finds the set of residues that are not in the input set
+        # nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
 
-        ### Then finds the fraction of residues to each non input set residue that are close to network residues
-        closeNonInputResiCountList = self.findFractionCloseToNetwork(nonInputResiList)
+        # ### Then finds the fraction of residues to each non input set residue that are close to network residues
+        # closeNonInputResiCountList = self.findFractionCloseToNetwork(nonInputResiList)
 
-        # Finds the statistical significance between all input set vs non input set residues' fraction of residues close to network
-        # Does this by a student's t-test
-        tStat, pValue = scipy.stats.ttest_ind(closeInputResiCountList, closeNonInputResiCountList)
+        sig_test_values = []
 
-        print(f'Input set mean: {statistics.mean(closeInputResiCountList)}')
-        print(f'Non-input set mean: {statistics.mean(closeNonInputResiCountList)}')
-        print(f'The p value is: {pValue}')
+        for i in range(1, int(self.args.n_iter_sig_test)):
+
+            # Finds random sample of residues
+            #print(len(self.inputSetDict[self.args.col]))
+            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col]))
+            #print(randomResiList)
+
+            ### Then finds the fraction of residues to each non input set residue that are close to network residues
+            randomResiCountList = self.findFractionCloseToNetwork(randomResiList)
+
+            # Finds the statistical significance between all input set vs non input set residues' fraction of residues close to network
+            # Does this by a KS test
+            ksStat, pValue = scipy.stats.ks_2samp(closeInputResiCountList, randomResiCountList) #closeNonInputResiCountList
+
+            sig_test_values.append({'input_set_mean': statistics.mean(closeInputResiCountList), 
+                                    'non-input_set_mean': statistics.mean(randomResiCountList), 
+                                    'ks_stat': ksStat,
+                                    'pvalue': pValue})
+
+            # print(f'Input set mean: {statistics.mean(closeInputResiCountList)}')
+            # print(f'Non-input set mean: {statistics.mean(randomResiCountList)}')
+            # print(f'The p value is: {pValue}')
+
+        sig_test_df = pd.DataFrame(sig_test_values)
+        sig_test_df.to_csv(f'{self.args.outputname}_{self.args.col}_sig_test.csv', index=False)
 
         # Plots histograms if either flag is provided
         if (self.args.cumulative_histogram or self.args.histogram) == True:
-            self.plotHistogram(closeInputResiCountList, closeNonInputResiCountList)
+            self.plotHistogram(closeInputResiCountList, randomResiCountList)
     
     def plotHistogram (self, closeInputResiCountList, closeNonInputResiCountList):
 

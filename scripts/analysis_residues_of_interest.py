@@ -47,6 +47,12 @@ def setupArguments ():
     )
 
     parser.add_argument(
+        '--n_iter_sig_test',
+        default=100,
+        help='Number of iterations to perform the significance test' 
+    )
+
+    parser.add_argument(
         '--no_normalize_by_total', 
         default=False,
         action='store_true',
