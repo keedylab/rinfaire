@@ -121,19 +121,19 @@ class ResiduesOfInterest:
         ### Then finds the fraction of residues to each input set residue that are close to network residues
         closeInputResiCountList = self.findFractionCloseToNetwork(self.inputSetDict[self.args.col])
 
-        # # Finds the set of residues that are not in the input set
-        # nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
+        # Finds the set of residues that are not in the input set
+        nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
 
         # ### Then finds the fraction of residues to each non input set residue that are close to network residues
         # closeNonInputResiCountList = self.findFractionCloseToNetwork(nonInputResiList)
 
         sig_test_values = []
 
-        for i in range(1, int(self.args.n_iter_sig_test)):
+        for i in range(0, int(self.args.n_iter_sig_test)):
 
             # Finds random sample of residues
             #print(len(self.inputSetDict[self.args.col]))
-            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col]))
+            randomResiList = random.sample(nonInputResiList, len(self.inputSetDict[self.args.col])) # allNetworkList
             #print(randomResiList)
 
             ### Then finds the fraction of residues to each non input set residue that are close to network residues
@@ -158,6 +158,7 @@ class ResiduesOfInterest:
         # Plots histograms if either flag is provided
         if (self.args.cumulative_histogram or self.args.histogram) == True:
             self.plotHistogram(closeInputResiCountList, randomResiCountList)
+            self.plotBoxPlot(closeInputResiCountList, randomResiCountList)
     
     def plotHistogram (self, closeInputResiCountList, closeNonInputResiCountList):
 
@@ -213,6 +214,33 @@ class ResiduesOfInterest:
         plt.title(self.args.col)
         plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram.png')
 
+    def plotBoxPlot (self, closeInputResiCountList, closeNonInputResiCountList):
+
+        import matplotlib.pyplot as plt
+
+        # Create a figure and axes
+        fig, ax = plt.subplots()
+
+        # Create the boxplots
+        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col} Residues', f'Non {self.args.col} Residues'])
+
+        # Add title and labels
+        plt.xlabel('Dataset')
+        plt.ylabel('Network Residues within 4Å')
+
+        combinedLists = [closeInputResiCountList, closeNonInputResiCountList]
+
+        print(closeInputResiCountList)
+        print(closeNonInputResiCountList)
+
+        for i in range(len(combinedLists)):
+            y = combinedLists[i]
+            x = np.random.normal(1+i, 0.04, size=len(y))
+            plt.plot(x, y, 'r.', alpha=0.2)
+
+        # Show the plot
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_BoxPlot.png')
+
     def findFractionCloseToNetwork (self, resiList):
         
         closeResiCountList = []
@@ -244,6 +272,8 @@ class ResiduesOfInterest:
                 # Otherwise just add in the number of adjacent network residues
                 else:
                     closeResiCountList.append(closeNetworkResiCount)
+
+                print(resi, closeNetworkResiCount)
 
         return(closeResiCountList)
     
