@@ -1,6 +1,4 @@
-
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run40_shivani_samples/'
-
 outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run40_shivani_samples/SumNetwork_Removed95_CommunitiesAll/'
 outputfilename=${outputdir}'/SumNetwork'
 

@@ -7,4 +7,6 @@ pipenv run python ../scripts/generate_multi.py \
 	${inputdir}PROMALS3D_PTPsAlignment_withoutArchael.fa \
 	${outputdir} \
 	--metadata /data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/PTPs_Metadata.csv \
-	--output_info
+	--output_info \
+	--norm_type log
+	# --no_norm_struct

@@ -90,9 +90,17 @@ class SumNetwork:
             return None
 
         # Scales the sum array to all be values between 0 and 20
-        if self.args.no_scale_sum_network == False:
-            sumArray = self.scaleSumNetwork(sumArray)
+        # if self.args.no_scale_sum_network == False:
+        if self.args.scale_sum_network == 'max':
+            sumArray = self.scaleSumNetworkMax(sumArray)
             logging.info(f'Scaled the Sum Network to values between 0 and 20')
+        elif self.args.scale_sum_network == 'struct':
+            sumArray = self.scaleSumNetworkStruct(sumArray, inputArray)
+            logging.info(f'Scaled the Sum Network by total number of structures')
+        elif self.args.scale_sum_network == 'none':
+            pass
+        else:
+            raise NameError("Scaling type not found")
 
         # Removes weak edges so that the network is easier to visualize
         if self.args.remove_weak_edges != None:
@@ -107,14 +115,32 @@ class SumNetwork:
 
         return sumArray
 
-    def scaleSumNetwork (self, sumArray):
+    def scaleSumNetworkMax (self, sumArray):
+
+        """
+        Scales the Sum Network by the maximum value so max value is the scaling factor
+        """
 
         # Gets maximum value across all dimensions
         maxValue = sumArray.max(dim=['firstResi','secondResi']).item()
 
         # Then divides each network by max value
         # Scales to a set value (default 0 to 20)
-        sumArray = (sumArray / maxValue) * self.args.sum_network_scale
+        sumArray = (sumArray / maxValue) * self.args.sum_network_scaling_factor
+
+        return sumArray
+    
+    def scaleSumNetworkStruct (self, sumArray, originalArray):
+
+        """
+        Scales the Sum Network by the number of total structures that were summed
+        """
+
+        # Gets total number of structures/networks
+        numberOfStructures = originalArray.sizes['network']
+        
+        # Then divides each network by total number of structures, also scales by scaling factor
+        sumArray = (sumArray / numberOfStructures) * self.args.sum_network_scaling_factor
 
         return sumArray
 
@@ -133,6 +159,49 @@ class SumNetwork:
         sumArray = xr.where(sumArray < cutoffValue, 0.0, sumArray)
 
         return sumArray
+    
+    def constructMaxSpanningTrees (self):
+
+        """
+        Function that creates the maximum spanning tree as a way to visualize the sum network. Done instead of the traditional method of visualizing the sum network that shows all edges.
+
+        Inputs:
+        - self.sumArrays: Dictionary of sum arrays for each subset
+
+        Outputs:
+        - self.graphs: Dictionary with entries being the graphs for each subset
+        """
+
+        # Loops through each sum array across all subsets (if no subsets it just iterates once on the full sum array)
+        for sumArray in self.sumArrays:
+
+            # Converts XArray into Numpy array
+            nparray = self.sumArrays[sumArray].to_numpy()
+
+            # Creates graph from Numpy array
+            newGraph = nx.from_numpy_array(nparray)
+            newGraph.remove_nodes_from(list(nx.isolates(newGraph)))
+
+            for i in newGraph.nodes():
+                newGraph.nodes[i]['label'] = str(i)
+
+            # Finds maximum spanning tree
+            MSTGraph = nx.maximum_spanning_tree(newGraph)
+
+            # Resizing nodes by the degree of the node
+            if self.args.no_resize_by_degree == False:
+                MSTGraph = self.resizeByDegree(MSTGraph)
+
+            # Shifts sequence to reference sequence
+            if self.args.seq_to_ref != None:
+                MSTGraph = self.seqToRef(MSTGraph)
+
+            # Detects communities within sum graph
+            if self.args.detect_communities == True:
+                MSTGraph = self.detectCommunities(MSTGraph) 
+
+            # Appends this new graph to the dictionary of graphs for each sum array, with the key being the original name in the sumArrays dictionary
+            self.graphs[sumArray] = MSTGraph
 
     def constructGraphs (self):
 
@@ -205,7 +274,7 @@ class SumNetwork:
             for node in nts.get_nodes():
                 nts.get_node(node)['x']=pos[node][0]
                 nts.get_node(node)['y']=-pos[node][1] #the minus is needed here to respect networkx y-axis convention 
-                nts.get_node(node)['physics']=False
+                # nts.get_node(node)['physics']=False
                 nts.get_node(node)['label']=str(node) #set the node label as a string so that it can be displayed
     
             # Outputs the network graph
@@ -256,6 +325,12 @@ class SumNetwork:
 
         # Uses networkX relabel function to relabel nodes using this mapping dictionary
         G = nx.relabel_nodes(G, mappingDict, copy=True)
+
+        # Removes nodes that didn't map to residue in structure
+        if self.args.keep_nan == False:
+            remove = [node for node in G.nodes if str(node)[0:3] == 'NaN']
+            G.remove_nodes_from(remove)
+
         return G
 
     def allToOne (self, seqaln, seqID, sequenceList, mainResidue):
@@ -280,7 +355,7 @@ class SumNetwork:
             if mainCount == mainResidue:
 
                 if i == '-':
-                    return('NaN_' + str(sequenceList[seqIndex]))
+                    return(f'NaN_{str(sequenceList[seqIndex])}_{str(mainCount)}')
 
                 else:
                     # Returns the main count which is the position on the full alignment
@@ -318,19 +393,35 @@ class SumNetwork:
         # Then labels each node in each community with an associated group
         # Pyvis then colors these groups separately during visualization
         communityCounter = 0
+        communityList = []
+        nodeList = []
 
+        # Iterates over each community
         for community in selectedCommunities:
 
-            nodeList = []
+            # Iterates over each residue in community
+            communityNodeList = []
             for node in community:
+
+                # Sets the nodes' group attribute to the be the community number
                 G.nodes[node]['group'] = communityCounter
-                nodeList.append(int(G.nodes[node]['label']))
 
-            print(f'Community {communityCounter + 1}: {nodeList}')
+                # Adds to lists to output
+                communityNodeList.append(int(G.nodes[node]['label']))
+                nodeList.append(node)
+                communityList.append(communityCounter + 1)
 
+            # Prints community with list of residues in it plus adds it to dictionary
+            print(f'Community {communityCounter + 1}: {communityNodeList}')
+
+            # updates community number
             communityCounter += 1
 
         print(f"Modularity of the communities: {modularityMax}")
+
+        # Output communities as csv file
+        communityDF = pd.DataFrame.from_dict({'Residue': nodeList, 'Community':communityList}).set_index('Residue')
+        communityDF.to_csv(f'{self.args.outputname}Communities.csv')
         
         return G
 

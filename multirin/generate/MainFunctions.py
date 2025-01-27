@@ -25,6 +25,14 @@ def setupArguments (multiFlag):
             help='Sequence alignment file in fasta (.fa) format'
         )
 
+        parser.add_argument( 
+            '-s',
+            '--only_sidechain', 
+            default=False,
+            action='store_true', 
+            help="Only looks at sidechain alt confs"
+        )
+
         parser.add_argument(
             '-m', 
             '--metadata',
@@ -43,6 +51,24 @@ def setupArguments (multiFlag):
             default=False,
             action='store_true', 
             help="Turns off the normalization of each structure's network in relation to the others"
+        )
+
+        parser.add_argument( 
+            '--norm_type', 
+            default='log',
+            help="Can choose the normalization of structures method (either log, total, etc.)"
+        )
+
+        parser.add_argument( 
+            '--log_norm_threshold', 
+            default=99,
+            help="Edge weight clip threshold for log normalization. By default it clips at the 99th percentile."
+        )
+
+        parser.add_argument( 
+            '--clip_norm_threshold', 
+            default=90,
+            help="Total edge weight threshold for clip normalization. By default it clips at the 90th percentile."
         )
 
         parser.add_argument( 
@@ -198,15 +224,6 @@ def generateMultiNetwork (networkList, args):
 
     # Exports MultiNetwork object as a pickle file for further analysis
     multi.exportPickle()
-
-    # Gets info about edges in MultiNetwork
-    if args.output_info == True:
-        multi.getInfo()
-
-    # # Calculates the sum matrix of all the structures in the object
-    # # Does this across each residue pairing
-    # sumMatrix = multi.sum()
-    # multi.visualize(sumMatrix, 'sumNetwork')
 
     return multi
     
