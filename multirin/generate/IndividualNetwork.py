@@ -350,21 +350,21 @@ class IndividualNetwork:
 
         return count
 
-		def addAdjacentResidues (self):
+    def addAdjacentResidues (self):
 
-				# Creates dictionary of lists of atoms for network residues as well as all residues in structure
-				netResisDict = self.createNetworkResidueDict(self.struct)
-				allResisDict = self.createAllResidueDict(self.struct)
+        # Creates dictionary of lists of atoms for network residues as well as all residues in structure
+        netResisDict = self.createNetworkResidueDict(self.struct)
+        allResisDict = self.createAllResidueDict(self.struct)
 
-				# Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
-				for key in netResisDict:
-						del allResisDict[key]
+        # Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
+        for key in netResisDict:
+                del allResisDict[key]
 
-				# Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
-				# Goal is to find adjacent residues to the network
-				print(self.network)
-				self.findContacts(netResisDict, allResisDict, [], edgeClass='adjacent')
-				print(self.network)
+        # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
+        # Goal is to find adjacent residues to the network
+        print(self.network)
+        self.findContacts(netResisDict, allResisDict, [], edgeClass='adjacent')
+        print(self.network)
 
     def addAllResidues (self):
 
@@ -380,35 +380,35 @@ class IndividualNetwork:
         self.findContacts(allResisDict, allResisDict, [], edgeClass='all')
         print(self.network)
 				
-		def createNetworkResidueDict (self, inputStruct):
+    def createNetworkResidueDict (self, inputStruct):
 
-				# Gets list of graph nodes
-				networkList = list(self.network.nodes)    
+        # Gets list of graph nodes
+        networkList = list(self.network.nodes)    
 
-				# Iterates over this list of nodes
-				netResisDict = {}
-				for netResi in networkList:
+        # Iterates over this list of nodes
+        netResisDict = {}
+        for netResi in networkList:
 
-						# Gets associated residue in structure
-						res = inputStruct.model[0][0][f'{netResi}'][0]
+                # Gets associated residue in structure
+                res = inputStruct.model[0][0][f'{netResi}'][0]
 
-						# Ensures residue is not a HETATM
-						if res.het_flag == 'A':
+                # Ensures residue is not a HETATM
+                if res.het_flag == 'A':
 
-								# Iterates over all atoms in the residue
-								for n_atom, atom in enumerate(res):
+                        # Iterates over all atoms in the residue
+                        for n_atom, atom in enumerate(res):
 
-										# Appends them to dictionary of lists of atoms
-										if res.seqid.num in netResisDict.keys():
-												# print('Resi present: ', res)
-												netResisDict[res.seqid.num].append(atom)
+                                # Appends them to dictionary of lists of atoms
+                                if res.seqid.num in netResisDict.keys():
+                                        # print('Resi present: ', res)
+                                        netResisDict[res.seqid.num].append(atom)
 
-										else:
-												# print('New resi: ', res)
-												netResisDict[res.seqid.num] = []
-												netResisDict[res.seqid.num].append(atom)
+                                else:
+                                        # print('New resi: ', res)
+                                        netResisDict[res.seqid.num] = []
+                                        netResisDict[res.seqid.num].append(atom)
 
-				return(netResisDict)
+        return(netResisDict)
 
     def createAllResidueDict (self, inputStruct):
     
@@ -462,42 +462,3 @@ class IndividualNetwork:
 
     def convertToAdjacency (self):
         return nx.to_dict_of_dicts(self.network)
-
-
-# print("Total number of atom-atom connections is: ", counterAtomAtom)
-# print("Total number of residue-residue connections is: ", counterResiResi)
-# print(G.edges)
-# print(G.edges.data('weight'))
-
-# # Defining a separate function that looks for and labels residues that are adjacent to ligands
-
-# # Creates empty dictionary of ligand atoms
-# ligandAtomsDict = {}
-
-# # Iterates over all chains, residues, and atoms to only add ligand atoms
-# for n_ch, chain in enumerate(st[0]):
-    
-#     for n_res, res in enumerate(chain):
-        
-#         # Asserts that the atom is a HETATM (H) and that it is not a water -- should give us all ligand atoms
-#         if res.het_flag == 'H' and (res.is_water() == False):
-#             print("Ligand: ", res.name,res,chain)
-            
-#             # Iterates over each atom in the residue
-#             for n_atom, atom in enumerate(res):
-
-#                 #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
-#                 if res.seqid.num in atomsWithAltConfsDict.keys():
-#                     print('Ligand present: ', res)
-#                     atomsWithAltConfsDict[res.seqid.num].append(atom)
-                    
-#                 else:
-#                     print('New ligand: ', res)
-#                     atomsWithAltConfsDict[res.seqid.num] = []
-#                     atomsWithAltConfsDict[res.seqid.num].append(atom)
-
-#                     # Checks if the atom has an altloc label
-#                     # if atom.has_altloc():
-
-
-
