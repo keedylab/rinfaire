@@ -379,9 +379,8 @@ class IndividualNetwork:
     def convertToAdjacency (self):
         return nx.to_dict_of_dicts(self.network)
 
-
-###
-
+### Functions used by Resi of Interest calculation only
+### Not used by default Individual Network calculation for creating MultiNetworks
 
     def addAdjacentResidues (self):
 
@@ -391,12 +390,11 @@ class IndividualNetwork:
 
         # Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
         for key in netResisDict:
-                del allResisDict[key]
+            del allResisDict[key]
 
         # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
         # Goal is to find adjacent residues to the network
-        print(self.network)
-        self.findContacts(netResisDict, allResisDict, [], edgeClass='adjacent')
+        self.findContactsROI(netResisDict, allResisDict)
         print(self.network)
 
     def addAllResidues (self):
@@ -410,9 +408,9 @@ class IndividualNetwork:
         allResisDict = self.createAllResidueDict(self.struct)
 
         # Then finds all contacts between residues in this dict
-        self.findContacts(allResisDict, allResisDict, [], edgeClass='all')
+        self.findContactsROI(allResisDict, allResisDict)
         print(self.network)
-				
+
     def createNetworkResidueDict (self, inputStruct):
 
         # Gets list of graph nodes
@@ -422,27 +420,27 @@ class IndividualNetwork:
         netResisDict = {}
         for netResi in networkList:
 
-                # Gets associated residue in structure
-                res = inputStruct.model[0][0][f'{netResi}'][0]
+            # Gets associated residue in structure
+            res = inputStruct.model[0][0][f'{netResi}'][0]
 
-                # Ensures residue is not a HETATM
-                if res.het_flag == 'A':
+            # Ensures residue is not a HETATM
+            if res.het_flag == 'A':
 
-                        # Iterates over all atoms in the residue
-                        for n_atom, atom in enumerate(res):
-
-                                # Appends them to dictionary of lists of atoms
-                                if res.seqid.num in netResisDict.keys():
-                                        # print('Resi present: ', res)
-                                        netResisDict[res.seqid.num].append(atom)
-
-                                else:
-                                        # print('New resi: ', res)
-                                        netResisDict[res.seqid.num] = []
-                                        netResisDict[res.seqid.num].append(atom)
+                # Iterates over all atoms in the residue
+                for n_atom, atom in enumerate(res):
+                    
+                    # Appends them to dictionary of lists of atoms
+                    if res.seqid.num in netResisDict.keys():
+                        # print('Resi present: ', res)
+                        netResisDict[res.seqid.num].append(atom)
+                        
+                    else:
+                        # print('New resi: ', res)
+                        netResisDict[res.seqid.num] = []
+                        netResisDict[res.seqid.num].append(atom)
 
         return(netResisDict)
-
+    
     def createAllResidueDict (self, inputStruct):
     
         # Iterates over all the residues in the model
@@ -466,3 +464,42 @@ class IndividualNetwork:
                         allResisDict[res.seqid.num].append(atom)
 
         return(allResisDict)
+
+    def findContactsROI (self, firstResiDict, secondResiDict, contactCutoffValue = 4, tooFarCutoffValue = 25):
+
+        """
+        Only used in Residue of Interest calculation to find adjacent / all network residues
+        """
+
+        for firstResi in firstResiDict:
+            for secondResi in secondResiDict:
+
+                # Condition that satisfies both the fact that the first and second residues cannot be equal to each other
+                # And that we can prune duplicate connections by only looking at connection i,j and not j,i
+                if firstResi < secondResi:
+
+                    tooFarFlag = False
+                    
+                    for firstAtom in firstResiDict[firstResi]:
+                        for secondAtom in secondResiDict[secondResi]:
+
+                            # Calculates distance between the two atoms using Gemmi dist() function
+                            distance = firstAtom.pos.dist(secondAtom.pos)  
+
+                            # Condition that checks if the distance between atoms is greater than the threshold
+                            # If it is, then they are considered to be too far to even both checking the rest of the residue
+                            if distance > tooFarCutoffValue:
+                                tooFarFlag = True
+                                break
+                            
+                            # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
+                            elif distance < contactCutoffValue:
+
+                                # Ensures that edge is not already present
+                                if (firstResi,secondResi) not in self.network.edges:
+                                    self.network.add_edge(firstResi, secondResi)
+            
+                        # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
+                        # ...between this pair and move on to the next pair of residues
+                        if tooFarFlag == True:
+                            break
