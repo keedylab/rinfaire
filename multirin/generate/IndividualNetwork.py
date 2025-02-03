@@ -349,6 +349,39 @@ class IndividualNetwork:
                 count = self.findBackboneConnections(firstResiAltConfAtomNames, secondResiAltConfAtomNames, backboneGraph, startingResidue=successor, count=newCount)
 
         return count
+    
+    def visualize (self):
+
+        # Creates a deep copy of self.network
+        # So any operations performed here do not affect the class object
+        visNetwork = copy.deepcopy(self.network)
+
+        # From VisArray function in postCONTACT script
+        visNetwork.remove_nodes_from(list(nx.isolates(visNetwork)))
+        # nx.convert_node_labels_to_integers(visNetwork)
+
+        #Converts node labels into strings
+        for i in visNetwork.nodes():
+            visNetwork.nodes[i]['label'] = str(i)
+
+        # Gets weights of network
+        #widths = nx.get_edge_attributes(self.network, 'weight')
+
+        # Creates network object
+        # Notebook = true is for Jupyter Notebook (might need to remove later)
+        nts = Network(notebook=True)
+
+        # populates the nodes and edges data structures
+        nts.from_nx(visNetwork)
+        outputpath = f'{self.args.output}{self.struct.name}.html'
+        nts.show(outputpath)
+
+    def convertToAdjacency (self):
+        return nx.to_dict_of_dicts(self.network)
+
+
+###
+
 
     def addAdjacentResidues (self):
 
@@ -433,32 +466,3 @@ class IndividualNetwork:
                         allResisDict[res.seqid.num].append(atom)
 
         return(allResisDict)
-        
-    def visualize (self):
-
-        # Creates a deep copy of self.network
-        # So any operations performed here do not affect the class object
-        visNetwork = copy.deepcopy(self.network)
-
-        # From VisArray function in postCONTACT script
-        visNetwork.remove_nodes_from(list(nx.isolates(visNetwork)))
-        # nx.convert_node_labels_to_integers(visNetwork)
-
-        #Converts node labels into strings
-        for i in visNetwork.nodes():
-            visNetwork.nodes[i]['label'] = str(i)
-
-        # Gets weights of network
-        #widths = nx.get_edge_attributes(self.network, 'weight')
-
-        # Creates network object
-        # Notebook = true is for Jupyter Notebook (might need to remove later)
-        nts = Network(notebook=True)
-
-        # populates the nodes and edges data structures
-        nts.from_nx(visNetwork)
-        outputpath = f'{self.args.output}{self.struct.name}.html'
-        nts.show(outputpath)
-
-    def convertToAdjacency (self):
-        return nx.to_dict_of_dicts(self.network)
