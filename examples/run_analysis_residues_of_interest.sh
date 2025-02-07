@@ -1,7 +1,7 @@
 
-inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run40_shivani_samples/SumNetwork_Removed95_CommunitiesAll/'
-outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run40_shivani_samples/SumNetwork_Removed95_CommunitiesAll/FoxComparison_SectorB_V2'
-inputsetpath='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/FoxSectors.csv'
+inputdir='/Volumes/Akshay/ptpsinpdb/MultiRIN_Outputs/batchruns/run39/SumNetwork_Removed95_CommunitiesAll/'
+outputfilename='/Volumes/Akshay/ptpsinpdb/MultiRIN_Outputs/batchruns/run39/SumNetwork_Removed95_CommunitiesAll/FoxComparison_SectorB_V2'
+inputsetpath='/Volumes/Akshay/ARaju_Projects/PTPs_Paper/Data/FoxPaper/FoxSectors.csv'
 
 # outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run12/FoxClinMuts_Removed95_withNorm_CumHist'
 # inputsetpath='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/FoxClinMuts.csv'
@@ -9,12 +9,12 @@ inputsetpath='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/FoxSectors.csv'
 # outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run12/FoxExperimentalMuts_Removed95'
 # inputsetpath='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/FoxExperimentalMuts.csv'
 
-pipenv run python ../scripts/analysis_residues_of_interest.py \
+pipenv run python ../analysis_residues_of_interest.py \
 	${inputdir}SumNetwork_All.pkl \
 	${outputfilename} \
 	--input_set ${inputsetpath} \
 	--col Sector_B \
-	--find_significance /data/araju/ptpsinpdb/FinalProcessing/Final/1SUG_qFit_chainA.pdb \
+	--find_significance /Volumes/Akshay/ptpsinpdb/FinalProcessing/Final/1SUG_qFit_chainA.pdb \
 	--n_iter_sig_test 1 \
 	--cumulative_histogram \
 	# --no_normalize_by_total \

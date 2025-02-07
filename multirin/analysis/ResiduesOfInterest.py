@@ -250,14 +250,14 @@ class ResiduesOfInterest:
             
             # Checks if the graph has the node or not
             # If the node is not present then it is not close to any of the network residues
-            if self.adjResisNetwork.network.has_node(resi) == False:
+            if self.allResisNetwork.network.has_node(resi) == False:
                 closeResiCountList.append(0)
 
             # Otherwise, it has at least one connection, and the number of connections is the degree
             else:
 
                 # Finds the degree of the adjacent residue network (to find number of network adjacent connections)
-                closeNetworkResiCount = self.conditionalDegree(self.adjResisNetwork.network, resi, 'edgeClass', None)
+                closeNetworkResiCount = self.conditionalDegree(resi)
                 
                 # By default, this is true, telling the program to normalize the count of adjacent network residues by the total number of residues
                 if self.args.no_normalize_by_total == False:
@@ -277,7 +277,7 @@ class ResiduesOfInterest:
 
         return(closeResiCountList)
     
-    def conditionalDegree (self, G, inputNode, condition, conditionValue):
+    def conditionalDegree (self, inputNode):
 
         """
         Function that gets the degree of a node where its edges must pass a certain condtion
@@ -287,10 +287,14 @@ class ResiduesOfInterest:
         """
 
         degree = 0
-        for u,v,d in G.edges(inputNode, data=True):
-            if d[condition] == conditionValue:
+        for u,v,d in self.allResisNetwork.network.edges(inputNode, data=True):
+
+            if ((u == inputNode) & (v in self.sumNetwork.nodes)):
+
+                print(u,v)
                 degree += 1
-                
+
+        print(degree)                
         return degree
 
     def labelGraphOverlap (self):

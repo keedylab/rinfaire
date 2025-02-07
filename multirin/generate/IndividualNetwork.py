@@ -475,8 +475,7 @@ class IndividualNetwork:
             for secondResi in secondResiDict:
 
                 # Condition that satisfies both the fact that the first and second residues cannot be equal to each other
-                # And that we can prune duplicate connections by only looking at connection i,j and not j,i
-                if firstResi < secondResi:
+                if firstResi != secondResi:
 
                     tooFarFlag = False
                     
