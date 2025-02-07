@@ -104,8 +104,6 @@ def main ():
 
     resiObject.labelGraphOverlap()
     resiObject.visualize(resiObject.overlapGraph, "overlapGraph")
-    resiObject.visualize(resiObject.adjResisNetwork.network, "adjacentResiNetwork")
-
 
     # # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # # If not then it gets visualized through PyVis which creates a .html output

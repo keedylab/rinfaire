@@ -382,21 +382,6 @@ class IndividualNetwork:
 ### Functions used by Resi of Interest calculation only
 ### Not used by default Individual Network calculation for creating MultiNetworks
 
-    def addAdjacentResidues (self):
-
-        # Creates dictionary of lists of atoms for network residues as well as all residues in structure
-        netResisDict = self.createNetworkResidueDict(self.struct)
-        allResisDict = self.createAllResidueDict(self.struct)
-
-        # Then subtracts allResisDict from netResisDict to get dictionary of all non-network residues
-        for key in netResisDict:
-            del allResisDict[key]
-
-        # Then creates an IndividualNetwork object and runs the findsContact algorithm between the network residues and all other residues
-        # Goal is to find adjacent residues to the network
-        self.findContactsROI(netResisDict, allResisDict)
-        print(self.network)
-
     def addAllResidues (self):
 
         """
@@ -411,36 +396,6 @@ class IndividualNetwork:
         self.findContactsROI(allResisDict, allResisDict)
         print(self.network)
 
-    def createNetworkResidueDict (self, inputStruct):
-
-        # Gets list of graph nodes
-        networkList = list(self.network.nodes)    
-
-        # Iterates over this list of nodes
-        netResisDict = {}
-        for netResi in networkList:
-
-            # Gets associated residue in structure
-            res = inputStruct.model[0][0][f'{netResi}'][0]
-
-            # Ensures residue is not a HETATM
-            if res.het_flag == 'A':
-
-                # Iterates over all atoms in the residue
-                for n_atom, atom in enumerate(res):
-                    
-                    # Appends them to dictionary of lists of atoms
-                    if res.seqid.num in netResisDict.keys():
-                        # print('Resi present: ', res)
-                        netResisDict[res.seqid.num].append(atom)
-                        
-                    else:
-                        # print('New resi: ', res)
-                        netResisDict[res.seqid.num] = []
-                        netResisDict[res.seqid.num].append(atom)
-
-        return(netResisDict)
-    
     def createAllResidueDict (self, inputStruct):
     
         # Iterates over all the residues in the model

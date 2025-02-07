@@ -15,9 +15,9 @@ pipenv run python ../analysis_residues_of_interest.py \
 	--input_set ${inputsetpath} \
 	--col Sector_B \
 	--find_significance /Volumes/Akshay/ptpsinpdb/FinalProcessing/Final/1SUG_qFit_chainA.pdb \
-	--n_iter_sig_test 1 \
+	--n_iter_sig_test 5 \
 	--cumulative_histogram \
-	# --no_normalize_by_total \
+	--no_normalize_by_total \
 	# --include_adjacent_residues /data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb \
 	# --col All_Activity_Mutants
 	# --col Clin_Muts

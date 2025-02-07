@@ -44,22 +44,7 @@ class ResiduesOfInterest:
         # Creates a dictionary to store intersecting residues
         self.overlapDict = {}
 
-        # Condition if to include adjacent residues to the network or not
-        if self.args.include_adjacent_residues != None:
-
-            # Sets input structure file as Structure object
-            inputStruct = Structure(self.args.include_adjacent_residues, None)
-
-            # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
-            # Then uses the addAdjacentResidues() method to find adjacent residues to the sumNetwork
-            args = Namespace(no_norm_resi=False)
-            self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork)
-            self.adjResisNetwork.addAdjacentResidues()
-
-            networkList = list(self.adjResisNetwork.network.nodes)
-
-        else:
-            networkList = list(self.sumNetwork.nodes)
+        networkList = list(self.sumNetwork.nodes)
 
         # Iterates over each sector of residues in the input set dictionary
         for col in self.inputSetDict:
@@ -111,12 +96,6 @@ class ResiduesOfInterest:
         self.allResisNetwork.addAllResidues()
 
         allNetworkList = list(self.allResisNetwork.network.nodes)
-
-        ### Then finds adjacent network
-        # Creates IndividualNetwork object using the sumNetwork as an input network and inputStruct from user as reference structure
-        # Then uses the addAdjacentResidues() method to find adjacent residues to the sumNetwork
-        self.adjResisNetwork = IndividualNetwork(inputStruct, args, network=self.sumNetwork)
-        self.adjResisNetwork.addAdjacentResidues()
 
         ### Then finds the fraction of residues to each input set residue that are close to network residues
         closeInputResiCountList = self.findFractionCloseToNetwork(self.inputSetDict[self.args.col])
@@ -222,16 +201,13 @@ class ResiduesOfInterest:
         fig, ax = plt.subplots()
 
         # Create the boxplots
-        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col} Residues', f'Non {self.args.col} Residues'])
+        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col} Residues', f'Random Set Of Residues'])
 
         # Add title and labels
         plt.xlabel('Dataset')
         plt.ylabel('Network Residues within 4Å')
 
         combinedLists = [closeInputResiCountList, closeNonInputResiCountList]
-
-        print(closeInputResiCountList)
-        print(closeNonInputResiCountList)
 
         for i in range(len(combinedLists)):
             y = combinedLists[i]
@@ -273,7 +249,7 @@ class ResiduesOfInterest:
                 else:
                     closeResiCountList.append(closeNetworkResiCount)
 
-                print(resi, closeNetworkResiCount)
+                # print(resi, closeNetworkResiCount)
 
         return(closeResiCountList)
     
@@ -290,11 +266,8 @@ class ResiduesOfInterest:
         for u,v,d in self.allResisNetwork.network.edges(inputNode, data=True):
 
             if ((u == inputNode) & (v in self.sumNetwork.nodes)):
-
-                print(u,v)
                 degree += 1
-
-        print(degree)                
+              
         return degree
 
     def labelGraphOverlap (self):
