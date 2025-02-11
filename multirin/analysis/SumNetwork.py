@@ -222,9 +222,14 @@ class SumNetwork:
             newGraph = nx.from_numpy_array(nparray)
             newGraph.remove_nodes_from(list(nx.isolates(newGraph)))
             
+            # Relabels nodes as strings
             for i in newGraph.nodes():
                 newGraph.nodes[i]['label'] = str(i)
 
+            # Setting edgeClass for all edges to be None
+            for i,j in newGraph.edges():
+                newGraph.edges[i,j]['edgeClass'] = None
+            
             # Resizing nodes by the degree of the node
             if self.args.no_resize_by_degree == False:
                 newGraph = self.resizeByDegree(newGraph)
@@ -477,6 +482,9 @@ class SumNetwork:
 
     def exportPickle (self):
 
-        # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
-        with open(f'{self.args.outputname}.pkl', 'wb') as pickleFile:
-            pickle.dump(self, pickleFile)
+        # Loops over all graphs
+        for graph in self.graphs:
+
+            # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
+            with open(f'{self.args.outputname}_{str(graph)}.pkl', 'wb') as pickleFile:
+                pickle.dump(self.graphs[graph], pickleFile)

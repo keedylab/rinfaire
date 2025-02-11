@@ -6,13 +6,19 @@ import networkx as nx
 from pyvis.network import Network
 import copy
 import logging
+from multirin.generate.Structure import Structure
 import numpy as np
 
 class IndividualNetwork:
-    def __init__ (self, Structure, args):
+    def __init__ (self, Structure, args, network=None):
         
         self.struct = Structure
-        self.network = nx.Graph() # Creates networkX graph object
+
+        if network != None:
+            self.network = network
+        else:
+            self.network = nx.Graph() # Creates networkX graph object
+
         self.args = args
     
     def findAltConfAtoms (self):
@@ -69,7 +75,7 @@ class IndividualNetwork:
                 #print("Adding to amide Hydrogen only list: ", altResi, " because it only has amide hydrogen alt-confs: ", listAtoms)
 
         return amideHOnlyList
-    
+
     def populateNetwork (self):
         atomsWithAltConfsDict, resToSeqPositionMap = self.findAltConfAtoms()
         amideHOnlyList = self.flagAmideHydrogenOnlyResidues(atomsWithAltConfsDict)
@@ -343,7 +349,6 @@ class IndividualNetwork:
                 count = self.findBackboneConnections(firstResiAltConfAtomNames, secondResiAltConfAtomNames, backboneGraph, startingResidue=successor, count=newCount)
 
         return count
-        
     
     def visualize (self):
 
@@ -374,41 +379,81 @@ class IndividualNetwork:
     def convertToAdjacency (self):
         return nx.to_dict_of_dicts(self.network)
 
+### Functions used by Resi of Interest calculation only
+### Not used by default Individual Network calculation for creating MultiNetworks
 
-# print("Total number of atom-atom connections is: ", counterAtomAtom)
-# print("Total number of residue-residue connections is: ", counterResiResi)
-# print(G.edges)
-# print(G.edges.data('weight'))
+    def addAllResidues (self):
 
-# # Defining a separate function that looks for and labels residues that are adjacent to ligands
+        """
+        This is a function that's used to find the contacts between all pairs of residues in the structure, not just those with alt-confs.
+        Used to create a traditional contact mapping of the protein structure.
+        """
 
-# # Creates empty dictionary of ligand atoms
-# ligandAtomsDict = {}
+        # Creates dictionary of all residues in structure
+        allResisDict = self.createAllResidueDict(self.struct)
 
-# # Iterates over all chains, residues, and atoms to only add ligand atoms
-# for n_ch, chain in enumerate(st[0]):
+        # Then finds all contacts between residues in this dict
+        self.findContactsROI(allResisDict, allResisDict)
+        print(self.network)
+
+    def createAllResidueDict (self, inputStruct):
     
-#     for n_res, res in enumerate(chain):
-        
-#         # Asserts that the atom is a HETATM (H) and that it is not a water -- should give us all ligand atoms
-#         if res.het_flag == 'H' and (res.is_water() == False):
-#             print("Ligand: ", res.name,res,chain)
+        # Iterates over all the residues in the model
+        allResisDict = {}
+        for n_res,res in enumerate(inputStruct.model[0][0]):
             
-#             # Iterates over each atom in the residue
-#             for n_atom, atom in enumerate(res):
-
-#                 #If it does then append a tuple of (atom,residue) to the list of atoms with alt confs
-#                 if res.seqid.num in atomsWithAltConfsDict.keys():
-#                     print('Ligand present: ', res)
-#                     atomsWithAltConfsDict[res.seqid.num].append(atom)
+            # Ensures residue is not a HETATM
+            if res.het_flag == 'A':
+            
+                # Iterates over all atoms in the residue
+                for n_atom, atom in enumerate(res):
                     
-#                 else:
-#                     print('New ligand: ', res)
-#                     atomsWithAltConfsDict[res.seqid.num] = []
-#                     atomsWithAltConfsDict[res.seqid.num].append(atom)
+                    # Appends them to dictionary of lists of atoms
+                    if res.seqid.num in allResisDict.keys():
+                        # print('Resi present: ', res)
+                        allResisDict[res.seqid.num].append(atom)
+                        
+                    else:
+                        # print('New resi: ', res)
+                        allResisDict[res.seqid.num] = []
+                        allResisDict[res.seqid.num].append(atom)
 
-#                     # Checks if the atom has an altloc label
-#                     # if atom.has_altloc():
+        return(allResisDict)
 
+    def findContactsROI (self, firstResiDict, secondResiDict, contactCutoffValue = 4, tooFarCutoffValue = 25):
 
+        """
+        Only used in Residue of Interest calculation to find adjacent / all network residues
+        """
 
+        for firstResi in firstResiDict:
+            for secondResi in secondResiDict:
+
+                # Condition that satisfies both the fact that the first and second residues cannot be equal to each other
+                if firstResi != secondResi:
+
+                    tooFarFlag = False
+                    
+                    for firstAtom in firstResiDict[firstResi]:
+                        for secondAtom in secondResiDict[secondResi]:
+
+                            # Calculates distance between the two atoms using Gemmi dist() function
+                            distance = firstAtom.pos.dist(secondAtom.pos)  
+
+                            # Condition that checks if the distance between atoms is greater than the threshold
+                            # If it is, then they are considered to be too far to even both checking the rest of the residue
+                            if distance > tooFarCutoffValue:
+                                tooFarFlag = True
+                                break
+                            
+                            # Asks if the distance calculated between each atom pair is less than the maximum atomic distance the user specifies
+                            elif distance < contactCutoffValue:
+
+                                # Ensures that edge is not already present
+                                if (firstResi,secondResi) not in self.network.edges:
+                                    self.network.add_edge(firstResi, secondResi)
+            
+                        # If the tooFarFlag is triggered then it continues to break this loop to prevent it from searching any atom-atom contacts...
+                        # ...between this pair and move on to the next pair of residues
+                        if tooFarFlag == True:
+                            break
