@@ -112,7 +112,7 @@ class ResiduesOfInterest:
 
             # Finds random sample of residues
             #print(len(self.inputSetDict[self.args.col]))
-            randomResiList = random.sample(nonInputResiList, len(self.inputSetDict[self.args.col])) # allNetworkList
+            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col]))
             #print(randomResiList)
 
             ### Then finds the fraction of residues to each non input set residue that are close to network residues
