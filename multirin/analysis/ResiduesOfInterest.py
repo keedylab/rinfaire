@@ -101,7 +101,7 @@ class ResiduesOfInterest:
         closeInputResiCountList = self.findFractionCloseToNetwork(self.inputSetDict[self.args.col])
 
         # Finds the set of residues that are not in the input set
-        nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
+        #nonInputResiList = [i for i in allNetworkList if i not in self.inputSetDict[self.args.col]]
 
         # ### Then finds the fraction of residues to each non input set residue that are close to network residues
         # closeNonInputResiCountList = self.findFractionCloseToNetwork(nonInputResiList)
@@ -112,7 +112,7 @@ class ResiduesOfInterest:
 
             # Finds random sample of residues
             #print(len(self.inputSetDict[self.args.col]))
-            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col]))
+            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col])) # allNetworkList
             #print(randomResiList)
 
             ### Then finds the fraction of residues to each non input set residue that are close to network residues
@@ -196,26 +196,43 @@ class ResiduesOfInterest:
     def plotBoxPlot (self, closeInputResiCountList, closeNonInputResiCountList):
 
         import matplotlib.pyplot as plt
+        import numpy as np
 
         # Create a figure and axes
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(4, 6))
+
+        # Create the boxplots with customized colors
+        boxprops = dict(color='black', linewidth=0.5)  # Gray outline for boxes
+        whiskerprops = dict(color='black', linewidth=0.5)  # Whisker thickness
+        capprops = dict(color='black', linewidth=0.5)  # Cap thickness
+        medianprops = dict(color='black', linewidth=0.5)  # Gray median line
 
         # Create the boxplots
-        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col} Residues', f'Random Set Of Residues'])
+        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col}', f'Random Set'], widths=0.5, boxprops=boxprops, medianprops=medianprops, whiskerprops=whiskerprops, capprops=capprops)
 
         # Add title and labels
-        plt.xlabel('Dataset')
-        plt.ylabel('Network Residues within 4Å')
+        plt.xlabel('Residues', fontsize=15)
+        plt.ylabel('Network Residues within 4Å', fontsize=15)
 
+        # Get min/max for y-axis ticks
+        all_values = closeInputResiCountList + closeNonInputResiCountList
+        min_value, max_value = min(all_values), max(all_values)
+
+        # Set y-axis ticks at step of 2
+        plt.yticks(np.arange(min_value, max_value + 2, 2), fontsize=15)
+        plt.xticks(fontsize=15)
         combinedLists = [closeInputResiCountList, closeNonInputResiCountList]
+        colors = ['darkorange', 'darkgray']
 
-        for i in range(len(combinedLists)):
+
+        for i, (y, color) in enumerate(zip(combinedLists, colors)):
             y = combinedLists[i]
             x = np.random.normal(1+i, 0.04, size=len(y))
-            plt.plot(x, y, 'r.', alpha=0.2)
+            plt.plot(x, y, '.', color=color, alpha=0.5)
+            plt.tight_layout()
 
         # Show the plot
-        plt.savefig(f'{self.args.outputname}_{self.args.col}_BoxPlot.png')
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_BoxPlot.png', bbox_inches='tight', dpi=300)
 
     def findFractionCloseToNetwork (self, resiList):
         
