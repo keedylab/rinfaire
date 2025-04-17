@@ -1,4 +1,4 @@
-from multirin import Structure 
+from multirin.generate.Structure import Structure 
 from argparse import Namespace
 import gemmi
 import unittest
@@ -11,7 +11,7 @@ class testStructure (unittest.TestCase):
 
         # structureListFile='tests/data/synth_structs/TestInputFiles.txt'
         self.args = Namespace()
-        self.struct1 = Structure.Structure('tests/data/synth_structs/1111_Test.pdb', self.args)
+        self.struct1 = Structure('tests/data/synth_structs/1111_Test.pdb', self.args)
     
     # Function to test model of structure
     def test_model (self):

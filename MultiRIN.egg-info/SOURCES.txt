@@ -1,0 +1,17 @@
+setup.py
+MultiRIN.egg-info/PKG-INFO
+MultiRIN.egg-info/SOURCES.txt
+MultiRIN.egg-info/dependency_links.txt
+MultiRIN.egg-info/top_level.txt
+multirin/__init__.py
+multirin/main_multi.py
+multirin/main_single.py
+multirin/generate/IndividualNetwork.py
+multirin/generate/MainFunctions.py
+multirin/generate/MultiNetwork.py
+multirin/generate/Structure.py
+multirin/generate/__init__.py
+tests/__init__.py
+tests/test_IndividualNetwork.py
+tests/test_Structure.py
+tests/test_generateMultiNetwork.py

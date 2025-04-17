@@ -1,8 +1,8 @@
 import argparse
 import os
-from Structure import Structure
-from IndividualNetwork import IndividualNetwork
-from MultiNetwork import MultiNetwork
+from .Structure import Structure
+from .IndividualNetwork import IndividualNetwork
+from .MultiNetwork import MultiNetwork
 
 def setupArguments (multiFlag):
 
@@ -25,10 +25,18 @@ def setupArguments (multiFlag):
             help='Sequence alignment file in fasta (.fa) format'
         )
 
+        parser.add_argument( 
+            '-s',
+            '--only_sidechain', 
+            default=False,
+            action='store_true', 
+            help="Only looks at sidechain alt confs"
+        )
+
         parser.add_argument(
-            '-l', 
-            '--labels',
-            help='File of metadata labels to classify structures in (.csv) format'
+            '-m', 
+            '--metadata',
+            help='Table of metadata information to classify structures in (.csv) format'
         )
 
         parser.add_argument(
@@ -43,6 +51,65 @@ def setupArguments (multiFlag):
             default=False,
             action='store_true', 
             help="Turns off the normalization of each structure's network in relation to the others"
+        )
+
+        parser.add_argument( 
+            '--norm_type', 
+            default='log',
+            help="Can choose the normalization of structures method (either log, total, etc.)"
+        )
+
+        parser.add_argument( 
+            '--log_norm_threshold', 
+            default=99,
+            help="Edge weight clip threshold for log normalization. By default it clips at the 99th percentile."
+        )
+
+        parser.add_argument( 
+            '--clip_norm_threshold', 
+            default=90,
+            help="Total edge weight threshold for clip normalization. By default it clips at the 90th percentile."
+        )
+
+        parser.add_argument( 
+            '--scale_multinet', 
+            default=False,
+            action='store_true', 
+            help="Scales the MultiNetwork object to a range between 0 and 10"
+        )
+
+        parser.add_argument( 
+            '--multinet_scale',
+            default=10,
+            type=int,
+            help='Maximum edge weight the MultiNetwork should be scaled to'
+        )
+
+        parser.add_argument( 
+            '--no_scale_sum_network', 
+            default=False,
+            action='store_true', 
+            help="Turns off the scaling of the Sum Network"
+        )
+
+        parser.add_argument( 
+            '--sum_network_scale',
+            default=20,
+            type=int,
+            help='Maximum edge weight Sum Network should be scaled to'
+        )
+
+        parser.add_argument( 
+            '--remove_weak_edges',
+            type=int,
+            help='Option to remove weak edges by a percent cutoff factor specified'
+        )
+
+        parser.add_argument( 
+            '--output_info', 
+            default=False,
+            action='store_true', 
+            help="Outputs summary statistics of the Multi Network"
         )
     
     # Options specific to single model inputs
@@ -67,6 +134,14 @@ def setupArguments (multiFlag):
         help="Turns off the normalization of each residue-residue pair in the network by the size of the residue"
     )
 
+    parser.add_argument(
+        '-a', 
+        '--add_adjacent_residues', 
+        default=False,
+        action='store_true', 
+        help="Adds residues spatially adjacent to the determined network"
+    )
+
     args = parser.parse_args()
 
     # Checks of the file extension to ensure that it is the correct type
@@ -77,8 +152,8 @@ def setupArguments (multiFlag):
         checkExtension(args.alignmentFile, '.fa', "Sequence file must be in .fa format")
 
         # Checks only if the user wants to use inputted labels
-        if args.labels is not None:
-            checkExtension(args.labels, '.csv', "Labels file must be in .csv format")
+        if args.metadata != None:
+            checkExtension(args.metadata, '.csv', "Labels file must be in .csv format")
 
     # For single model inputs
     else:
@@ -128,6 +203,9 @@ def generateIndividualNetworks (fileList, args):
         net = IndividualNetwork(struct, args)
         net.populateNetwork()
 
+        if args.add_adjacent_residues == True:
+            net.addAdjacentResidues()
+
         # Appends this to the list of networks
         networkList.append(net)
 
@@ -139,13 +217,13 @@ def generateIndividualNetworks (fileList, args):
 def generateMultiNetwork (networkList, args):
     
     # Initializes an empty multi-network object 
-    multi = MultiNetwork(args)
+    multi = MultiNetwork(args=args)
+
+    # Adds networks from the list of individual networks
     multi.addNetworks(networkList)
 
-    # Calculates the sum matrix of all the structures in the object
-    # Does this across each residue pairing
-    sumMatrix = multi.sum()
-    multi.visualize(sumMatrix, 'sumNetwork')
+    # Exports MultiNetwork object as a pickle file for further analysis
+    multi.exportPickle()
 
     return multi
     

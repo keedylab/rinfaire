@@ -1,2 +1,0 @@
-/data/araju/ptpsinpdb/FinalRefine_qFitV4_V2/1WCH/1WCH_qFit.pdb
-/data/araju/ptpsinpdb/FinalRefine_qFitV4_V2/6B8Z/6B8Z_qFit.pdb
