@@ -1,4 +1,3 @@
-
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run13/'
 outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/batchruns/run13/SumNetwork_Subset_Removed50_STEP'
 

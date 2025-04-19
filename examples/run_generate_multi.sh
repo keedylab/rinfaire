@@ -1,4 +1,3 @@
-
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/'
 outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test42/'
 

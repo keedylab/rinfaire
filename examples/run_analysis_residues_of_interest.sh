@@ -1,4 +1,3 @@
-
 inputdir='/Volumes/Akshay/ptpsinpdb/MultiRIN_Outputs/batchruns/run39/SumNetwork_Removed95_CommunitiesAll/'
 outputfilename='/Volumes/Akshay/ptpsinpdb/MultiRIN_Outputs/batchruns/run39/SumNetwork_Removed95_CommunitiesAll/FoxComparison_SectorB_V2'
 inputsetpath='/Volumes/Akshay/ARaju_Projects/PTPs_Paper/Data/FoxPaper/FoxSectors.csv'
