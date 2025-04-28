@@ -19,3 +19,4 @@ run_analysis_residues_of_interest.sh
 Please note that additional example scripts in the directory 'work in progress' may not have been tested with the current code so should be used with caution. 
 
 Input .pkl files for run_analysis_residues_of_interest.sh and run_analysis_sum_subset.sh can be accessed on Zenodo (refer to paper).
+
