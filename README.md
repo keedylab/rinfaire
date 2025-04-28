@@ -5,7 +5,7 @@ It can then normalize and sum these networks, calculate differences between netw
 
 If you use this software, please cite:
 
-[Raju A, Sharma S, Riley BT, Tan Y, Kim M, & Keedy DA. Mapping allosteric rewiring in related protein structures from collections of crystallographic multiconformer models. Preprint forthcoming (2025).](https://keedylab.org/publications/)
+[Raju A, Sharma S, Riley BT, Djuraev S, Tan Y, Kim M, & Keedy DA. Mapping allosteric rewiring in related protein structures from collections of crystallographic multiconformer models. Preprint forthcoming (2025).](https://keedylab.org/publications/)
 
 If you also use qFit, please cite:
 
@@ -41,6 +41,8 @@ For more specific instructions, see the Methods section of the paper.
 `python scripts/analysis_sum.py /input_dir/MultiNetwork.pkl /output_dir/output_name --output_graph_info`
 
 6. Perform additional network analyses as desired; see the [examples](examples/) directory.
+
+Please note that scripts in the 'work in progress' directory may not have been tested with the current code so should be used with caution.
 
 ## License
 

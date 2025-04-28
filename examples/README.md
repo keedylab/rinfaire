@@ -12,8 +12,10 @@ run_analysis_sum.sh
 
 run_analysis_sum_subset.sh
 
-4. Evaluate overlap between sum network and user-defined residues of interest, including statistical significance:
+4.Evaluate overlap between sum network and user-defined residues of interest, including statistical significance:
 
 run_analysis_residues_of_interest.sh
 
-Please note that any additional example scripts may not have been tested with the current code so should be used with caution.
+Please note that additional example scripts in the directory 'work in progress' may not have been tested with the current code so should be used with caution. 
+
+Input .pkl files for run_analysis_residues_of_interest.sh and run_analysis_sum_subset.sh can be accessed on Zenodo (refer to paper).

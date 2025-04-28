@@ -1,11 +1,11 @@
-inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/'
-outputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test42/'
+inputdir='/your/input/dir/'
+outputfilename='/your/output/dir/output_filename’
+outputdir='/your/output/dir/'
 
-pipenv run python ../scripts/generate_multi.py \
-	${inputdir}InputPDBsTest.txt \
-	${inputdir}PROMALS3D_PTPsAlignment_withoutArchael.fa \
+pipenv run python /multirin/installation/dir/generate_multi.py \
+	${inputdir}All_PTPs_input.txt \
+	${inputdir}PROMALS3D_PTPsAlignment.fa \
 	${outputdir} \
-	--metadata /data/araju/ptpsinpdb/MultiRIN_Outputs/inputfiles/PTPs_Metadata.csv \
+	--metadata /multirin/installation/dir/examples/PTPs_Metadata.csv \
 	--output_info \
 	--norm_type log
-	# --no_norm_struct

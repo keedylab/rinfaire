@@ -1,3 +1,0 @@
-/data/araju/ptpsinpdb/FinalProcessing/Final/1ZC0_qFit_chainA.pdb
-/data/araju/ptpsinpdb/FinalProcessing/Final/1WCH_qFit_chainA.pdb
-/data/araju/ptpsinpdb/FinalProcessing/Final/6B8Z_qFit_chainA.pdb
