@@ -1,4 +1,3 @@
-
 inputdir='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test23/'
 outputfilename='/data/araju/ptpsinpdb/MultiRIN_Outputs/testruns/test23/SubNetwork_All'
 

@@ -208,7 +208,7 @@ class ResiduesOfInterest:
         medianprops = dict(color='black', linewidth=0.5)  # Gray median line
 
         # Create the boxplots
-        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col}', f'Random Set'], widths=0.5, boxprops=boxprops, medianprops=medianprops, whiskerprops=whiskerprops, capprops=capprops)
+        ax.boxplot([closeInputResiCountList, closeNonInputResiCountList], labels=[f'{self.args.col}', f'Random'], widths=0.5, boxprops=boxprops, medianprops=medianprops, whiskerprops=whiskerprops, capprops=capprops)
 
         # Add title and labels
         plt.xlabel('Residues', fontsize=15)

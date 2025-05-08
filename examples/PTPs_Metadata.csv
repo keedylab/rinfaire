@@ -1,222 +1,222 @@
-PDB,ID,UnitCell_Alpha,UnitCell_Beta,UnitCell_Gamma,UnitCell_A,UnitCell_B,UnitCell_C,Chain,Collection_Temperature,Water_Molecules,Disulfide_Bonds,Molecular_Weight,Resolution,R_Free,R_Work,Space_Group,Source_Organism,Gene_Name,Protein_Name,Ligand_ID,Protein_Bound,Ligand_Effect_On_Activity,Ligand_Type,Ligand_Binding_Location,Sequence_WT_Or_Mutant,Mutation_Uniprot_Residue,Mutation_Original_Residue,Mutation_Mutated_Residue,Catalytic_Domains,Additional_Domains,WPD_state,Comments,WPD location
-6KRW,6KRW_qFit_chainA,90,109.49,90,117.682,42.213,72.959,chainA,100,198,,35.2,1.40,0.16611,0.13309,C 1 2 1,Arabidopsis thaliana,PTP1,AtPTP1,,,,,apo,WT,,,,D1,,closed,Citrate binds very close to the active site (C265),
-6KRX,6KRX_qFit_chainA,90,110.815,90,116.536,38.97,75.525,chainA,100,221,,38.28,1.70,0.1743,0.1511,C 1 2 1,Arabidopsis thaliana,PTP1,AtPTP1,,,,,apo,WT,,,,D1,,closed,,
-4GFU,4GFU_qFit_chainA,90,99.52,90,44.032,71.766,57.161,chainA,100,146,,34.62,2.00,0.2319,0.1894,P 1 21 1,Homo sapiens,PTPN18,BDP1,PTR,,,substrate,active,M,229,C,S,D1,,closed,C226S; unpublished manuscript,
-4GFV,4GFV_qFit_chainA,90,90,90,74.348,91.341,92.97,chainA,100,52,,69.06,2.10,0.293,0.2459,P 21 21 21,Homo sapiens,PTPN18,BDP1,PTR,,,substrate,allosteric,M,229,C,S,D1,,closed,C226S (catalytic mutant); unpublished manuscript,
-4GFV,4GFV_qFit_chainB,90,90,90,74.348,91.341,92.97,chainB,100,65,,69.06,2.10,0.293,0.2459,P 21 21 21,Homo sapiens,PTPN18,BDP1,PTR,,,substrate,allosteric,M,229,C,S,D1,,closed,C226S (catalytic mutant); unpublished manuscript,
-2OC3,2OC3_qFit_chainA,90,102.64,90,46.338,63.763,48.992,chainA,100,277,,34.3,1.50,0.18395,0.15407,P 1 21 1,Homo sapiens,PTPN18,BDP1,,,,,apo,WT,,,,D1,,open,,
-1ZC0,1ZC0_qFit_chainA,90,90,120,127.101,127.101,59.863,chainA,100,286,,35.43,1.85,0.18584,0.16134,P 61,Homo sapiens,PTPN7,HEPTP,PO4,,,ion,active,WT,,,,D1,,closed,PO4 bound at the active site,
-2GP0,2GP0_qFit_chainA,90,90,120,127.52,127.52,60.133,chainA,100,297,,35.55,2.05,0.206,0.178,P 61,Homo sapiens,PTPN7,HEPTP,PO4,,,,apo,M,246,S,D,D1,,closed,Residue numbering is off but confirmed the mutated res from paper,
-2QDC,2QDC_qFit_chainA,90,90,120,127.258,127.258,59.56,chainA,100,230,,35.67,2.00,0.19046,0.16276,P 61,Homo sapiens,PTPN7,HEPTP,PO4; PO4,,,,apo,M,257,D,A,D1,,closed,The residue numbering doesn't start from 1 but confirmed the location of mutation from the original paper,
-3O4S,3O4S_qFit_chainA,90,124.29,90,117.795,39.13,83.441,chainA,100,277,,36.27,1.90,0.21214,0.1617,C 1 2 1,Homo sapiens,PTPN7,HEPTP,SO4; SO4,,,,apo,M,93,S,D,D1,,closed,S41D; binding of SO4 has significant effects on the conformation of active site regions including the WPD loop,
-5AWX,5AWX_qFit_chainA,90,90,90,54.641,72.245,90.557,chainA,100,247,,34.27,1.86,0.22094,0.18563,P 21 21 21,Homo sapiens,PTPRZ1,HTPZP2,,,,,apo,WT,,,,D1,,open,C1933 is the active site; 1 Br very close to active site ,
-2P6X,2P6X_qFit_chainA,90,102.84,90,60.961,48.442,119.805,chainA,100,228,,73.31,1.90,0.21725,0.16352,P 1 21 1,Homo sapiens,PTPN22,LyP,,,,,apo,WT,,,,D1,,superopen,,
-2P6X,2P6X_qFit_chainB,90,102.84,90,60.961,48.442,119.805,chainB,100,145,,73.31,1.90,0.21725,0.16352,P 1 21 1,Homo sapiens,PTPN22,LyP,,,,,apo,WT,,,,D1,,superopen,,
-4ICZ,4ICZ_qFit_chainA,90,90,90,73.249,85.705,49.781,chainB,unpublished,118,,37.15,1.90,0.2487,0.2033,P 21 21 2,Homo sapiens,PTPN9,MEG2,,,,PTR,active,WT,,,,D1,,closed,unpublished manuscript,
-6KZQ,6KZQ_qFit_chainA,90,90,90,71.447,83.708,48.615,chainA,293,215,,36.39,1.70,0.2098,0.1837,P 21 21 2,Homo sapiens,PTPN9,MEG2,,,,PTR,active,M,470; 515,D; C,A; A,D1,,closed,,
-4GE5,4GE5_qFit_chainA,77.55,78.23,79.97,40.26,57.17,66.422,chainA,100,187,,73.29,2.00,0.2228,0.1866,P 1,Homo sapiens,PTPN9,MEG2,A89,,inhibitory,small_molecule,active,WT,,,,D1,,open,,
-4GE6,4GE6_qFit_chainA,77.22,78.03,80.01,40.137,57.774,66.702,chainA,100,110,,73.54,1.40,0.2152,0.1982,P 1,Homo sapiens,PTPN9,MEG2,B26,,inhibitory,small_molecule,active,WT,,,,D1,,open,,
-2PA5,2PA5_qFit_chainA,77.44,78.22,80.41,39.965,57.427,66.446,chainA,100,224,,72.97,1.60,0.18792,0.15559,P 1,Homo sapiens,PTPN9,MEG2,,,,,apo,WT,,,,D1,,open,Has a WPD loop,
-4GE5,4GE5_qFit_chainB,77.55,78.23,79.97,40.26,57.17,66.422,chainB,100,169,,73.29,2.00,0.2228,0.1866,P 1,Homo sapiens,PTPN9,MEG2,,,,,apo,WT,,,,D1,,open,,
-4GE6,4GE6_qFit_chainB,77.22,78.03,80.01,40.137,57.774,66.702,chainB,100,90,,73.54,1.40,0.2152,0.1982,P 1,Homo sapiens,PTPN9,MEG2,,,,,apo,WT,,,,D1,,open,,
-2PA5,2PA5_qFit_chainB,77.44,78.22,80.41,39.965,57.427,66.446,chainB,100,186,,72.97,1.60,0.18792,0.15559,P 1,Homo sapiens,PTPN9,MEG2,,,,,apo,WT,,,,D1,,superopen,The WPD loop is absent in chain B,
-1G1F,1G1F_qFit_chainA,90,111.19,90,42.545,89.124,50.126,chainA,100,247,,36.45,2.00,0.227,0.207,P 1 21 1,Homo sapiens,PTPN1,PTP1B,PTR; PTR,,activating,PTR,active,M,215,C,A,D1,,closed,Substrate trapping mutant; tri-phosphorylated tyrosine substrate ,
-1Q6N,1Q6N_qFit_chainA,90,90,90,86.878,88.409,139.224,chainA,100,128,,73.85,2.10,0.238,0.208,P 21 21 21,Homo sapiens,PTPN1,PTP1B,P90,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-1Q6N,1Q6N_qFit_chainB,90,90,90,86.878,88.409,139.224,chainB,100,111,,73.85,2.10,0.238,0.208,P 21 21 21,Homo sapiens,PTPN1,PTP1B,P90,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2AZR,2AZR_qFit_chainA,90,90,120,88.318,88.318,104.043,chainA,113,215,,35.09,2.00,0.2497,0.2234,P 31 2 1,Homo sapiens,PTPN1,PTP1B,982,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2B07,2B07_qFit_chainA,90,90,120,88.239,88.239,104.063,chainA,110,176,,35.39,2.10,0.2412,0.2107,P 31 2 1,Homo sapiens,PTPN1,PTP1B,598,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2F6T,2F6T_qFit_chainA,90,90,120,88.219,88.219,104.867,chainA,100,368,,35.31,1.70,0.192,0.166,P 31 2 1,Homo sapiens,PTPN1,PTP1B,1C2,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2F6V,2F6V_qFit_chainA,90,90,120,87.984,87.984,104.455,chainA,100,262,,35.34,1.70,0.18775,0.17076,P 31 2 1,Homo sapiens,PTPN1,PTP1B,SK2,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2F6Z,2F6Z_qFit_chainA,90,90,120,87.996,87.996,104.656,chainA,100,343,,35.4,1.70,0.177,0.16,P 31 2 1,Homo sapiens,PTPN1,PTP1B,UN5,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2F71,2F71_qFit_chainA,90,90,120,88.189,88.189,105.115,chainA,100,348,,35.35,1.55,0.172,0.152,P 31 2 1,Homo sapiens,PTPN1,PTP1B,UN7,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2FJM,2FJM_qFit_chainA,90,90,90,86.431,86.621,139.193,chainA,100,145,,73.75,2.10,0.21676,0.19152,P 21 21 21,Homo sapiens,PTPN1,PTP1B,073,,inhibitory,small_molecule,active,M,119,L,V,D1,,closed,The residue numbering doesn't start from 1 but confirmed the location of mutation to be 119 from the original paper,
-2FJM,2FJM_qFit_chainB,90,90,90,86.431,86.621,139.193,chainB,100,154,,73.75,2.10,0.21676,0.19152,P 21 21 21,Homo sapiens,PTPN1,PTP1B,073,,inhibitory,small_molecule,active,M,119,L,V,D1,,closed,L119V,
-2HB1,2HB1_qFit_chainA,90,90,120,88.538,88.538,104.202,chainA,113,171,,35.11,2.00,0.243,0.2176,P 31 2 1,Homo sapiens,PTPN1,PTP1B,512,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2NTA,2NTA_qFit_chainA,90,90,120,88.256,88.256,104.17,chainA,113,218,,35.15,2.10,0.2473,0.2152,P 31 2 1,Homo sapiens,PTPN1,PTP1B,521,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2QBQ,2QBQ_qFit_chainA,90,90,120,88.345,88.345,104.21,chainA,113,270,,35.34,2.10,0.226,0.194,P 31 2 1,Homo sapiens,PTPN1,PTP1B,4B3,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2QBS,2QBS_qFit_chainA,90,90,120,88.458,88.458,104.358,chainA,113,223,,35.29,2.10,0.229,0.193,P 31 2 1,Homo sapiens,PTPN1,PTP1B,024,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2VEV,2VEV_qFit_chainA,90,90,90,66.95,73.02,2,chainA,93,353,,38.01,1.80,0.2332,0.203,P 21 21 21,Homo sapiens,PTPN1,PTP1B,IZ2,,inhibitory,small_molecule,active,WT,,,,D1,,closed,"close to the active site; binding in the 'B' site (Tyr20,Arg24,Ala27,Phe52Arg254and Met258-Gly259)",
-2VEW,2VEW_qFit_chainA,90,90,90,66.8,72.72,88.13,chainA,93,295,,37.97,2.00,0.2386,0.2014,P 21 21 21,Homo sapiens,PTPN1,PTP1B,IZ3,,inhibitory,small_molecule,active,WT,,,,D1,,closed,"close to the active site; binding in the 'B' site (Tyr20,Arg24,Ala27,Phe52Arg254and Met258-Gly259)",
-2ZMM,2ZMM_qFit_chainA,90,90,120,88.02,88.02,103.676,chainA,113,293,,35.58,2.10,0.2135,0.1827,P 31 2 1,Homo sapiens,PTPN1,PTP1B,35B,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2ZN7,2ZN7_qFit_chainA,90,90,120,88.49,88.49,104.9,chainA,113,218,,35.39,2.10,0.2062,0.1777,P 31 2 1,Homo sapiens,PTPN1,PTP1B,410,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-4Y14,4Y14_qFit_chainA,90,94.3,90,52.167,71.748,88.01,chainA,111,275,,73.16,1.90,0.2059,0.1661,P 1 21 1,Homo sapiens,PTPN1,PTP1B,C0A,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-4Y14,4Y14_qFit_chainB,90,94.3,90,52.167,71.748,88.01,chainB,111,264,,73.16,1.90,0.2059,0.1661,P 1 21 1,Homo sapiens,PTPN1,PTP1B,C0A,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-5K9W,5K9W_qFit_chainA,90,90,120,88.555,88.555,103.867,chainA,100,171,,36.21,2.01,0.2148,0.1848,P 31 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,WT,,,,D1,,closed,closed state,
-5KA1,5KA1_qFit_chainA,90,90,120,88.021,88.021,72.972,chainA,100,200,,34.78,1.84,0.1946,0.166,P 32 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,WT,,,,D1,,closed,closed state,
-5KA7,5KA7_qFit_chainA,90,90,120,88.564,88.564,104.11,chainA,100,165,,36.18,2.06,0.2137,0.1834,P 31 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,178,T,A,D1,,closed,T178A,
-7MN7,7MN7_qFit_chainA,90,90,120,88.515,88.515,104.231,chainA,100,252,,36.68,1.95,0.1901,0.1555,P 31 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,225,F,Y,D1,,closed,F225Y,
-7MOW,7MOW_qFit_chainA,90,90,120,88.609,88.609,103.571,chainA,100,259,,36.52,1.80,0.1757,0.1547,P 31 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,225,F,I,D1,,closed,F225I,
-4BJO,4BJO_qFit_chainA,90,95.01,90,161.62,66.765,68.771,chainA,100,71,,79.07,2.06,0.23932,0.21529,C 1 2 1,Homo sapiens,PTPN1,PTP1B,NO3,,,substrate_mimetic,active,WT,,,,D1,,closed,NO3 in the active site mimics transition state; non-covalent interaction with NO3,
-4ZRT,4ZRT_qFit_chainA,90,97.25,90,43.848,88.725,50.043,chainA,100,272,,36.28,1.74,0.20743,0.16835,P 1 21 1,Homo sapiens,PTPN1,PTP1B,PTR,,inhibitory,substrate_mimetic,active,M,215,C,S,D1,,closed,C215S (catalytically inactive mutant); authors study the effect of replacing residues near the pY to acidic/basic/neutral,
-6PG0,6PG0_qFit_chainA,90,90,120,88.227,88.227,104.068,chainA,93,239,,35.07,2.10,0.2251,0.1947,P 31 2 1,Homo sapiens,PTPN1,PTP1B,VO4,,inhibitory,substrate_mimetic,active,M,188,P,A,D1,,closed,P188A; VO4 in the active site,
-6PM8,6PM8_qFit_chainA,90,90,120,88.298,88.298,104.003,chainA,93,275,,34.95,2.06,0.2195,0.1952,P 31 2 1,Homo sapiens,PTPN1,PTP1B,VO4,,inhibitory,substrate_mimetic,active,M,180,P,A,D1,,closed,P188A; VO4 in the active site,
-7L0H,7L0H_qFit_chainA,90,90,120,88.471,88.471,104.979,chainA,100,136,,37.41,2.10,0.2079,0.178,P 31 2 1,Homo sapiens,PTPN1,PTP1B,VO4,,inhibitory,substrate_mimetic,active,M,177,T,G,D1,,closed,T177G,
-5KA8,5KA8_qFit_chainA,90,90,120,88.896,88.896,105.84,chainA,100,201,,35.87,1.97,0.2316,0.1883,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,active,M,192,L,A,D1,,closed,L192A; CL binding very close to active site,
-1G7F,1G7F_qFit_chainA,90,90,90,52.74,83.82,88.66,chainA,100,462,,35.25,1.80,0.249,0.18,P 21 21 21,Homo sapiens,PTPN1,PTP1B,INZ,,inhibitory,small_molecule,active,WT,,,,D1,,open,,
-3EAX,3EAX_qFit_chainA,90,90,120,88.612,88.612,104.278,chainA,100,90,,38.01,1.90,0.244,0.213,P 31 2 1,Homo sapiens,PTPN1,PTP1B,LZP,,inhibitory,small_molecule,active,WT,,,,D1,,open,binds to an inactive WPD loop conformation (open),
-5KA9,5KA9_qFit_chainA,90,90,120,88.709,88.709,106.218,chainA,100,189,,36.13,2.07,0.2302,0.1887,P 31 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,192,L,A,D1,,open,L192A,
-5KAB,5KAB_qFit_chainA,90,90,120,88.17,88.17,71.908,chainA,100,161,,34.25,1.97,0.2092,0.1781,P 32 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,185,P,G,D1,,open,P185G,
-5KAD,5KAD_qFit_chainA,90,104.4,90,47.626,73.732,88.123,chainA,100,322,,71.99,1.90,0.2049,0.1759,P 1 21 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,193,N,A,D1,,open,P185G,
-5KAD,5KAD_qFit_chainB,90,104.4,90,47.626,73.732,88.123,chainB,100,322,,71.99,1.90,0.2049,0.1759,P 1 21 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,193,N,A,D1,,open,P185G,
-7MNF,7MNF_qFit_chainA,90,90,120,88.331,88.331,72.646,chainA,100,243,,36.38,1.70,0.2021,0.182,P 32 2 1,Homo sapiens,PTPN1,PTP1B,OTA,,inhibitory,small_molecule,active,M,206,P,G,D1,,open,P206G,
-4BJO,4BJO_qFit_chainB,90,95.01,90,161.62,66.765,68.771,chainB,100,53,,79.07,2.06,0.23932,0.21529,C 1 2 1,Homo sapiens,PTPN1,PTP1B,NO3,,,substrate_mimetic,active,WT,,,,D1,,open,NO3 in the active site mimics transition state; non-covalent interaction with NO3,
-1BZH,1BZH_qFit_chainA,90,96.91,90,39.69,86.82,52,chainA,100,88,,35.73,2.10,0.262,0.196,P 1 21 1,Homo sapiens,PTPN1,PTP1B,FLT,,inhibitory,peptide,allosteric,WT,,,,D1,,open,,
-1T49,1T49_qFit_chainA,90,90,120,88.394,88.394,104.615,chainA,100,235,,35.4,1.90,0.2357,0.20547,P 31 2 1,Homo sapiens,PTPN1,PTP1B,892,,inhibitory,small_molecule,allosteric,WT,,,,D1,,open,,
-6B8Z,6B8Z_qFit_chainA,90,90,120,89.65,89.65,106.39,chainA,273,167,,38.09,1.80,0.1991,0.1687,P 31 2 1,Homo sapiens,PTPN1,PTP1B,FRJ,,inhibitory,small_molecule,allosteric,M,32; 92,C; C,S; V,D1,,open,C32S; C92V,
-6B95,6B95_qFit_chainA,90,90,120,87.96,87.96,104.63,chainA,100,135,,37.74,1.95,0.2307,0.1858,P 31 2 1,Homo sapiens,PTPN1,PTP1B,D0P,,inhibitory,small_molecule,allosteric,M,32; 92; 197,C; C; K,S; V; C,D1,,open,C32S; C92V; K197C,
-6W30,6W30_qFit_chainA,90,90,120,89.033,89.033,105.559,chainA,100,170,,38.76,2.10,0.2388,0.1973,P 31 2 1,Homo sapiens,PTPN1,PTP1B,SJA,,inhibitory,small_molecule,allosteric,WT,,,,D1,,open,SJA; MG; GOL,
-1PA1,1PA1_qFit_chainA,90,90,120,88.451,88.451,104.356,chainA,100,330,,36.51,1.60,0.204,0.186,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,215,C,D,D1,,closed,C215D,
-1SUG,1SUG_qFit_chainA,90,90,120,88.118,88.118,103.9,chainA,100,251,,37.86,1.95,0.203,0.188,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,closed,,
-6B8E,6B8E_qFit_chainA,90,90,120,88.57,88.57,104.32,chainA,180,294,,37.84,1.82,0.1997,0.1708,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,32; 92,C; C,S; V,D1,,closed,C32S; C92V,
-6B8T,6B8T_qFit_chainA,90,90,120,89.44,89.44,106,chainA,240,240,,37.74,1.85,0.2123,0.1674,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,32; 92,C; C,S; V,D1,,closed,C32S; C92V,
-6B8X,6B8X_qFit_chainA,90,90,120,89.52,89.52,106.25,chainA,278,225,,37.71,1.74,0.2059,0.1752,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,32; 92,C; C,S; V,D1,,closed,C32S; C92V,
-6B90,6B90_qFit_chainA,90,90,120,88.118,88.118,103.9,chainA,100,294,,37.95,1.95,0.1926,0.158,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,32; 92,C; C,S; V,D1,,closed,C32S; C92V,
-6OLQ,6OLQ_qFit_chainA,90,90,120,88.517,88.517,104.253,chainA,93,225,,34.9,2.10,0.2344,0.2031,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,188,P,A,D1,,closed,P188A,
-6OMY,6OMY_qFit_chainA,90,90,120,88.263,88.263,103.324,chainA,93,239,,34.75,2.10,0.2052,0.1861,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,180,P,A,D1,,closed,P180A,
-7MOV,7MOV_qFit_chainB,90,110.933,90,114.359,90.102,74.49,chainB,100,223,,72.69,1.65,0.1933,0.1653,C 1 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,225; 199,F; R,Y; N,D1,,closed,F225Y-R199N,
-2F6F,2F6F_qFit_chainA,90,90,120,88.33,88.33,104.18,chainA,100,251,,35.4,2.00,0.203,0.183,P 31 2 1,Homo sapiens,PTPN1,PTP1B,CL,,,ion,apo,M,295,S,F,D1,,open,The mutation is labeled as residue 295 in the deposition title but annotated as residue 299,
-1I57,1I57_qFit_chainA,90,90,120,87.381,87.381,95.942,chainA,100,250,,36.42,2.10,0.266,0.195,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,215,C,S,D1,,open,C215S,
-1OEM,1OEM_qFit_chainX,90,90,120,88.218,88.218,103.787,chainX,100,181,,37.37,1.80,0.227,0.203,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,C215 oxidized to a sulfenyl-amide bond,
-3A5J,3A5J_qFit_chainA,90,90,120,88.426,88.426,72.467,chainA,98,200,,38.22,1.70,0.22857,0.188,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,unpublished manuscript,
-3A5K,3A5K_qFit_chainA,90,90,90,59.094,60.755,87.964,chainA,98,197,,35.66,1.85,0.23323,0.18912,P 21 21 21,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,121,C,W,D1,,open,C127W; unpublished manuscript,
-3QKP,3QKP_qFit_chainA,90,90,120,88.282,88.282,104.535,chainA,100,239,,37.63,2.05,0.2452,0.204,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,179,W,F,D1,,open,W179F,
-3SME,3SME_qFit_chainA,90,90,120,88,88,104,chainA,100,170,,34.94,1.70,0.2096,0.1972,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,oxidized C215,
-4QAP,4QAP_qFit_chainA,90,90,120,88.47,88.47,104.558,chainA,100,129,,34.97,1.90,0.242,0.209,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,263,T,N,D1,,open,T263N,
-4QBW,4QBW_qFit_chainA,90,90,120,89.013,89.013,106.146,chainA,100,130,,34.96,1.91,0.2385,0.2064,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,,
-5K9V,5K9V_qFit_chainA,90,90,120,88.526,88.526,72.992,chainA,100,213,,36.1,1.90,0.2059,0.1733,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,CL binding very close to active site,
-5KA0,5KA0_qFit_chainA,90,90,120,88.362,88.362,72.507,chainA,100,213,,34.25,1.99,0.211,0.1646,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,open state,
-5KA2,5KA2_qFit_chainA,90,90,120,87.306,87.306,98.625,chainA,100,149,,35.88,2.07,0.2382,0.2037,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,152; 153,Y; Y,A; A,D1,,open,Y152A; Y153A,
-5KAA,5KAA_qFit_chainA,90,90,120,88.33,88.33,72.373,chainA,100,206,,34.08,1.97,0.2104,0.1728,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,185,P,G,D1,,open,P185G,
-5KAC,5KAC_qFit_chainA,90,90,120,88.375,88.375,72.342,chainA,100,202,,36.06,1.90,0.2109,0.1681,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,185,P,G,D1,,open,P185G,
-6BAI,6BAI_qFit_chainA,90,90,120,87.265,87.265,104.103,chainA,100,109,,37.44,1.95,0.2569,0.2061,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,32; 92; 197,C; C; K,S; V; C,D1,,open,C32S; C92V; K197C,
-6CWU,6CWU_qFit_chainA,90,90,120,89.197,89.197,105.734,chainA,100,352,,38.48,2.08,0.29122,0.25472,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,135,F,Y,D1,,open,F135Y,
-6CWV,6CWV_qFit_chainA,90,90,120,89.434,89.434,105.554,chainA,100,220,,38.48,1.98,0.246377959,0.204635027,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,122,A,S,D1,,open,A122S,
-7KEN,7KEN_qFit_chainA,90,90,120,88.314,88.314,104.155,chainA,100,187,,38.34,1.80,0.24369,0.20351,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,289,D,A,D1,,open,D289A,
-7LFO,7LFO_qFit_chainA,90,90,120,88.023,88.023,104.494,chainA,100,146,,38.46,1.94,0.243,0.2004,P 31 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,WT,,,,D1,,open,,
-7MKZ,7MKZ_qFit_chainA,90,90,120,88.552,88.552,72.643,chainA,100,279,,36.23,1.40,0.173,0.156,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,225,F,Y,D1,,open,F225Y,
-7MN9,7MN9_qFit_chainA,90,90,120,88.464,88.464,72.429,chainA,100,357,,33.98,1.24,0.1801,0.1622,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,225; 199,F; R,Y; N,D1,,open,F225Y-R199N,
-7MNE,7MNE_qFit_chainA,90,90,120,88.123,88.123,72.377,chainA,100,179,,36.3,1.60,0.1761,0.1632,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,206,P,G,D1,,open,P206G,
-7MOU,7MOU_qFit_chainA,90,90,120,88.427,88.427,72.459,chainA,100,229,,33.96,1.48,0.1801,0.1715,P 32 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,225; 199; 195,F; R; L,Y; N; R,D1,,open,F225Y-R199N-L195R,
-7MOV,7MOV_qFit_chainA,90,110.933,90,114.359,90.102,74.49,chainA,100,268,,72.69,1.65,0.1933,0.1653,C 1 2 1,Homo sapiens,PTPN1,PTP1B,,,,,apo,M,225; 199,F; R,Y; N,D1,,open,F225Y-R199N; CL bound very close to the active site in chain A only,
-1WCH,1WCH_qFit_chainA,90,113.05,90,99.707,59.193,66.075,chainA,101,280,,36.37,1.85,0.204,0.177,C 1 2 1,Homo sapiens,PTPN13,PTP1E,PO4,,,,apo,WT,,,,D1,,closed,,
-2BZL,2BZL_qFit_chainA,90,90,120,87.636,87.636,77.115,chainA,100,244,,37.94,1.65,0.217,0.185,P 32 2 1,Homo sapiens,PTPN14,PTPD2,,,,,apo,WT,,,,D1,,open,C1121 is the active site,
-6IWD,6IWD_qFit_chainA,90,90,90,54.573,169.153,42.53,chainA,93,268,,41.64,1.80,0.2125,0.1858,P 21 21 2,Homo sapiens,PTPN14,PTPD2,,CR3 domain of HPV18 E7,,,apo,WT,,,,D1,,open,Molecule shown as a homodimer but they are connected by crystallographic symmetry,
-5J8R,5J8R_qFit_chainA,90,90,120,129.938,129.938,278.757,chainA,100,130,,148.19,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,,,,,apo,M,61,K,R,D1,,superopen,K61R,
-5J8R,5J8R_qFit_chainB,90,90,120,129.938,129.938,278.757,chainB,100,142,,148.19,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,,,,,apo,M,61,K,R,D1,,superopen,K61R,
-5J8R,5J8R_qFit_chainC,90,90,120,129.938,129.938,278.757,chainC,100,51,,148.19,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,,,,,apo,M,61,K,R,D1,,superopen,K61R,
-5J8R,5J8R_qFit_chainD,90,90,120,129.938,129.938,278.757,chainD,100,54,,148.19,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,,,,,apo,M,61,K,R,D1,,superopen,K61R,
-4RI4,4RI4_qFit_chainA,90,90,90,94.878,99.406,134.267,chainA,100,277,,70.03,1.60,0.1886,0.1631,C 2 2 21,Homo sapiens,PTPN3,PTPH1,VO4,,inhibitory,ion,active,M,676,Y,I,D1,,closed,Y676I is catalytically inactive (substrate binding motif); PTPN21 has an 'E' in place of 'D' the 'WPD' loop,
-4RI4,4RI4_qFit_chainB,90,90,90,94.878,99.406,134.267,chainB,100,258,,70.03,1.60,0.1886,0.1631,C 2 2 21,Homo sapiens,PTPN3,PTPH1,VO4,,inhibitory,ion,active,M,676,Y,I,D1,,closed,Y676I is catalytically inactive (substrate binding motif); PTPN21 has an 'E' in place of 'D' the 'WPD' loop,
-4RI5,4RI5_qFit_chainA,90,90,90,95.162,96.071,141.722,chainA,100,368,,70.31,1.26,0.1732,0.1591,C 2 2 21,Homo sapiens,PTPN3,PTPH1,VN4,,inhibitory,ion,active,M,811,D,E,D1,,closed,"D811E (D of the WPD loop, this mutation significantly reduces the activity ~1/1000 decrease in kcat)",
-4RI5,4RI5_qFit_chainB,90,90,90,95.162,96.071,141.722,chainB,100,389,,70.31,1.26,0.1732,0.1591,C 2 2 21,Homo sapiens,PTPN3,PTPH1,VN4,,inhibitory,ion,active,M,811,D,E,D1,,closed,"D811E (D of the WPD loop, this mutation significantly reduces the activity ~1/1000 decrease in kcat)",
-4RH5,4RH5_qFit_chainA,90,90,90,57.958,67.5,69.621,chainA,100,258,,36.01,1.60,0.2035,0.1738,P 21 21 21,Homo sapiens,PTPN3,PTPH1,PTR,,,substrate_mimetic,active,M,811; 842,D; C,A; S,D1,,closed,D208A; C239S; PTPN21 has an 'E' in place of 'D' the 'WPD' loop; catalytic C mutated,
-4RH9,4RH9_qFit_chainA,90,90,90,58.084,67.63,69.754,chainA,100,196,,35.95,1.60,0.2264,0.1945,P 21 21 21,Homo sapiens,PTPN3,PTPH1,PTR,,,substrate_mimetic,active,M,811; 812; 842; 883,D; H; C; M,A; F; S; G,D1,,closed,H812F; M883G; PTPN21 has an 'E' in place of 'D' the 'WPD' loop; catalytic C mutated,
-4RHG,4RHG_qFit_chainA,90,90,90,58.151,67.651,69.995,chainA,100,213,,36.07,1.58,0.2088,0.1831,P 21 21 21,Homo sapiens,PTPN3,PTPH1,PTR,,,substrate_mimetic,active,M,811; 842,D; C,E; S,D1,,closed,"D811E (D of the WPD loop, this mutation significantly reduces the activity ~1/1000 decrease in kcat); C842S (catalytic Cys); PTPN21 has an 'E' in place of 'D' the 'WPD' loop",
-4S0G,4S0G_qFit_chainA,90,90,90,58.051,67.332,68.985,chainA,100,137,,36.01,1.72,0.2285,0.1823,P 21 21 21,Homo sapiens,PTPN3,PTPH1,PTR,,,substrate_mimetic,active,M,811; 842,D; C,A; S,D1,,closed,D811A; C842S (catalytic mutant),
-4QUN,4QUN_qFit_chainA,90,90,90,94.74,97,138.207,chainA,100,170,,70.15,1.86,0.2055,0.1771,C 2 2 21,Homo sapiens,PTPN3,PTPH1,PO4,,,,apo,M,842,C,S,D1,,closed,C842S (catalytic cys),
-4QUN,4QUN_qFit_chainB,90,90,90,94.74,97,138.207,chainB,100,168,,70.15,1.86,0.2055,0.1771,C 2 2 21,Homo sapiens,PTPN3,PTPH1,,,,,apo,M,842,C,S,D1,,closed,C842S,
-3I36,3I36_qFit_chainA,90,90,90,46.468,63.113,111.655,chainA,100,443,,39.93,1.84,0.2023,0.1569,P 21 21 21,Rattus norvegicus,PTPRJ,PTPRJ,,,,,apo,WT,,,,D1,,open,unpublished manuscript,
-4IKC,4IKC_qFit_chainA,90,90,120,77.58,77.58,85.24,chainA,100,284,,32.47,1.56,0.1654,0.1474,P 64,Homo sapiens,PTPRQ,PTPRQ,SO4; Cl,,,,apo,M,2233,C,S,D1,,open,C221S,
-2I4E,2I4E_qFit_chainA,90,93.31,90,62.058,71.721,69.859,chainA,100,165,,72.81,1.75,0.221,0.183,P 1 21 1,Homo sapiens,PTPRB,RPTPb,VO4,,inhibitory,ion,active,WT,,,,D1,,closed,,
-2I4E,2I4E_qFit_chainB,90,93.31,90,62.058,71.721,69.859,chainB,100,111,,72.81,1.75,0.221,0.183,P 1 21 1,Homo sapiens,PTPRB,RPTPb,VO4,,inhibitory,ion,active,WT,,,,D1,,closed,,
-2H03,2H03_qFit_chainA,90,103.91,90,112.316,38.934,66.062,chainA,100,202,,34.39,1.65,0.217,0.18,C 1 2 1,Homo sapiens,PTPRB,RPTPb,3UN,,inhibitory,small_molecule,active,M,1748; 1749,N; V,G; G,D1,,closed,N74G; V75G,
-2I4G,2I4G_qFit_chainA,90,90,90,38.852,69.61,117.777,chainA,100,249,,36.86,1.65,0.22,0.176,P 21 21 21,Homo sapiens,PTPRB,RPTPb,UA1,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2I5X,2I5X_qFit_chainA,90,93.4,90,61.973,71.308,69.69,chainA,100,199,,73.07,1.70,0.207,0.179,P 1 21 1,Homo sapiens,PTPRB,RPTPb,UA5,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2I5X,2I5X_qFit_chainB,90,93.4,90,61.973,71.308,69.69,chainB,100,127,,73.07,1.70,0.207,0.179,P 1 21 1,Homo sapiens,PTPRB,RPTPb,UA5,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2AHS,2AHS_qFit_chainA,90,90,120,123.368,123.368,179.569,chainA,100,270,,68.95,2.10,0.206,0.152,P 61 2 2,Homo sapiens,PTPRB,RPTPb,,,,,apo,WT,,,,D1,,open,CL; NA; EDO,
-2AHS,2AHS_qFit_chainB,90,90,120,123.368,123.368,179.569,chainA,100,209,,68.95,2.10,0.206,0.152,P 61 2 2,Homo sapiens,PTPRB,RPTPb,,,,,apo,WT,,,,D1,,open,CL; NA; EDO,
-2HC1,2HC1_qFit_chainA,90,90,90,39.06,70.714,118.455,chainA,100,362,,33.91,1.30,0.17885,0.13376,P 21 21 21,Homo sapiens,PTPRB,RPTPb,,,,,apo,M,1748; 1749,N; V,G; G,D1,,open,N74G; V75G,
-2HC2,2HC2_qFit_chainA,90,92.52,90,38.314,70.775,49.846,chainA,100,303,,33.85,1.40,0.17892,0.14391,P 1 21 1,Homo sapiens,PTPRB,RPTPb,,,,,apo,M,1748; 1749,N; V,G; G,D1,,open,N74G; V75G,
-2I3R,2I3R_qFit_chainA,90,93.58,90,61.856,71.643,70.531,chainA,100,123,,72.65,1.85,0.217,0.184,P 1 21 1,Homo sapiens,PTPRB,RPTPb,,,,,apo,WT,,,,D1,,open,,
-2I3R,2I3R_qFit_chainB,90,93.58,90,61.856,71.643,70.531,chainB,100,67,,72.65,1.85,0.217,0.184,P 1 21 1,Homo sapiens,PTPRB,RPTPb,,,,,apo,WT,,,,D1,,open,,
-2I3U,2I3U_qFit_chainA,90,90,90,38.785,69.777,118.523,chainA,100,204,,36.29,1.85,0.226,0.187,P 21 21 21,Homo sapiens,PTPRB,RPTPb,,,,,apo,WT,,,,D1,,open,,
-6D4D,6D4D_qFit_chainA,90,115.73,90,154.055,35.998,115.023,chainA,100,297,2,67.83,1.77,0.2223,0.1782,C 1 2 1,Homo sapiens,PTPRE,RPTPe,,,,,apo,WT,,,,D1,,open,,
-6D4D,6D4D_qFit_chainB,90,115.73,90,154.055,35.998,115.023,chainB,100,235,2,67.83,1.77,0.2223,0.1782,C 1 2 1,Homo sapiens,PTPRE,RPTPe,,,,,apo,WT,,,,D1,,open,D1 domain,
-3QCC,3QCC_qFit_chainB,90,90,90,74.9,77.7,123.7,chainB,100,31,,71.65,2.10,0.267,0.224,P 21 21 21,Homo sapiens,PTPRG,RPTPg,VO4,,inhibitory,ion,active,WT,,,,D1,,closed,,
-3QCD,3QCD_qFit_chainA,90,90,120,75.4,75.4,151,chainA,100,134,,35.94,1.80,0.257,0.241,P 32 2 1,Homo sapiens,PTPRG,RPTPg,VO4,,inhibitory,ion,active,WT,,,,D1,,closed,,
-3QCC,3QCC_qFit_chainA,90,90,90,74.9,77.7,123.7,chainA,100,67,,71.65,2.10,0.267,0.224,P 21 21 21,Homo sapiens,PTPRG,RPTPg,VO4,,inhibitory,ion,active,WT,,,,D1,,open,,
-3QCE,3QCE_qFit_chainA,90,90,90,74.9,82.5,127,chainA,100,86,,72.44,2.10,0.261,0.233,P 21 21 21,Homo sapiens,PTPRG,RPTPg,NXY,,inhibitory,small_molecule,allosteric,WT,,,,D1,,open,WPD in open (NOT superopen) conf,
-3QCG,3QCG_qFit_chainA,90,90,120,75.5,75.5,152.1,chainA,100,179,,36.13,2.05,0.253,0.217,P 32 2 1,Homo sapiens,PTPRG,RPTPg,NX1,,inhibitory,small_molecule,allosteric,WT,,,,D1,,open,,
-3QCE,3QCE_qFit_chainB,90,90,90,74.9,82.5,127,chainB,100,78,,72.44,2.10,0.261,0.233,P 21 21 21,Homo sapiens,PTPRG,RPTPg,NXY,,inhibitory,small_molecule,allosteric,WT,,,,D1,,superopen,"WPD in superopen conf; Compound 1; binding site includes residues Ile950, Tyr1023, Trp1026, Val1031, Pro1032, Arg1066, Thr1069, Thr1070, Thr1105, Glu1107, Gln1108, and Phe1111",
-3QCK,3QCK_qFit_chainA,90,90,120,75.5,75.5,152.1,chainA,100,93,,36.02,2.05,0.261,0.233,P 32 2 1,Homo sapiens,PTPRG,RPTPg,NX5,,inhibitory,small_molecule,allosteric,WT,,,,D1,,superopen,WPD in superopen conf; Compound 17 (same binding site as in 3QCE_B),
-2H4V,2H4V_qFit_chainA,90,90,90,74.849,78.859,121.758,chainA,100,283,,75.11,1.55,0.1813,0.1613,P 21 21 21,Homo sapiens,PTPRG,RPTPg,,,,,apo,WT,,,,D1,,open,,
-2H4V,2H4V_qFit_chainB,90,90,90,74.849,78.859,121.758,chainB,100,279,,75.11,1.55,0.1813,0.1613,P 21 21 21,Homo sapiens,PTPRG,RPTPg,,,,,apo,WT,,,,D1,,open,,
-2PBN,2PBN_qFit_chainA,90,90,120,107.338,107.338,67.757,chainA,100,238,,36.19,1.70,0.234,0.208,P 32 2 1,Homo sapiens,PTPRG,RPTPg,SO4,,,,apo,WT,,,,D1,,open,,
-3QCB,3QCB_qFit_chainA,90,90,90,74.9,79.5,123.9,chainA,100,98,,71.99,2.10,0.304,0.254,P 21 21 21,Homo sapiens,PTPRG,RPTPg,SO4,,,,apo,WT,,,,D1,,open,,
-3QCB,3QCB_qFit_chainB,90,90,90,74.9,79.5,123.9,chainB,100,76,,71.99,2.10,0.304,0.254,P 21 21 21,Homo sapiens,PTPRG,RPTPg,SO4,,,,apo,WT,,,,D1,,open,,
-2C7S,2C7S_qFit_chainA,90,90,90,91.373,91.373,108.415,chainA,100,138,1,36.12,1.95,0.218,0.2,P 43 21 2,Homo sapiens,PTPRK,RPTPk,,,,,apo,WT,,,,D1,,open,,
-1JLN,1JLN_qFit_chainA,90,90,90,46.136,65.322,105.67,chainA,100,238,,33.75,1.81,0.245,0.195,P 21 21 21,Mus musculus,PTP13,RPTPr,,,,,apo,WT,,,,D1,,open,,
-2FH7,2FH7_qFit_D1_chainA,90,90,120,94.333,94.333,123.036,chainA,100,361,,68.7,2.00,0.238,0.19,P 61,Homo sapiens,PTPRS,RPTPs,,,,,apo,WT,,,,D1,D1/D2,open,,
-2NV5,2NV5_qFit_chainA,90,90,120,140.789,140.789,112.431,chainA,77,177,,103.04,2.00,0.237,0.197,P 61,Rattus norvegicus,PTPRS,RPTPs,,,,,apo,WT,,,,D1,,open,,
-2NV5,2NV5_qFit_chainB,90,90,120,140.789,140.789,112.431,chainB,77,244,,103.04,2.00,0.237,0.197,P 61,Rattus norvegicus,PTPRS,RPTPs,,,,,apo,WT,,,,D1,,open,,
-2NV5,2NV5_qFit_chainC,90,90,120,140.789,140.789,112.431,chainC,77,207,,103.04,2.00,0.237,0.197,P 61,Rattus norvegicus,PTPRS,RPTPs,,,,,apo,WT,,,,D1,,open,,
-4BPC,4BPC_qFit_D1_chainA,90,90,120,94.672,94.672,123.423,chainA,100,181,,66.93,2.10,0.22198,0.17827,P 61,Homo sapiens,PTPRS,RPTPs,,,,,apo,M,1457; 1530; 1577; 1598; 1651; 1704; 1723; 1932,C; C; C; C; C; C; C; C,R; A; A; A; A; A; A; A,D1,D1/D2,open,catalytic Cys (1589) in sulfenic acid form (CSO),
-2OOQ,2OOQ_qFit_chainA,90,99.89,90,37.186,86.697,91.12,chainA,100,164,,66.18,1.80,0.18758,0.14488,P 1 21 1,Homo sapiens,PTPRT,RPTPt,B3P,,inhibitory,small_molecule,allosteric,WT,,,,D1,,closed,,
-2OOQ,2OOQ_qFit_chainB,90,99.89,90,37.186,86.697,91.12,chainB,100,277,,66.18,1.80,0.18758,0.14488,P 1 21 1,Homo sapiens,PTPRT,RPTPt,B3P,,inhibitory,small_molecule,allosteric,WT,,,,D1,,open,,
-6SUB,6SUB_qFit_chainA,90,90,90,61.821,107.887,88.328,chainA,100,117,,34.1,1.72,0.2014,0.1819,C 2 2 21,Homo sapiens,PTPRU,RPTPu,,,,,apo,M,940,N,S,D1,,open,reduced form,
-6SUC,6SUC_qFit_chainA,90,90,90,62.09,107.92,89.28,chainA,100,94,1,34.03,1.97,0.2452,0.2139,C 2 2 21,Homo sapiens,PTPRU,RPTPu,,,,,apo,M,940,N,S,D1,,open,oxidized form,
-4GRZ,4GRZ_qFit_chainA,90,91.24,90,164.141,45.404,44.679,chainA,100,391,,33.01,1.37,0.1889,0.1685,C 1 2 1,Homo sapiens,PTPN6,SHP1,PO4,,,ion,active,M,453,C,S,D1,,closed,C213S,
-4HJQ,4HJQ_qFit_chainA,102.39,94.71,110.01,45.642,57.783,77.319,chainA,100,330,,70.93,1.80,0.2022,0.1654,P 1,Homo sapiens,PTPN6,SHP1,PO4,,,ion,active,M,453,C,S,D1,,closed,C233S,
-4HJQ,4HJQ_qFit_chainB,102.39,94.71,110.01,45.642,57.783,77.319,chainB,100,352,,70.93,1.80,0.2022,0.1654,P 1,Homo sapiens,PTPN6,SHP1,PO4,,,ion,active,M,453,C,S,D1,,closed,C233S,
-4GS0,4GS0_qFit_chainA,90,90,120,43.935,43.935,258.112,chainA,100,159,,71.32,1.80,0.1953,0.1617,P 31,Homo sapiens,PTPN6,SHP1,,,,,apo,WT,,,,D1,,closed,,
-4GS0,4GS0_qFit_chainB,90,90,120,43.935,43.935,258.112,chainB,100,128,,71.32,1.80,0.1953,0.1617,P 31,Homo sapiens,PTPN6,SHP1,FTY,,,,apo,WT,,,,D1,,open,only in chain B,
-3B7O,3B7O_qFit_chainA,90,90,90,44.813,86.496,166.555,chainA,100,241,,37.01,1.60,0.20897,0.17009,C 2 2 21,Homo sapiens,PTPN11,SHP2,MLT,,,ion,active,WT,,,,D1,,open,,
-3O5X,3O5X_qFit_chainA,90,98.53,90,39.544,75.829,48.214,chainA,100,134,,32.84,2.00,0.238,0.1961,P 1 21 1,Homo sapiens,PTPN11,SHP2,JZG,,inhibitory,small_molecule,active,WT,,,,D1,,open,,
-4RDD,4RDD_qFit_chainA,90,99.11,90,39.638,75.274,48.046,chainA,100,368,,32.66,1.60,0.2011,0.1751,P 1 21 1,Homo sapiens,PTPN11,SHP2,3LU,,inhibitory,substrate_mimetic,active,WT,,,,D1,,open,catalytic domain only; pTyr mimetic,423-425
-2SHP,2SHP_qFit_chainA,90,96.3,90,45.9,214.5,55.7,chainA,100,401,,120.82,2.00,0.27,0.199,P 1 21 1,Homo sapiens,PTPN11,SHP2,CAT,,,other,allosteric,M,2; 41; 513,T; F; F,K; L; S,D1,SH1/SH2,open,T2K; F41L; F513S,
-2SHP,2SHP_qFit_chainB,90,96.3,90,45.9,214.5,55.7,chainB,100,376,,120.82,2.00,0.27,0.199,P 1 21 1,Homo sapiens,PTPN11,SHP2,CAT,,,other,allosteric,M,2; 41; 513,T; F; F,K; L; S,D1,SH1/SH2,open,T2K; F41L; F513S,
-5EHP,5EHP_qFit_chainA,90,96.82,90,46.31,213.73,55.98,chainA,100,350,,122.13,1.85,0.2084,0.1745,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OA,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,5OA and 5OD bind at the same location,
-5EHP,5EHP_qFit_chainB,90,96.82,90,46.31,213.73,55.98,chainB,100,304,,122.13,1.85,0.2084,0.1745,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OA,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,5OA and 5OD bind at the same location,
-5EHR,5EHR_qFit_chainA,90,96.88,90,46.19,213.79,55.89,chainA,100,343,,121.94,1.70,0.2207,0.1948,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OD,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,5OA and 5OD bind at the same location,
-5EHR,5EHR_qFit_chainB,90,96.88,90,46.19,213.79,55.89,chainB,100,327,,121.94,1.70,0.2207,0.1948,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OD,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,5OA and 5OD bind at the same location,
-6BMV,6BMV_qFit_chainA,90,97.3,90,46.42,216.88,55.86,chainA,100,310,,121.94,2.05,0.223,0.174,P 1 21 1,Homo sapiens,PTPN11,SHP2,DZS,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 9,
-6BMV,6BMV_qFit_chainB,90,97.3,90,46.42,216.88,55.86,chainB,100,337,,121.94,2.05,0.223,0.174,P 1 21 1,Homo sapiens,PTPN11,SHP2,DZS,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 9,
-6BMW,6BMW_qFit_chainA,90,96.68,90,46.27,214.13,56.03,chainA,100,231,,122.74,2.10,0.229,0.186,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OD; DZS,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 1; Compound 9; binding sites are different,
-6BMW,6BMW_qFit_chainB,90,96.68,90,46.27,214.13,56.03,chainB,100,231,,122.74,2.10,0.229,0.186,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OD; DZS,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 1; Compound 9; binding sites are different,
-6BMY,6BMY_qFit_chainA,90,96.71,90,46.05,213.71,55.98,chainA,100,246,,123.09,2.09,0.228,0.18,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OD; DYV,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 1; Compound 8; binding sites are different,
-6BMY,6BMY_qFit_chainB,90,96.71,90,46.05,213.71,55.98,chainB,100,232,,123.09,2.09,0.228,0.18,P 1 21 1,Homo sapiens,PTPN11,SHP2,5OD; DYV,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 1; Compound 8; binding sites are different,
-6MD7,6MD7_qFit_chainA,90,96.51,90,46.05,213.59,55.91,chainA,100,371,,122.51,1.96,0.209,0.17,P 1 21 1,Homo sapiens,PTPN11,SHP2,JE1,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-6MD7,6MD7_qFit_chainB,90,96.51,90,46.05,213.59,55.91,chainB,100,361,,122.51,1.96,0.209,0.17,P 1 21 1,Homo sapiens,PTPN11,SHP2,JE1,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-6MDD,6MDD_qFit_chainA,90,96.96,90,46.419,214.8,56.092,chainA,100,131,,121.48,2.05,0.251,0.213,P 1 21 1,Homo sapiens,PTPN11,SHP2,JE7,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-6MDD,6MDD_qFit_chainB,90,96.96,90,46.419,214.8,56.092,chainB,100,121,,121.48,2.05,0.251,0.213,P 1 21 1,Homo sapiens,PTPN11,SHP2,JE7,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-7JVN,7JVN_qFit_chainA,90,97.09,90,46.09,214.736,55.84,chainA,100,373,,121.93,1.92,0.214,0.181,P 1 21 1,Homo sapiens,PTPN11,SHP2,VKP,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,Compound 8,
-7JVN,7JVN_qFit_chainB,90,97.09,90,46.09,214.736,55.84,chainB,100,365,,121.93,1.92,0.214,0.181,P 1 21 1,Homo sapiens,PTPN11,SHP2,VKP,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-7RCT,7RCT_qFit_chainA,90,96.83,90,45.79,213.78,55.85,chainA,93,323,1,121.44,1.80,0.2252,0.1845,P 1 21 1,Homo sapiens,PTPN11,SHP2,4Q4,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-7RCT,7RCT_qFit_chainB,90,96.83,90,45.79,213.78,55.85,chainB,93,370,1,121.44,1.80,0.2252,0.1845,P 1 21 1,Homo sapiens,PTPN11,SHP2,4Q4,,inhibitory,small_molecule,allosteric,WT,,,,D1,SH1/SH2,open,,
-3ZM0,3ZM0_qFit_chainA,72.52,81.63,74.73,40.216,42.257,49.197,chainA,100,206,,33.11,1.50,0.21342,0.18413,P 1,Homo sapiens,PTPN11,SHP2,,,,,apo,WT,,,,D1,,open,,
-3ZM1,3ZM1_qFit_chainA,72,80.28,74.19,40.174,42.051,49.256,chainA,100,283,,33.11,1.40,0.20281,0.17023,P 1,Homo sapiens,PTPN11,SHP2,,,,,apo,WT,,,,D1,,open,,
-3ZM2,3ZM2_qFit_chainA,72.04,80.39,74.65,40.123,42.061,49.287,chainA,100,205,,33.11,1.50,0.22286,0.18549,P 1,Homo sapiens,PTPN11,SHP2,,,,,apo,WT,,,,D1,,open,,
-3ZM3,3ZM3_qFit_chainA,71.99,81.09,75.36,40.19,42.091,49.386,chainA,100,221,,33.16,1.50,0.22747,0.19056,P 1,Homo sapiens,PTPN11,SHP2,,,,,apo,WT,,,,D1,,open,,
-4GWF,4GWF_qFit_chainA,90,96.63,90,45.972,211.953,55.691,chainA,100,134,,130.14,2.10,0.2433,0.21,P 1 21 1,Homo sapiens,PTPN11,SHP2,,,,,apo,M,279,Y, C,D1,SH1/SH2,open,Y279C,
-4GWF,4GWF_qFit_chainB,90,96.63,90,45.972,211.953,55.691,chainB,100,127,,130.14,2.10,0.2433,0.21,P 1 21 1,Homo sapiens,PTPN11,SHP2,,,,,apo,M,279,Y, C,D1,SH1/SH2,open,Y279C,
-4NWF,4NWF_qFit_chainA,90,90,90,211.28,55.88,91.629,chainA,100,326,,124.54,2.10,0.3094,0.2664,P 21 21 21,Homo sapiens,PTPN11,SHP2,,,,,apo,M,308,N,D,D1,SH1/SH2,open,N308D,
-4NWF,4NWF_qFit_chainB,90,90,90,211.28,55.88,91.629,chainB,100,329,,124.54,2.10,0.3094,0.2664,P 21 21 21,Homo sapiens,PTPN11,SHP2,,,,,apo,M,308,N,D,D1,SH1/SH2,open,N308D,
-5I6V,5I6V_qFit_chainA,90,96.08,90,45.822,214.263,55.472,chainA,100,548,,120.56,1.87,0.2317,0.2014,P 1 21 1,Homo sapiens,PTPN11,SHP2,,,,,apo,M,285,F,S,D1,SH1/SH2,open,F285S,
-5I6V,5I6V_qFit_chainB,90,96.08,90,45.822,214.263,55.472,chainB,100,560,,120.56,1.87,0.2317,0.2014,P 1 21 1,Homo sapiens,PTPN11,SHP2,,,,,apo,M,285,F,S,D1,SH1/SH2,open,F285S,
-6CMP,6CMP_qFit_chainA,90,90,90,54.75,84.91,211.92,chainA,100,372,,122.06,1.80,0.2306,0.2012,P 21 21 21,Homo sapiens,PTPN11,SHP2,,,,,apo,M,459,C,E,D1,SH1/SH2,open,C459E (catalytic Cys),
-6CMP,6CMP_qFit_chainB,90,90,90,54.75,84.91,211.92,chainB,100,391,,122.06,1.80,0.2306,0.2012,P 21 21 21,Homo sapiens,PTPN11,SHP2,,,,,apo,M,459,C,E,D1,SH1/SH2,open,C459E (catalytic Cys),
-5OVX,5OVX_qFit_chainA,90,90,90,52.117,64.124,100.338,chainA,100,252,,35.66,2.10,0.228,0.1954,P 21 21 21,Homo sapiens,PTPN5,STEP,AY5,,inhibitory,small_molecule,active,WT,,,,D1,,superopen,,
-5OW1,5OW1_qFit_chainA,90,90,90,52.66,64.41,100.16,chainA,100,302,,35.62,2.05,0.2115,0.18,P 21 21 21,Homo sapiens,PTPN5,STEP,AY8,,inhibitory,small_molecule,active,WT,,,,D1,,superopen,,
-2CJZ,2CJZ_qFit_chainA,90,90,90,52.342,64.348,100.781,chainA,100,212,,35.51,1.70,0.205,0.175,P 21 21 21,Homo sapiens,PTPN5,STEP,PTR,,activating,substrate,active,M,496,C,S,D1,,superopen,Has 5 mutations but 4 res marked as mutant are not; bound to a phosphotyrosine residue. Catalytic Cys mutated to Ser,
-6H8R,6H8R_qFit_chainA,90,90,90,53.095,64.375,100.804,chainA,100,377,,35.52,1.66,0.239,0.2,P 21 21 21,Homo sapiens,PTPN5,STEP,FWB,,activating,small_molecule,allosteric,WT,,,,D1,,superopen,Compound 2,
-6H8S,6H8S_qFit_chainA,90,90,90,59.303,59.303,181.641,chainA,100,277,,35.17,1.77,0.212,0.181,P 41 21 2,Mus musculus,PTPN5,STEP,FSZ,,activating,small_molecule,allosteric,WT,,,,D1,,superopen,BI-0314; Binding site here is different than 6H8R,
-2BIJ,2BIJ_qFit_chainA,90,90,90,51.808,64.318,101.077,chainA,100,103,,35.3,2.05,0.264,0.212,P 21 21 21,Homo sapiens,PTPN5,STEP,SO4,,,,apo,WT,,,,D1,,superopen,SO4; Has 4 mutations but all 4 res marked as mutant are not,
-2BV5,2BV5_qFit_chainA,90,90,90,39.957,64.01,136.149,chainA,100,271,,32.71,1.80,0.201,0.164,P 21 21 21,Homo sapiens,PTPN5,STEP,SO4,,,,apo,M,281,A,P,D1,,superopen,"Has 5 mutations but 4 res marked as mutant are not; a residue is modified. Looking at the sequence, catalytic Cys looks deleted/missing",
-7F5N,7F5N_qFit_chainA,112.932,106.459,92.459,54.57,68.056,73.244,chainA,107,158,,110.79,1.93,0.2376,0.1834,P 1,Homo sapiens,PTPN2,TCPTP,,,,,apo,WT,,,,D1,,closed,,
-7F5N,7F5N_qFit_chainB,112.932,106.459,92.459,54.57,68.056,73.244,chainB,107,90,,110.79,1.93,0.2376,0.1834,P 1,Homo sapiens,PTPN2,TCPTP,,,,,apo,WT,,,,D1,,closed,,
-7F5N,7F5N_qFit_chainC,112.932,106.459,92.459,54.57,68.056,73.244,chainC,107,162,,110.79,1.93,0.2376,0.1834,P 1,Homo sapiens,PTPN2,TCPTP,,,,,apo,WT,,,,D1,,closed,,
-7F5O,7F5O_qFit_chainA,111.54,102.659,92.337,55.094,68.187,72.683,chainA,107,197,,107.21,1.70,0.241,0.1989,P 1,Homo sapiens,PTPN2,TCPTP,,,,,apo,WT,,,,D1,,closed,Does not have the catalytic domain; only 2 PDZ domains,
-7F5O,7F5O_qFit_chainB,111.54,102.659,92.337,55.094,68.187,72.683,chainB,107,149,,107.21,1.70,0.241,0.1989,P 1,Homo sapiens,PTPN2,TCPTP,,,,,apo,WT,,,,D1,,closed,Does not have the catalytic domain; only 2 PDZ domains,
-7F5O,7F5O_qFit_chainC,111.54,102.659,92.337,55.094,68.187,72.683,chainC,107,207,,107.21,1.70,0.241,0.1989,P 1,Homo sapiens,PTPN2,TCPTP,,,,,apo,WT,,,,D1,,closed,Does not have the catalytic domain; only 2 PDZ domains,
-2Y2F,2Y2F_qFit_chainA,90,90,90,49.243,55.48,100.081,chainA,100,274,,33.88,1.78,0.21007,0.16457,P 21 21 21,Yersinia pestis,yopH,YopH,YI1,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-2YDU,2YDU_qFit_chainA,90,90,90,49.307,55.912,99.055,chainA,100,276,,33.79,1.79,0.21323,0.17589,P 21 21 21,Yersinia pestis,yopH,YopH,79W,,inhibitory,small_molecule,active,WT,,,,D1,,closed,,
-3BLU,3BLU_qFit_chainA,90,90,90,48.849,54.092,96.926,chainA,100,164,,33.59,2.00,0.253,0.205,P 21 21 21,Yersinia enterocolitica,yopH,YopH,PVS,,inhibitory,small_molecule,active,M,235,C,R,D1,,closed,C72R,
-1PA9,1PA9_qFit_chainA,90,90,90,49.36,55.9,97.84,chainA,140,217,,31.49,2.00,0.243,0.226,P 21 21 21,Yersinia enterocolitica,yopH,YopH,CSN,,inhibitory,small_molecule; substrate_mimetic,active,M,51,C,R,D1,,closed,C51R,
-1QZ0,1QZ0_qFit_chainA,109.61,104.75,89.98,47.292,53.45,69.066,chainA,100,297,,70.45,1.50,0.209,0.188,P 1,Yersinia pestis,yopH,YopH,FTY; FTY,,inhibitory,substrate_mimetic,active,M,235; 392,C; G,R; A,D1,,closed,"C73R; G230A; bidendate (2 molecules bound, 1 in the active site and 2nd elsewhere) ",
-1QZ0,1QZ0_qFit_chainB,109.61,104.75,89.98,47.292,53.45,69.066,chainB,100,265,,70.45,1.50,0.209,0.188,P 1,Yersinia pestis,yopH,YopH,FTY; FTY,,inhibitory,substrate_mimetic,active,M,235; 392,C; G,R; A,D1,,closed,"C73R; G230A; bidendate (2 molecules bound, 1 in the active site and 2nd elsewhere) ",
-3U96,3U96_qFit_chainB,104.78,108.79,97.83,49.863,53.993,65.759,chainB,100,156,,67.74,1.80,0.2071,0.1792,P 1,Yersinia enterocolitica,yopH,YopH,CSN,,inhibitory,substrate_mimetic,active,M,235; 357,C; Q,R; F,D1,,closed,C73R; Q195F,
-3U96,3U96_qFit_chainA,104.78,108.79,97.83,49.863,53.993,65.759,chainA,100,153,,67.74,1.80,0.2071,0.1792,P 1,Yersinia enterocolitica,yopH,YopH,CSN,,inhibitory,substrate_mimetic,active,M,235; 357,C; Q,R; F,D1,,open,C73R; Q195F,
-6XFT,6XFT_qFit_chainA,90,90,90,49.69,54.94,97.01,chainA,100,186,,33.58,1.78,0.2269,0.1904,P 21 21 21,Yersinia enterocolitica,yopH,YopH,,,,,apo,M,235,C,R,D1,,closed,modified Cys residue; oxidized Cys by NO,
-3F9A,3F9A_qFit_chainA,90,90,90,54.431,58.263,90.622,chainA,82,373,,34.01,1.69,0.207,0.173,P 21 21 21,Yersinia enterocolitica (type O:9),yopH,YopH,WO4; WO4,,inhibitory,,apo,M,235; 354,C; W,R; F,D1,,intermediate,C73R; W192F; 2 WO4 bind of which 1 is in the active site,
-4YAA,4YAA_qFit_chainA,90,90,90,52.888,60.512,89.358,chainA,194,447,,33.69,1.05,0.14,0.128,P 21 21 21,Yersinia enterocolitica,yopH,YopH,,,,,apo,M,235; 354,C; W,R; Y,D1,,open,"W354Y (this causes disruption in WPD closure, reduced catalysis and quasi open WPD loop)",
-4Z6B,4Z6B_qFit_chainA,90,90,90,52.888,60.512,89.358,chainA,100,388,,33.66,1.20,0.159,0.14,P 21 21 21,Yersinia enterocolitica,yopH,YopH,,,,,apo,M,235; 354,C; W,R; H,D1,,open,"W354H (this causes disruption in WPD closure, reduced catalysis and quasi open WPD loop)",
+PDB,ID,UnitCell_Alpha,UnitCell_Beta,UnitCell_Gamma,UnitCell_A,UnitCell_B,UnitCell_C,Chain,Collection_Temperature,Water_Molecules,Resolution,R_Free,R_Work,Space_Group,Source_Organism,Gene_Name,Protein_Name,Ligand_Binding_Location,Sequence_WT_Or_Mutant,Catalytic_Domains
+6KRW,6KRW_qFit_chainA,90,109.49,90,117.682,42.213,72.959,chainA,100,198,1.4,0.16611,0.13309,C 1 2 1,Arabidopsis thaliana,PTP1,AtPTP1,apo,WT,D1
+6KRX,6KRX_qFit_chainA,90,110.815,90,116.536,38.97,75.525,chainA,100,221,1.7,0.1743,0.1511,C 1 2 1,Arabidopsis thaliana,PTP1,AtPTP1,apo,WT,D1
+4GFU,4GFU_qFit_chainA,90,99.52,90,44.032,71.766,57.161,chainA,100,146,2,0.2319,0.1894,P 1 21 1,Homo sapiens,PTPN18,BDP1,active,M,D1
+4GFV,4GFV_qFit_chainA,90,90,90,74.348,91.341,92.97,chainA,100,52,2.1,0.293,0.2459,P 21 21 21,Homo sapiens,PTPN18,BDP1,allosteric,M,D1
+4GFV,4GFV_qFit_chainB,90,90,90,74.348,91.341,92.97,chainB,100,65,2.1,0.293,0.2459,P 21 21 21,Homo sapiens,PTPN18,BDP1,allosteric,M,D1
+2OC3,2OC3_qFit_chainA,90,102.64,90,46.338,63.763,48.992,chainA,100,277,1.5,0.18395,0.15407,P 1 21 1,Homo sapiens,PTPN18,BDP1,apo,WT,D1
+1ZC0,1ZC0_qFit_chainA,90,90,120,127.101,127.101,59.863,chainA,100,286,1.85,0.18584,0.16134,P 61,Homo sapiens,PTPN7,HEPTP,active,WT,D1
+2GP0,2GP0_qFit_chainA,90,90,120,127.52,127.52,60.133,chainA,100,297,2.05,0.206,0.178,P 61,Homo sapiens,PTPN7,HEPTP,apo,M,D1
+2QDC,2QDC_qFit_chainA,90,90,120,127.258,127.258,59.56,chainA,100,230,2,0.19046,0.16276,P 61,Homo sapiens,PTPN7,HEPTP,apo,M,D1
+3O4S,3O4S_qFit_chainA,90,124.29,90,117.795,39.13,83.441,chainA,100,277,1.9,0.21214,0.1617,C 1 2 1,Homo sapiens,PTPN7,HEPTP,apo,M,D1
+5AWX,5AWX_qFit_chainA,90,90,90,54.641,72.245,90.557,chainA,100,247,1.86,0.22094,0.18563,P 21 21 21,Homo sapiens,PTPRZ1,HTPZP2,apo,WT,D1
+2P6X,2P6X_qFit_chainA,90,102.84,90,60.961,48.442,119.805,chainA,100,228,1.9,0.21725,0.16352,P 1 21 1,Homo sapiens,PTPN22,LyP,apo,WT,D1
+2P6X,2P6X_qFit_chainB,90,102.84,90,60.961,48.442,119.805,chainB,100,145,1.9,0.21725,0.16352,P 1 21 1,Homo sapiens,PTPN22,LyP,apo,WT,D1
+4ICZ,4ICZ_qFit_chainA,90,90,90,73.249,85.705,49.781,chainB,unpublished,118,1.9,0.2487,0.2033,P 21 21 2,Homo sapiens,PTPN9,MEG2,active,WT,D1
+6KZQ,6KZQ_qFit_chainA,90,90,90,71.447,83.708,48.615,chainA,293,215,1.7,0.2098,0.1837,P 21 21 2,Homo sapiens,PTPN9,MEG2,active,M,D1
+4GE5,4GE5_qFit_chainA,77.55,78.23,79.97,40.26,57.17,66.422,chainA,100,187,2,0.2228,0.1866,P 1,Homo sapiens,PTPN9,MEG2,active,WT,D1
+4GE6,4GE6_qFit_chainA,77.22,78.03,80.01,40.137,57.774,66.702,chainA,100,110,1.4,0.2152,0.1982,P 1,Homo sapiens,PTPN9,MEG2,active,WT,D1
+2PA5,2PA5_qFit_chainA,77.44,78.22,80.41,39.965,57.427,66.446,chainA,100,224,1.6,0.18792,0.15559,P 1,Homo sapiens,PTPN9,MEG2,apo,WT,D1
+4GE5,4GE5_qFit_chainB,77.55,78.23,79.97,40.26,57.17,66.422,chainB,100,169,2,0.2228,0.1866,P 1,Homo sapiens,PTPN9,MEG2,apo,WT,D1
+4GE6,4GE6_qFit_chainB,77.22,78.03,80.01,40.137,57.774,66.702,chainB,100,90,1.4,0.2152,0.1982,P 1,Homo sapiens,PTPN9,MEG2,apo,WT,D1
+2PA5,2PA5_qFit_chainB,77.44,78.22,80.41,39.965,57.427,66.446,chainB,100,186,1.6,0.18792,0.15559,P 1,Homo sapiens,PTPN9,MEG2,apo,WT,D1
+1G1F,1G1F_qFit_chainA,90,111.19,90,42.545,89.124,50.126,chainA,100,247,2,0.227,0.207,P 1 21 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+1Q6N,1Q6N_qFit_chainA,90,90,90,86.878,88.409,139.224,chainA,100,128,2.1,0.238,0.208,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+1Q6N,1Q6N_qFit_chainB,90,90,90,86.878,88.409,139.224,chainB,100,111,2.1,0.238,0.208,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2AZR,2AZR_qFit_chainA,90,90,120,88.318,88.318,104.043,chainA,113,215,2,0.2497,0.2234,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2B07,2B07_qFit_chainA,90,90,120,88.239,88.239,104.063,chainA,110,176,2.1,0.2412,0.2107,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2F6T,2F6T_qFit_chainA,90,90,120,88.219,88.219,104.867,chainA,100,368,1.7,0.192,0.166,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2F6V,2F6V_qFit_chainA,90,90,120,87.984,87.984,104.455,chainA,100,262,1.7,0.18775,0.17076,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2F6Z,2F6Z_qFit_chainA,90,90,120,87.996,87.996,104.656,chainA,100,343,1.7,0.177,0.16,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2F71,2F71_qFit_chainA,90,90,120,88.189,88.189,105.115,chainA,100,348,1.55,0.172,0.152,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2FJM,2FJM_qFit_chainA,90,90,90,86.431,86.621,139.193,chainA,100,145,2.1,0.21676,0.19152,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,M,D1
+2FJM,2FJM_qFit_chainB,90,90,90,86.431,86.621,139.193,chainB,100,154,2.1,0.21676,0.19152,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,M,D1
+2HB1,2HB1_qFit_chainA,90,90,120,88.538,88.538,104.202,chainA,113,171,2,0.243,0.2176,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2NTA,2NTA_qFit_chainA,90,90,120,88.256,88.256,104.17,chainA,113,218,2.1,0.2473,0.2152,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2QBQ,2QBQ_qFit_chainA,90,90,120,88.345,88.345,104.21,chainA,113,270,2.1,0.226,0.194,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2QBS,2QBS_qFit_chainA,90,90,120,88.458,88.458,104.358,chainA,113,223,2.1,0.229,0.193,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2VEV,2VEV_qFit_chainA,90,90,90,66.95,73.02,2,chainA,93,353,1.8,0.2332,0.203,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2VEW,2VEW_qFit_chainA,90,90,90,66.8,72.72,88.13,chainA,93,295,2,0.2386,0.2014,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2ZMM,2ZMM_qFit_chainA,90,90,120,88.02,88.02,103.676,chainA,113,293,2.1,0.2135,0.1827,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+2ZN7,2ZN7_qFit_chainA,90,90,120,88.49,88.49,104.9,chainA,113,218,2.1,0.2062,0.1777,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+4Y14,4Y14_qFit_chainA,90,94.3,90,52.167,71.748,88.01,chainA,111,275,1.9,0.2059,0.1661,P 1 21 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+4Y14,4Y14_qFit_chainB,90,94.3,90,52.167,71.748,88.01,chainB,111,264,1.9,0.2059,0.1661,P 1 21 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+5K9W,5K9W_qFit_chainA,90,90,120,88.555,88.555,103.867,chainA,100,171,2.01,0.2148,0.1848,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+5KA1,5KA1_qFit_chainA,90,90,120,88.021,88.021,72.972,chainA,100,200,1.84,0.1946,0.166,P 32 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+5KA7,5KA7_qFit_chainA,90,90,120,88.564,88.564,104.11,chainA,100,165,2.06,0.2137,0.1834,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+7MN7,7MN7_qFit_chainA,90,90,120,88.515,88.515,104.231,chainA,100,252,1.95,0.1901,0.1555,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+7MOW,7MOW_qFit_chainA,90,90,120,88.609,88.609,103.571,chainA,100,259,1.8,0.1757,0.1547,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+4BJO,4BJO_qFit_chainA,90,95.01,90,161.62,66.765,68.771,chainA,100,71,2.06,0.23932,0.21529,C 1 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+4ZRT,4ZRT_qFit_chainA,90,97.25,90,43.848,88.725,50.043,chainA,100,272,1.74,0.20743,0.16835,P 1 21 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+6PG0,6PG0_qFit_chainA,90,90,120,88.227,88.227,104.068,chainA,93,239,2.1,0.2251,0.1947,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+6PM8,6PM8_qFit_chainA,90,90,120,88.298,88.298,104.003,chainA,93,275,2.06,0.2195,0.1952,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+7L0H,7L0H_qFit_chainA,90,90,120,88.471,88.471,104.979,chainA,100,136,2.1,0.2079,0.178,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+5KA8,5KA8_qFit_chainA,90,90,120,88.896,88.896,105.84,chainA,100,201,1.97,0.2316,0.1883,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+1G7F,1G7F_qFit_chainA,90,90,90,52.74,83.82,88.66,chainA,100,462,1.8,0.249,0.18,P 21 21 21,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+3EAX,3EAX_qFit_chainA,90,90,120,88.612,88.612,104.278,chainA,100,90,1.9,0.244,0.213,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+5KA9,5KA9_qFit_chainA,90,90,120,88.709,88.709,106.218,chainA,100,189,2.07,0.2302,0.1887,P 31 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+5KAB,5KAB_qFit_chainA,90,90,120,88.17,88.17,71.908,chainA,100,161,1.97,0.2092,0.1781,P 32 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+5KAD,5KAD_qFit_chainA,90,104.4,90,47.626,73.732,88.123,chainA,100,322,1.9,0.2049,0.1759,P 1 21 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+5KAD,5KAD_qFit_chainB,90,104.4,90,47.626,73.732,88.123,chainB,100,322,1.9,0.2049,0.1759,P 1 21 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+7MNF,7MNF_qFit_chainA,90,90,120,88.331,88.331,72.646,chainA,100,243,1.7,0.2021,0.182,P 32 2 1,Homo sapiens,PTPN1,PTP1B,active,M,D1
+4BJO,4BJO_qFit_chainB,90,95.01,90,161.62,66.765,68.771,chainB,100,53,2.06,0.23932,0.21529,C 1 2 1,Homo sapiens,PTPN1,PTP1B,active,WT,D1
+1BZH,1BZH_qFit_chainA,90,96.91,90,39.69,86.82,52,chainA,100,88,2.1,0.262,0.196,P 1 21 1,Homo sapiens,PTPN1,PTP1B,allosteric,WT,D1
+1T49,1T49_qFit_chainA,90,90,120,88.394,88.394,104.615,chainA,100,235,1.9,0.2357,0.20547,P 31 2 1,Homo sapiens,PTPN1,PTP1B,allosteric,WT,D1
+6B8Z,6B8Z_qFit_chainA,90,90,120,89.65,89.65,106.39,chainA,273,167,1.8,0.1991,0.1687,P 31 2 1,Homo sapiens,PTPN1,PTP1B,allosteric,M,D1
+6B95,6B95_qFit_chainA,90,90,120,87.96,87.96,104.63,chainA,100,135,1.95,0.2307,0.1858,P 31 2 1,Homo sapiens,PTPN1,PTP1B,allosteric,M,D1
+6W30,6W30_qFit_chainA,90,90,120,89.033,89.033,105.559,chainA,100,170,2.1,0.2388,0.1973,P 31 2 1,Homo sapiens,PTPN1,PTP1B,allosteric,WT,D1
+1PA1,1PA1_qFit_chainA,90,90,120,88.451,88.451,104.356,chainA,100,330,1.6,0.204,0.186,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+1SUG,1SUG_qFit_chainA,90,90,120,88.118,88.118,103.9,chainA,100,251,1.95,0.203,0.188,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+6B8E,6B8E_qFit_chainA,90,90,120,88.57,88.57,104.32,chainA,180,294,1.82,0.1997,0.1708,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6B8T,6B8T_qFit_chainA,90,90,120,89.44,89.44,106,chainA,240,240,1.85,0.2123,0.1674,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6B8X,6B8X_qFit_chainA,90,90,120,89.52,89.52,106.25,chainA,278,225,1.74,0.2059,0.1752,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6B90,6B90_qFit_chainA,90,90,120,88.118,88.118,103.9,chainA,100,294,1.95,0.1926,0.158,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6OLQ,6OLQ_qFit_chainA,90,90,120,88.517,88.517,104.253,chainA,93,225,2.1,0.2344,0.2031,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6OMY,6OMY_qFit_chainA,90,90,120,88.263,88.263,103.324,chainA,93,239,2.1,0.2052,0.1861,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7MOV,7MOV_qFit_chainB,90,110.933,90,114.359,90.102,74.49,chainB,100,223,1.65,0.1933,0.1653,C 1 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+2F6F,2F6F_qFit_chainA,90,90,120,88.33,88.33,104.18,chainA,100,251,2,0.203,0.183,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+1I57,1I57_qFit_chainA,90,90,120,87.381,87.381,95.942,chainA,100,250,2.1,0.266,0.195,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+1OEM,1OEM_qFit_chainX,90,90,120,88.218,88.218,103.787,chainX,100,181,1.8,0.227,0.203,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+3A5J,3A5J_qFit_chainA,90,90,120,88.426,88.426,72.467,chainA,98,200,1.7,0.22857,0.188,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+3A5K,3A5K_qFit_chainA,90,90,90,59.094,60.755,87.964,chainA,98,197,1.85,0.23323,0.18912,P 21 21 21,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+3QKP,3QKP_qFit_chainA,90,90,120,88.282,88.282,104.535,chainA,100,239,2.05,0.2452,0.204,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+3SME,3SME_qFit_chainA,90,90,120,88,88,104,chainA,100,170,1.7,0.2096,0.1972,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+4QAP,4QAP_qFit_chainA,90,90,120,88.47,88.47,104.558,chainA,100,129,1.9,0.242,0.209,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+4QBW,4QBW_qFit_chainA,90,90,120,89.013,89.013,106.146,chainA,100,130,1.91,0.2385,0.2064,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+5K9V,5K9V_qFit_chainA,90,90,120,88.526,88.526,72.992,chainA,100,213,1.9,0.2059,0.1733,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+5KA0,5KA0_qFit_chainA,90,90,120,88.362,88.362,72.507,chainA,100,213,1.99,0.211,0.1646,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+5KA2,5KA2_qFit_chainA,90,90,120,87.306,87.306,98.625,chainA,100,149,2.07,0.2382,0.2037,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+5KAA,5KAA_qFit_chainA,90,90,120,88.33,88.33,72.373,chainA,100,206,1.97,0.2104,0.1728,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+5KAC,5KAC_qFit_chainA,90,90,120,88.375,88.375,72.342,chainA,100,202,1.9,0.2109,0.1681,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6BAI,6BAI_qFit_chainA,90,90,120,87.265,87.265,104.103,chainA,100,109,1.95,0.2569,0.2061,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6CWU,6CWU_qFit_chainA,90,90,120,89.197,89.197,105.734,chainA,100,352,2.08,0.29122,0.25472,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+6CWV,6CWV_qFit_chainA,90,90,120,89.434,89.434,105.554,chainA,100,220,1.98,0.246377959,0.204635027,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7KEN,7KEN_qFit_chainA,90,90,120,88.314,88.314,104.155,chainA,100,187,1.8,0.24369,0.20351,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7LFO,7LFO_qFit_chainA,90,90,120,88.023,88.023,104.494,chainA,100,146,1.94,0.243,0.2004,P 31 2 1,Homo sapiens,PTPN1,PTP1B,apo,WT,D1
+7MKZ,7MKZ_qFit_chainA,90,90,120,88.552,88.552,72.643,chainA,100,279,1.4,0.173,0.156,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7MN9,7MN9_qFit_chainA,90,90,120,88.464,88.464,72.429,chainA,100,357,1.24,0.1801,0.1622,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7MNE,7MNE_qFit_chainA,90,90,120,88.123,88.123,72.377,chainA,100,179,1.6,0.1761,0.1632,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7MOU,7MOU_qFit_chainA,90,90,120,88.427,88.427,72.459,chainA,100,229,1.48,0.1801,0.1715,P 32 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+7MOV,7MOV_qFit_chainA,90,110.933,90,114.359,90.102,74.49,chainA,100,268,1.65,0.1933,0.1653,C 1 2 1,Homo sapiens,PTPN1,PTP1B,apo,M,D1
+1WCH,1WCH_qFit_chainA,90,113.05,90,99.707,59.193,66.075,chainA,101,280,1.85,0.204,0.177,C 1 2 1,Homo sapiens,PTPN13,PTP1E,apo,WT,D1
+2BZL,2BZL_qFit_chainA,90,90,120,87.636,87.636,77.115,chainA,100,244,1.65,0.217,0.185,P 32 2 1,Homo sapiens,PTPN14,PTPD2,apo,WT,D1
+6IWD,6IWD_qFit_chainA,90,90,90,54.573,169.153,42.53,chainA,93,268,1.8,0.2125,0.1858,P 21 21 2,Homo sapiens,PTPN14,PTPD2,apo,WT,D1
+5J8R,5J8R_qFit_chainA,90,90,120,129.938,129.938,278.757,chainA,100,130,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,apo,M,D1
+5J8R,5J8R_qFit_chainB,90,90,120,129.938,129.938,278.757,chainB,100,142,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,apo,M,D1
+5J8R,5J8R_qFit_chainC,90,90,120,129.938,129.938,278.757,chainC,100,51,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,apo,M,D1
+5J8R,5J8R_qFit_chainD,90,90,120,129.938,129.938,278.757,chainD,100,54,2.04,0.2752,0.2388,H 3,Homo sapiens,PTPN12,PTPG1,apo,M,D1
+4RI4,4RI4_qFit_chainA,90,90,90,94.878,99.406,134.267,chainA,100,277,1.6,0.1886,0.1631,C 2 2 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4RI4,4RI4_qFit_chainB,90,90,90,94.878,99.406,134.267,chainB,100,258,1.6,0.1886,0.1631,C 2 2 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4RI5,4RI5_qFit_chainA,90,90,90,95.162,96.071,141.722,chainA,100,368,1.26,0.1732,0.1591,C 2 2 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4RI5,4RI5_qFit_chainB,90,90,90,95.162,96.071,141.722,chainB,100,389,1.26,0.1732,0.1591,C 2 2 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4RH5,4RH5_qFit_chainA,90,90,90,57.958,67.5,69.621,chainA,100,258,1.6,0.2035,0.1738,P 21 21 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4RH9,4RH9_qFit_chainA,90,90,90,58.084,67.63,69.754,chainA,100,196,1.6,0.2264,0.1945,P 21 21 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4RHG,4RHG_qFit_chainA,90,90,90,58.151,67.651,69.995,chainA,100,213,1.58,0.2088,0.1831,P 21 21 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4S0G,4S0G_qFit_chainA,90,90,90,58.051,67.332,68.985,chainA,100,137,1.72,0.2285,0.1823,P 21 21 21,Homo sapiens,PTPN3,PTPH1,active,M,D1
+4QUN,4QUN_qFit_chainA,90,90,90,94.74,97,138.207,chainA,100,170,1.86,0.2055,0.1771,C 2 2 21,Homo sapiens,PTPN3,PTPH1,apo,M,D1
+4QUN,4QUN_qFit_chainB,90,90,90,94.74,97,138.207,chainB,100,168,1.86,0.2055,0.1771,C 2 2 21,Homo sapiens,PTPN3,PTPH1,apo,M,D1
+3I36,3I36_qFit_chainA,90,90,90,46.468,63.113,111.655,chainA,100,443,1.84,0.2023,0.1569,P 21 21 21,Rattus norvegicus,PTPRJ,PTPRJ,apo,WT,D1
+4IKC,4IKC_qFit_chainA,90,90,120,77.58,77.58,85.24,chainA,100,284,1.56,0.1654,0.1474,P 64,Homo sapiens,PTPRQ,PTPRQ,apo,M,D1
+2I4E,2I4E_qFit_chainA,90,93.31,90,62.058,71.721,69.859,chainA,100,165,1.75,0.221,0.183,P 1 21 1,Homo sapiens,PTPRB,RPTPb,active,WT,D1
+2I4E,2I4E_qFit_chainB,90,93.31,90,62.058,71.721,69.859,chainB,100,111,1.75,0.221,0.183,P 1 21 1,Homo sapiens,PTPRB,RPTPb,active,WT,D1
+2H03,2H03_qFit_chainA,90,103.91,90,112.316,38.934,66.062,chainA,100,202,1.65,0.217,0.18,C 1 2 1,Homo sapiens,PTPRB,RPTPb,active,M,D1
+2I4G,2I4G_qFit_chainA,90,90,90,38.852,69.61,117.777,chainA,100,249,1.65,0.22,0.176,P 21 21 21,Homo sapiens,PTPRB,RPTPb,active,WT,D1
+2I5X,2I5X_qFit_chainA,90,93.4,90,61.973,71.308,69.69,chainA,100,199,1.7,0.207,0.179,P 1 21 1,Homo sapiens,PTPRB,RPTPb,active,WT,D1
+2I5X,2I5X_qFit_chainB,90,93.4,90,61.973,71.308,69.69,chainB,100,127,1.7,0.207,0.179,P 1 21 1,Homo sapiens,PTPRB,RPTPb,active,WT,D1
+2AHS,2AHS_qFit_chainA,90,90,120,123.368,123.368,179.569,chainA,100,270,2.1,0.206,0.152,P 61 2 2,Homo sapiens,PTPRB,RPTPb,apo,WT,D1
+2AHS,2AHS_qFit_chainB,90,90,120,123.368,123.368,179.569,chainA,100,209,2.1,0.206,0.152,P 61 2 2,Homo sapiens,PTPRB,RPTPb,apo,WT,D1
+2HC1,2HC1_qFit_chainA,90,90,90,39.06,70.714,118.455,chainA,100,362,1.3,0.17885,0.13376,P 21 21 21,Homo sapiens,PTPRB,RPTPb,apo,M,D1
+2HC2,2HC2_qFit_chainA,90,92.52,90,38.314,70.775,49.846,chainA,100,303,1.4,0.17892,0.14391,P 1 21 1,Homo sapiens,PTPRB,RPTPb,apo,M,D1
+2I3R,2I3R_qFit_chainA,90,93.58,90,61.856,71.643,70.531,chainA,100,123,1.85,0.217,0.184,P 1 21 1,Homo sapiens,PTPRB,RPTPb,apo,WT,D1
+2I3R,2I3R_qFit_chainB,90,93.58,90,61.856,71.643,70.531,chainB,100,67,1.85,0.217,0.184,P 1 21 1,Homo sapiens,PTPRB,RPTPb,apo,WT,D1
+2I3U,2I3U_qFit_chainA,90,90,90,38.785,69.777,118.523,chainA,100,204,1.85,0.226,0.187,P 21 21 21,Homo sapiens,PTPRB,RPTPb,apo,WT,D1
+6D4D,6D4D_qFit_chainA,90,115.73,90,154.055,35.998,115.023,chainA,100,297,1.77,0.2223,0.1782,C 1 2 1,Homo sapiens,PTPRE,RPTPe,apo,WT,D1
+6D4D,6D4D_qFit_chainB,90,115.73,90,154.055,35.998,115.023,chainB,100,235,1.77,0.2223,0.1782,C 1 2 1,Homo sapiens,PTPRE,RPTPe,apo,WT,D1
+3QCC,3QCC_qFit_chainB,90,90,90,74.9,77.7,123.7,chainB,100,31,2.1,0.267,0.224,P 21 21 21,Homo sapiens,PTPRG,RPTPg,active,WT,D1
+3QCD,3QCD_qFit_chainA,90,90,120,75.4,75.4,151,chainA,100,134,1.8,0.257,0.241,P 32 2 1,Homo sapiens,PTPRG,RPTPg,active,WT,D1
+3QCC,3QCC_qFit_chainA,90,90,90,74.9,77.7,123.7,chainA,100,67,2.1,0.267,0.224,P 21 21 21,Homo sapiens,PTPRG,RPTPg,active,WT,D1
+3QCE,3QCE_qFit_chainA,90,90,90,74.9,82.5,127,chainA,100,86,2.1,0.261,0.233,P 21 21 21,Homo sapiens,PTPRG,RPTPg,allosteric,WT,D1
+3QCG,3QCG_qFit_chainA,90,90,120,75.5,75.5,152.1,chainA,100,179,2.05,0.253,0.217,P 32 2 1,Homo sapiens,PTPRG,RPTPg,allosteric,WT,D1
+3QCE,3QCE_qFit_chainB,90,90,90,74.9,82.5,127,chainB,100,78,2.1,0.261,0.233,P 21 21 21,Homo sapiens,PTPRG,RPTPg,allosteric,WT,D1
+3QCK,3QCK_qFit_chainA,90,90,120,75.5,75.5,152.1,chainA,100,93,2.05,0.261,0.233,P 32 2 1,Homo sapiens,PTPRG,RPTPg,allosteric,WT,D1
+2H4V,2H4V_qFit_chainA,90,90,90,74.849,78.859,121.758,chainA,100,283,1.55,0.1813,0.1613,P 21 21 21,Homo sapiens,PTPRG,RPTPg,apo,WT,D1
+2H4V,2H4V_qFit_chainB,90,90,90,74.849,78.859,121.758,chainB,100,279,1.55,0.1813,0.1613,P 21 21 21,Homo sapiens,PTPRG,RPTPg,apo,WT,D1
+2PBN,2PBN_qFit_chainA,90,90,120,107.338,107.338,67.757,chainA,100,238,1.7,0.234,0.208,P 32 2 1,Homo sapiens,PTPRG,RPTPg,apo,WT,D1
+3QCB,3QCB_qFit_chainA,90,90,90,74.9,79.5,123.9,chainA,100,98,2.1,0.304,0.254,P 21 21 21,Homo sapiens,PTPRG,RPTPg,apo,WT,D1
+3QCB,3QCB_qFit_chainB,90,90,90,74.9,79.5,123.9,chainB,100,76,2.1,0.304,0.254,P 21 21 21,Homo sapiens,PTPRG,RPTPg,apo,WT,D1
+2C7S,2C7S_qFit_chainA,90,90,90,91.373,91.373,108.415,chainA,100,138,1.95,0.218,0.2,P 43 21 2,Homo sapiens,PTPRK,RPTPk,apo,WT,D1
+1JLN,1JLN_qFit_chainA,90,90,90,46.136,65.322,105.67,chainA,100,238,1.81,0.245,0.195,P 21 21 21,Mus musculus,PTP13,RPTPr,apo,WT,D1
+2FH7,2FH7_qFit_D1_chainA,90,90,120,94.333,94.333,123.036,chainA,100,361,2,0.238,0.19,P 61,Homo sapiens,PTPRS,RPTPs,apo,WT,D1
+2NV5,2NV5_qFit_chainA,90,90,120,140.789,140.789,112.431,chainA,77,177,2,0.237,0.197,P 61,Rattus norvegicus,PTPRS,RPTPs,apo,WT,D1
+2NV5,2NV5_qFit_chainB,90,90,120,140.789,140.789,112.431,chainB,77,244,2,0.237,0.197,P 61,Rattus norvegicus,PTPRS,RPTPs,apo,WT,D1
+2NV5,2NV5_qFit_chainC,90,90,120,140.789,140.789,112.431,chainC,77,207,2,0.237,0.197,P 61,Rattus norvegicus,PTPRS,RPTPs,apo,WT,D1
+4BPC,4BPC_qFit_D1_chainA,90,90,120,94.672,94.672,123.423,chainA,100,181,2.1,0.22198,0.17827,P 61,Homo sapiens,PTPRS,RPTPs,apo,M,D1
+2OOQ,2OOQ_qFit_chainA,90,99.89,90,37.186,86.697,91.12,chainA,100,164,1.8,0.18758,0.14488,P 1 21 1,Homo sapiens,PTPRT,RPTPt,allosteric,WT,D1
+2OOQ,2OOQ_qFit_chainB,90,99.89,90,37.186,86.697,91.12,chainB,100,277,1.8,0.18758,0.14488,P 1 21 1,Homo sapiens,PTPRT,RPTPt,allosteric,WT,D1
+6SUB,6SUB_qFit_chainA,90,90,90,61.821,107.887,88.328,chainA,100,117,1.72,0.2014,0.1819,C 2 2 21,Homo sapiens,PTPRU,RPTPu,apo,M,D1
+6SUC,6SUC_qFit_chainA,90,90,90,62.09,107.92,89.28,chainA,100,94,1.97,0.2452,0.2139,C 2 2 21,Homo sapiens,PTPRU,RPTPu,apo,M,D1
+4GRZ,4GRZ_qFit_chainA,90,91.24,90,164.141,45.404,44.679,chainA,100,391,1.37,0.1889,0.1685,C 1 2 1,Homo sapiens,PTPN6,SHP1,active,M,D1
+4HJQ,4HJQ_qFit_chainA,102.39,94.71,110.01,45.642,57.783,77.319,chainA,100,330,1.8,0.2022,0.1654,P 1,Homo sapiens,PTPN6,SHP1,active,M,D1
+4HJQ,4HJQ_qFit_chainB,102.39,94.71,110.01,45.642,57.783,77.319,chainB,100,352,1.8,0.2022,0.1654,P 1,Homo sapiens,PTPN6,SHP1,active,M,D1
+4GS0,4GS0_qFit_chainA,90,90,120,43.935,43.935,258.112,chainA,100,159,1.8,0.1953,0.1617,P 31,Homo sapiens,PTPN6,SHP1,apo,WT,D1
+4GS0,4GS0_qFit_chainB,90,90,120,43.935,43.935,258.112,chainB,100,128,1.8,0.1953,0.1617,P 31,Homo sapiens,PTPN6,SHP1,apo,WT,D1
+3B7O,3B7O_qFit_chainA,90,90,90,44.813,86.496,166.555,chainA,100,241,1.6,0.20897,0.17009,C 2 2 21,Homo sapiens,PTPN11,SHP2,active,WT,D1
+3O5X,3O5X_qFit_chainA,90,98.53,90,39.544,75.829,48.214,chainA,100,134,2,0.238,0.1961,P 1 21 1,Homo sapiens,PTPN11,SHP2,active,WT,D1
+4RDD,4RDD_qFit_chainA,90,99.11,90,39.638,75.274,48.046,chainA,100,368,1.6,0.2011,0.1751,P 1 21 1,Homo sapiens,PTPN11,SHP2,active,WT,D1
+2SHP,2SHP_qFit_chainA,90,96.3,90,45.9,214.5,55.7,chainA,100,401,2,0.27,0.199,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,M,D1
+2SHP,2SHP_qFit_chainB,90,96.3,90,45.9,214.5,55.7,chainB,100,376,2,0.27,0.199,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,M,D1
+5EHP,5EHP_qFit_chainA,90,96.82,90,46.31,213.73,55.98,chainA,100,350,1.85,0.2084,0.1745,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+5EHP,5EHP_qFit_chainB,90,96.82,90,46.31,213.73,55.98,chainB,100,304,1.85,0.2084,0.1745,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+5EHR,5EHR_qFit_chainA,90,96.88,90,46.19,213.79,55.89,chainA,100,343,1.7,0.2207,0.1948,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+5EHR,5EHR_qFit_chainB,90,96.88,90,46.19,213.79,55.89,chainB,100,327,1.7,0.2207,0.1948,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6BMV,6BMV_qFit_chainA,90,97.3,90,46.42,216.88,55.86,chainA,100,310,2.05,0.223,0.174,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6BMV,6BMV_qFit_chainB,90,97.3,90,46.42,216.88,55.86,chainB,100,337,2.05,0.223,0.174,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6BMW,6BMW_qFit_chainA,90,96.68,90,46.27,214.13,56.03,chainA,100,231,2.1,0.229,0.186,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6BMW,6BMW_qFit_chainB,90,96.68,90,46.27,214.13,56.03,chainB,100,231,2.1,0.229,0.186,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6BMY,6BMY_qFit_chainA,90,96.71,90,46.05,213.71,55.98,chainA,100,246,2.09,0.228,0.18,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6BMY,6BMY_qFit_chainB,90,96.71,90,46.05,213.71,55.98,chainB,100,232,2.09,0.228,0.18,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6MD7,6MD7_qFit_chainA,90,96.51,90,46.05,213.59,55.91,chainA,100,371,1.96,0.209,0.17,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6MD7,6MD7_qFit_chainB,90,96.51,90,46.05,213.59,55.91,chainB,100,361,1.96,0.209,0.17,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6MDD,6MDD_qFit_chainA,90,96.96,90,46.419,214.8,56.092,chainA,100,131,2.05,0.251,0.213,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+6MDD,6MDD_qFit_chainB,90,96.96,90,46.419,214.8,56.092,chainB,100,121,2.05,0.251,0.213,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+7JVN,7JVN_qFit_chainA,90,97.09,90,46.09,214.736,55.84,chainA,100,373,1.92,0.214,0.181,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+7JVN,7JVN_qFit_chainB,90,97.09,90,46.09,214.736,55.84,chainB,100,365,1.92,0.214,0.181,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+7RCT,7RCT_qFit_chainA,90,96.83,90,45.79,213.78,55.85,chainA,93,323,1.8,0.2252,0.1845,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+7RCT,7RCT_qFit_chainB,90,96.83,90,45.79,213.78,55.85,chainB,93,370,1.8,0.2252,0.1845,P 1 21 1,Homo sapiens,PTPN11,SHP2,allosteric,WT,D1
+3ZM0,3ZM0_qFit_chainA,72.52,81.63,74.73,40.216,42.257,49.197,chainA,100,206,1.5,0.21342,0.18413,P 1,Homo sapiens,PTPN11,SHP2,apo,WT,D1
+3ZM1,3ZM1_qFit_chainA,72,80.28,74.19,40.174,42.051,49.256,chainA,100,283,1.4,0.20281,0.17023,P 1,Homo sapiens,PTPN11,SHP2,apo,WT,D1
+3ZM2,3ZM2_qFit_chainA,72.04,80.39,74.65,40.123,42.061,49.287,chainA,100,205,1.5,0.22286,0.18549,P 1,Homo sapiens,PTPN11,SHP2,apo,WT,D1
+3ZM3,3ZM3_qFit_chainA,71.99,81.09,75.36,40.19,42.091,49.386,chainA,100,221,1.5,0.22747,0.19056,P 1,Homo sapiens,PTPN11,SHP2,apo,WT,D1
+4GWF,4GWF_qFit_chainA,90,96.63,90,45.972,211.953,55.691,chainA,100,134,2.1,0.2433,0.21,P 1 21 1,Homo sapiens,PTPN11,SHP2,apo,M,D1
+4GWF,4GWF_qFit_chainB,90,96.63,90,45.972,211.953,55.691,chainB,100,127,2.1,0.2433,0.21,P 1 21 1,Homo sapiens,PTPN11,SHP2,apo,M,D1
+4NWF,4NWF_qFit_chainA,90,90,90,211.28,55.88,91.629,chainA,100,326,2.1,0.3094,0.2664,P 21 21 21,Homo sapiens,PTPN11,SHP2,apo,M,D1
+4NWF,4NWF_qFit_chainB,90,90,90,211.28,55.88,91.629,chainB,100,329,2.1,0.3094,0.2664,P 21 21 21,Homo sapiens,PTPN11,SHP2,apo,M,D1
+5I6V,5I6V_qFit_chainA,90,96.08,90,45.822,214.263,55.472,chainA,100,548,1.87,0.2317,0.2014,P 1 21 1,Homo sapiens,PTPN11,SHP2,apo,M,D1
+5I6V,5I6V_qFit_chainB,90,96.08,90,45.822,214.263,55.472,chainB,100,560,1.87,0.2317,0.2014,P 1 21 1,Homo sapiens,PTPN11,SHP2,apo,M,D1
+6CMP,6CMP_qFit_chainA,90,90,90,54.75,84.91,211.92,chainA,100,372,1.8,0.2306,0.2012,P 21 21 21,Homo sapiens,PTPN11,SHP2,apo,M,D1
+6CMP,6CMP_qFit_chainB,90,90,90,54.75,84.91,211.92,chainB,100,391,1.8,0.2306,0.2012,P 21 21 21,Homo sapiens,PTPN11,SHP2,apo,M,D1
+5OVX,5OVX_qFit_chainA,90,90,90,52.117,64.124,100.338,chainA,100,252,2.1,0.228,0.1954,P 21 21 21,Homo sapiens,PTPN5,STEP,active,WT,D1
+5OW1,5OW1_qFit_chainA,90,90,90,52.66,64.41,100.16,chainA,100,302,2.05,0.2115,0.18,P 21 21 21,Homo sapiens,PTPN5,STEP,active,WT,D1
+2CJZ,2CJZ_qFit_chainA,90,90,90,52.342,64.348,100.781,chainA,100,212,1.7,0.205,0.175,P 21 21 21,Homo sapiens,PTPN5,STEP,active,M,D1
+6H8R,6H8R_qFit_chainA,90,90,90,53.095,64.375,100.804,chainA,100,377,1.66,0.239,0.2,P 21 21 21,Homo sapiens,PTPN5,STEP,allosteric,WT,D1
+6H8S,6H8S_qFit_chainA,90,90,90,59.303,59.303,181.641,chainA,100,277,1.77,0.212,0.181,P 41 21 2,Mus musculus,PTPN5,STEP,allosteric,WT,D1
+2BIJ,2BIJ_qFit_chainA,90,90,90,51.808,64.318,101.077,chainA,100,103,2.05,0.264,0.212,P 21 21 21,Homo sapiens,PTPN5,STEP,apo,WT,D1
+2BV5,2BV5_qFit_chainA,90,90,90,39.957,64.01,136.149,chainA,100,271,1.8,0.201,0.164,P 21 21 21,Homo sapiens,PTPN5,STEP,apo,M,D1
+7F5N,7F5N_qFit_chainA,112.932,106.459,92.459,54.57,68.056,73.244,chainA,107,158,1.93,0.2376,0.1834,P 1,Homo sapiens,PTPN2,TCPTP,apo,WT,D1
+7F5N,7F5N_qFit_chainB,112.932,106.459,92.459,54.57,68.056,73.244,chainB,107,90,1.93,0.2376,0.1834,P 1,Homo sapiens,PTPN2,TCPTP,apo,WT,D1
+7F5N,7F5N_qFit_chainC,112.932,106.459,92.459,54.57,68.056,73.244,chainC,107,162,1.93,0.2376,0.1834,P 1,Homo sapiens,PTPN2,TCPTP,apo,WT,D1
+7F5O,7F5O_qFit_chainA,111.54,102.659,92.337,55.094,68.187,72.683,chainA,107,197,1.7,0.241,0.1989,P 1,Homo sapiens,PTPN2,TCPTP,apo,WT,D1
+7F5O,7F5O_qFit_chainB,111.54,102.659,92.337,55.094,68.187,72.683,chainB,107,149,1.7,0.241,0.1989,P 1,Homo sapiens,PTPN2,TCPTP,apo,WT,D1
+7F5O,7F5O_qFit_chainC,111.54,102.659,92.337,55.094,68.187,72.683,chainC,107,207,1.7,0.241,0.1989,P 1,Homo sapiens,PTPN2,TCPTP,apo,WT,D1
+2Y2F,2Y2F_qFit_chainA,90,90,90,49.243,55.48,100.081,chainA,100,274,1.78,0.21007,0.16457,P 21 21 21,Yersinia pestis,yopH,YopH,active,WT,D1
+2YDU,2YDU_qFit_chainA,90,90,90,49.307,55.912,99.055,chainA,100,276,1.79,0.21323,0.17589,P 21 21 21,Yersinia pestis,yopH,YopH,active,WT,D1
+3BLU,3BLU_qFit_chainA,90,90,90,48.849,54.092,96.926,chainA,100,164,2,0.253,0.205,P 21 21 21,Yersinia enterocolitica,yopH,YopH,active,M,D1
+1PA9,1PA9_qFit_chainA,90,90,90,49.36,55.9,97.84,chainA,140,217,2,0.243,0.226,P 21 21 21,Yersinia enterocolitica,yopH,YopH,active,M,D1
+1QZ0,1QZ0_qFit_chainA,109.61,104.75,89.98,47.292,53.45,69.066,chainA,100,297,1.5,0.209,0.188,P 1,Yersinia pestis,yopH,YopH,active,M,D1
+1QZ0,1QZ0_qFit_chainB,109.61,104.75,89.98,47.292,53.45,69.066,chainB,100,265,1.5,0.209,0.188,P 1,Yersinia pestis,yopH,YopH,active,M,D1
+3U96,3U96_qFit_chainB,104.78,108.79,97.83,49.863,53.993,65.759,chainB,100,156,1.8,0.2071,0.1792,P 1,Yersinia enterocolitica,yopH,YopH,active,M,D1
+3U96,3U96_qFit_chainA,104.78,108.79,97.83,49.863,53.993,65.759,chainA,100,153,1.8,0.2071,0.1792,P 1,Yersinia enterocolitica,yopH,YopH,active,M,D1
+6XFT,6XFT_qFit_chainA,90,90,90,49.69,54.94,97.01,chainA,100,186,1.78,0.2269,0.1904,P 21 21 21,Yersinia enterocolitica,yopH,YopH,apo,M,D1
+3F9A,3F9A_qFit_chainA,90,90,90,54.431,58.263,90.622,chainA,82,373,1.69,0.207,0.173,P 21 21 21,Yersinia enterocolitica (type O:9),yopH,YopH,apo,M,D1
+4YAA,4YAA_qFit_chainA,90,90,90,52.888,60.512,89.358,chainA,194,447,1.05,0.14,0.128,P 21 21 21,Yersinia enterocolitica,yopH,YopH,apo,M,D1
+4Z6B,4Z6B_qFit_chainA,90,90,90,52.888,60.512,89.358,chainA,100,388,1.2,0.159,0.14,P 21 21 21,Yersinia enterocolitica,yopH,YopH,apo,M,D1

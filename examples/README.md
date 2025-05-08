@@ -1,15 +1,22 @@
-# RINFAIRE
+# RINFAIRE example scripts
 
-1. Generate individual networks for a set of structures. Use a .txt file with directory information of each input file (refer to All_PTPs_input.txt in /examples).
+1. Generate a "multinetwork" containing individual networks for a set of structures:
+
 run_generate_multi.sh
 
-2. Subsetting can be performed using the flag --subset and specifying column name. A metadata file in csv format will be supplied in step 1 to achieve this.
-run_analysis_sum_subset.sh
+2. Generate a sum network for the entire multinetwork, including scaling and visualization:
 
-3. Use the MultiNetwork.pkl output to run sum analysis.
 run_analysis_sum.sh
 
-4. Additional analysis including # of residues in the network that are within 4A of some residues of interest can be performed. This data can be supplied as another csv file. Please output a pkl file in step 3 to serve as input here using the --output_pickle flag in step 3.
-run_analysis_residues_of_interest
+3. Generate a sum network for a subset of the multinetwork, including scaling and visualization (alternative to step 2):
 
-Additional examples are provided; however, please note that they have not been tested or implemented in the current code, so use them with caution.
+run_analysis_sum_subset.sh
+
+4.Evaluate overlap between sum network and user-defined residues of interest, including statistical significance:
+
+run_analysis_residues_of_interest.sh
+
+Please note that additional example scripts in the directory 'work in progress' may not have been tested with the current code so should be used with caution. 
+
+Input .pkl files for run_analysis_residues_of_interest.sh and run_analysis_sum_subset.sh can be accessed on Zenodo (refer to paper).
+
