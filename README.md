@@ -4,7 +4,7 @@ RINFAIRE (**R**esidue **I**nteraction **N**etworks **F**rom **A**lternate confor
 
 If you use this software, please cite:
 
-[Raju A, Sharma S, Riley BT, Djuraev S, Tan Y, Kim M, & Keedy DA. Mapping allosteric rewiring in related protein structures from collections of crystallographic multiconformer models. Preprint forthcoming (2025).](https://keedylab.org/publications/)
+[Raju A, Sharma S, Riley BT, Djuraev S, Tan Y, Kim M, Mahmud T, & Keedy DA. Mapping allosteric rewiring in related protein structures from collections of crystallographic multiconformer models. Preprint forthcoming (2025).](https://keedylab.org/publications/)
 
 If you also use qFit, please cite:
 
