@@ -1,7 +1,6 @@
 # RINFAIRE
 
-RINFAIRE (**R**esidue **I**nteraction **N**etworks **F**rom **A**lternate conformations **I**n **RE**lated structures) uses alternate conformations in crystallographic multiconformer models to calculate residue interaction networks (RINs) for sets of protein structures.  
-It can then normalize and sum these networks, calculate differences between networks, and identify communities within a network, among other downstream analyses.
+RINFAIRE (**R**esidue **I**nteraction **N**etworks **F**rom **A**lternate conformations **I**n **RE**lated structures) uses alternate conformations in crystallographic multiconformer models to calculate residue interaction networks (RINs) for sets of protein structures. It can then normalize and sum these networks, calculate differences between networks, and identify communities within a network, among other downstream analyses.
 
 If you use this software, please cite:
 
@@ -15,7 +14,7 @@ If you also use qFit, please cite:
 
 ## Installation
 
-`git clone -b main git@github.com:keedylab/RINFAIRE.git`
+`git clone -b main git@github.com:keedylab/rinfaire.git`
 
 ## Usage
 
