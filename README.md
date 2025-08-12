@@ -41,7 +41,7 @@ For more specific instructions, see the Methods section of the paper.
 
 6. Perform additional network analyses as desired; see the [examples](examples/) directory.
 
-Please note that scripts in the 'work in progress' directory may not have been tested with the current code so should be used with caution.
+Please note that scripts in the `wip` (work in progress) directory may not have been tested with the current code so should be used with caution.
 
 ## License
 

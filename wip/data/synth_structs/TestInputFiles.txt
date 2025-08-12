@@ -1,0 +1,1 @@
+/home/araju/MultiRIN/tests/data/synth_structs/1111_Test.pdb
