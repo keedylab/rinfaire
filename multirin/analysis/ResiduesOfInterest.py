@@ -212,13 +212,18 @@ class ResiduesOfInterest:
 
         # Add title and labels
         plt.xlabel('Residues', fontsize=15)
-        plt.ylabel('Fraction of Network Residues within 4Å', fontsize=15)
 
         # Get min/max for y-axis ticks
         all_values = closeInputResiCountList + closeNonInputResiCountList
         min_value, max_value = min(all_values), max(all_values)
 
-        plt.yticks(np.arange(0, 1.2, 0.2), fontsize=15)
+        if self.args.no_normalize_by_total == False:
+                plt.yticks(np.arange(0, 1.2, 0.2), fontsize=15)
+                plt.ylabel('Fraction of Network Residues within 4Å', fontsize=15)
+        else:
+                plt.yticks(np.arange(min_value, max_value + 2, 2), fontsize=15)
+                plt.ylabel('Network Residues within 4Å', fontsize=15)
+
         plt.xticks(fontsize=15)
         combinedLists = [closeInputResiCountList, closeNonInputResiCountList]
         colors = ['darkorange', 'darkgray']
