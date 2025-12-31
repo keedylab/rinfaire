@@ -287,7 +287,7 @@ class IndividualNetwork:
         print(f"Average Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['adjResi']['total'])}")
         print(f"Average Non-Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['nonAdjResi']['total'])}")
     
-    def findConnections (self, firstResiAltConfAtoms, secondResiAltConfAtoms, minDist=0, maxDist=4, tooFarDist=25, excludeAtoms=[]):
+    def findConnections (self, firstResiAltConfAtoms, secondResiAltConfAtoms, excludeAtoms=[]):
 
         """
         Function that finds distance connections between two residue's alt conf atoms.
@@ -303,6 +303,10 @@ class IndividualNetwork:
         - connections: Count of total number of connections
         - distancesRecord: List of the distances for each connection
         """
+
+        maxDist = self.args.max_distance_threshold
+        minDist = self.args.min_distance_threshold
+        tooFarDist = self.args.too_far_distance_threshold
 
         connections = 0
 
