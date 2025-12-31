@@ -211,7 +211,8 @@ def generateIndividualNetworks (fileList, args):
 
         # Creates the pyvis visualization (as an .html output)
         net.visualize()
-
+        net.exportPickle()
+	
     return networkList
 
 def generateMultiNetwork (networkList, args):

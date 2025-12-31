@@ -8,6 +8,7 @@ import copy
 import logging
 from multirin.generate.Structure import Structure
 import numpy as np
+import pickle
 
 class IndividualNetwork:
     def __init__ (self, Structure, args, network=None):
@@ -457,3 +458,10 @@ class IndividualNetwork:
                         # ...between this pair and move on to the next pair of residues
                         if tooFarFlag == True:
                             break
+
+    def exportPickle (self):
+ 
+        # Creates new pickle (.pkl) file and then dumps the entire class object into the pickle file
+        outputpath = f'{self.args.output}{self.struct.name}.pkl'
+        with open(outputpath, 'wb') as pickleFile:
+            pickle.dump(self.network, pickleFile)
