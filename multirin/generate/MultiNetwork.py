@@ -285,60 +285,44 @@ class MultiNetwork:
         for resiType in RecordAll:
             for BBorSCType in RecordAll[resiType]:
 
-                # Updates stats
-                RecordAllStats[resiType][BBorSCType]['min'] = min(RecordAll[resiType][BBorSCType])
-                RecordAllStats[resiType][BBorSCType]['max'] = max(RecordAll[resiType][BBorSCType])
-                RecordAllStats[resiType][BBorSCType]['average'] = statistics.mean(RecordAll[resiType][BBorSCType])
-                RecordAllStats[resiType][BBorSCType]['mode'] = statistics.mode(RecordAll[resiType][BBorSCType])
-                RecordAllStats[resiType][BBorSCType]['count'] = len(RecordAll[resiType][BBorSCType])
+                if len(RecordAll[resiType][BBorSCType]) > 0:
 
-                print(f"""
-{resiType} residue {BBorSCType} {axisName} for all Individual Networks:    
-    Count: {RecordAllStats[resiType][BBorSCType]['count']}    
-    Min: {RecordAllStats[resiType][BBorSCType]['min']}   
-    Max: {RecordAllStats[resiType][BBorSCType]['max']}  
-    Average: {RecordAllStats[resiType][BBorSCType]['average']}""")
+                    # Updates stats
+                    RecordAllStats[resiType][BBorSCType]['min'] = min(RecordAll[resiType][BBorSCType])
+                    RecordAllStats[resiType][BBorSCType]['max'] = max(RecordAll[resiType][BBorSCType])
+                    RecordAllStats[resiType][BBorSCType]['average'] = statistics.mean(RecordAll[resiType][BBorSCType])
+                    RecordAllStats[resiType][BBorSCType]['mode'] = statistics.mode(RecordAll[resiType][BBorSCType])
+                    RecordAllStats[resiType][BBorSCType]['count'] = len(RecordAll[resiType][BBorSCType])
 
+                    print(f"""
+                        {resiType} residue {BBorSCType} {axisName} for all Individual Networks:    
+                        Count: {RecordAllStats[resiType][BBorSCType]['count']}    
+                        Min: {RecordAllStats[resiType][BBorSCType]['min']}   
+                        Max: {RecordAllStats[resiType][BBorSCType]['max']}  
+                        Average: {RecordAllStats[resiType][BBorSCType]['average']}
+                    """)
 
-        # Plots histogram
-        for resiType in RecordAll:
-            for BBorSCType in RecordAll[resiType]:
+                    # Plots histogram of edge distribution across the network
+                    outputInfoName = f'{self.args.output}MultiNetwork_Info_{outputName}_{resiType}_{BBorSCType}'
+                    
+                    # Modifies bin size depending on the plot
+                    if BBorSCType == 'total':
+                        binSize = binSizeTotal
+                    else:
+                        binSize = binSizeOther
 
-                # Plots histogram of edge distribution across the network
-                outputInfoName = f'{self.args.output}MultiNetwork_Info_{outputName}_{resiType}_{BBorSCType}'
-                
-                # Modifies bin size depending on the plot
-                if BBorSCType == 'total':
-                    binSize = binSizeTotal
+                    maxValueBin = RecordAllStats[resiType][BBorSCType]['max']
 
-                    maxValueBin = 0
-                    maxValueFreq = 0
-                    for resiType2 in RecordAllStats:
-                        if maxValueBin < RecordAllStats[resiType2]['total']['max']:
-                            maxValueBin = RecordAllStats[resiType2]['total']['max']
+                    plt.figure(figsize=(10,10))
+                    plt.hist(RecordAll[resiType][BBorSCType], bins=np.arange(0.0, maxValueBin + (binSize*2), binSize), range=(0, maxValueBin + (binSize*2)))
+                    plt.xticks(np.arange(0.0, maxValueBin + (binSize*2), binSize))
+                    plt.xlabel(f'{resiType} Residue {BBorSCType} {axisName}')
+                    plt.ylabel('Frequency')
+                    plt.savefig(outputInfoName + '.png')
+                    plt.clf()
 
-                        if maxValueFreq < RecordAllStats[resiType2]['total']['mode']:
-                            maxValueFreq = RecordAllStats[resiType2]['total']['mode']
                 else:
-                    binSize = binSizeOther
-
-                    maxValueBin = 0
-                    maxValueFreq = 0
-                    for BBorSCType2 in RecordAllStats['adjResi']:
-                        if BBorSCType2 != 'total':
-                            if maxValueBin < RecordAllStats['adjResi'][BBorSCType2]['max']:
-                                maxValueBin = RecordAllStats['adjResi'][BBorSCType2]['max']
-
-                            if maxValueFreq < RecordAllStats['adjResi'][BBorSCType2]['mode']:
-                                maxValueFreq = RecordAllStats['adjResi'][BBorSCType2]['mode']
-
-                plt.figure(figsize=(10,10))
-                plt.hist(RecordAll[resiType][BBorSCType], bins=np.arange(0.0, maxValueBin + (binSize*2), binSize), range=(0, maxValueBin + (binSize*2)))
-                plt.xticks(np.arange(0.0, maxValueBin + (binSize*2), binSize))
-                plt.xlabel(f'{resiType} Residue {BBorSCType} {axisName}')
-                plt.ylabel('Frequency')
-                plt.savefig(outputInfoName + '.png')
-                plt.clf()
+                    print(f'No edges for type: {resiType} and {BBorSCType}, skipping summary stats')
 
     def getInfo_Edges (self):
 
@@ -358,6 +342,8 @@ class MultiNetwork:
         outputInfoName = f'{self.args.output}MultiNetwork_Info_Edges'
         plt.figure(figsize=(10,10))
         xr.plot.hist(stackedArray, bins=range(0, int(maxValue) + 1, 1), range=(0, maxValue))
+        plt.xlabel(f'Edge Weight')
+        plt.ylabel('Frequency')
         plt.savefig(outputInfoName + '.png')
         plt.clf()
 
@@ -378,6 +364,8 @@ class MultiNetwork:
         outputInfoName = f'{self.args.output}MultiNetwork_Info_Structs_Hist'
         plt.figure(figsize=(10,10))
         xr.plot.hist(summedArray, bins=range(0, int(maxValue) + 100, 100), range=(0, maxValue))
+        plt.xlabel(f'Total Network Edge Weight')
+        plt.ylabel('Frequency')
         plt.savefig(outputInfoName + '.png')
         plt.clf()
 
@@ -387,6 +375,8 @@ class MultiNetwork:
         networkSeries.plot.bar()
 
         outputInfoName = f'{self.args.output}MultiNetwork_Info_Structs_Bar'
+        plt.xlabel(f'Structure')
+        plt.ylabel('Total Network Edge Weight')
         plt.savefig(outputInfoName + '.png')
         plt.clf()
 
