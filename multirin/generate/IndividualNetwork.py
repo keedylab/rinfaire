@@ -190,7 +190,20 @@ class IndividualNetwork:
                     if self.args.only_sidechain == True:
 
                         # Finds connections only between sidechain atoms in first residue and second residue
-                        totalConnections = self.findConnections(sidechainAtomsFirstResi, sidechainAtomsSecondResi)
+                        totalConnections, nonAdj_distanceRecord = self.findConnections(sidechainAtomsFirstResi, sidechainAtomsSecondResi)
+
+                        self.distancesRecord['nonAdjResi']['total'] += nonAdj_distanceRecord
+
+                        # Same normalization as above
+                        if self.args.no_norm_resi == False:
+                            totalConnections = totalConnections / normalizationFactor
+
+                        # Adds connection in the network between the two residues, with the weight being the total atom-atom connections
+                        if totalConnections != 0:
+                            self.network.add_edge(firstResi, secondResi, weight=totalConnections)
+                        
+                            # Appends this weight to tracking list
+                            self.weightsRecord['nonAdjResi']['total'].append(totalConnections)
 
                     # Includes backbone alt confs (normal running scenario)
                     else:
