@@ -130,21 +130,21 @@ def setupArguments (multiFlag):
     parser.add_argument( 
         '--max_distance_threshold',
         default=4,
-        type=int,
+        type=float,
         help='Max distance threshold (in Å) for identifying distance based alt-conf connections'
     )
 
     parser.add_argument(  
         '--min_distance_threshold',
         default=0,
-        type=int,
+        type=float,
         help='Min distance threshold (in Å) for identifying distance based alt-conf connections'
     )
 
     parser.add_argument(  
         '--too_far_distance_threshold',
         default=25,
-        type=int,
+        type=float,
         help='Max distance between two residues to even consider them for interactions (to improve speed)'
     )
 
