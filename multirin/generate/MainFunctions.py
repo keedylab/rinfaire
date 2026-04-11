@@ -123,9 +123,30 @@ def setupArguments (multiFlag):
     # Options that are shared between both programs
 
     parser.add_argument(
-            'output',
-            help='Output directory for all files generated'
-        )
+        'output',
+        help='Output directory for all files generated'
+    )
+
+    parser.add_argument( 
+        '--max_distance_threshold',
+        default=4,
+        type=float,
+        help='Max distance threshold (in Å) for identifying distance based alt-conf connections'
+    )
+
+    parser.add_argument(  
+        '--min_distance_threshold',
+        default=0,
+        type=float,
+        help='Min distance threshold (in Å) for identifying distance based alt-conf connections'
+    )
+
+    parser.add_argument(  
+        '--too_far_distance_threshold',
+        default=25,
+        type=float,
+        help='Max distance between two residues to even consider them for interactions (to improve speed)'
+    )
 
     parser.add_argument( 
         '--no_norm_resi', 

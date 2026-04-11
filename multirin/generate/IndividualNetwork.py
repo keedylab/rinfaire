@@ -191,7 +191,20 @@ class IndividualNetwork:
                     if self.args.only_sidechain == True:
 
                         # Finds connections only between sidechain atoms in first residue and second residue
-                        totalConnections = self.findConnections(sidechainAtomsFirstResi, sidechainAtomsSecondResi)
+                        totalConnections, nonAdj_distanceRecord = self.findConnections(sidechainAtomsFirstResi, sidechainAtomsSecondResi)
+
+                        self.distancesRecord['nonAdjResi']['total'] += nonAdj_distanceRecord
+
+                        # Same normalization as above
+                        if self.args.no_norm_resi == False:
+                            totalConnections = totalConnections / normalizationFactor
+
+                        # Adds connection in the network between the two residues, with the weight being the total atom-atom connections
+                        if totalConnections != 0:
+                            self.network.add_edge(firstResi, secondResi, weight=totalConnections)
+                        
+                            # Appends this weight to tracking list
+                            self.weightsRecord['nonAdjResi']['total'].append(totalConnections)
 
                     # Includes backbone alt confs (normal running scenario)
                     else:
@@ -288,7 +301,7 @@ class IndividualNetwork:
         print(f"Average Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['adjResi']['total'])}")
         print(f"Average Non-Adjacent Residue Total Weight for {self.struct.name}: {np.average(self.weightsRecord['nonAdjResi']['total'])}")
     
-    def findConnections (self, firstResiAltConfAtoms, secondResiAltConfAtoms, minDist=0, maxDist=4, tooFarDist=25, excludeAtoms=[]):
+    def findConnections (self, firstResiAltConfAtoms, secondResiAltConfAtoms, excludeAtoms=[]):
 
         """
         Function that finds distance connections between two residue's alt conf atoms.
@@ -304,6 +317,10 @@ class IndividualNetwork:
         - connections: Count of total number of connections
         - distancesRecord: List of the distances for each connection
         """
+
+        maxDist = self.args.max_distance_threshold
+        minDist = self.args.min_distance_threshold
+        tooFarDist = self.args.too_far_distance_threshold
 
         connections = 0
 
