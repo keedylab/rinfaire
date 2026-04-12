@@ -2,7 +2,7 @@
 
 ## Input Files
 - `All_PTPs_input.txt`: A `.txt` file containing the absolute paths to your qFit PDB files.
-- `PROMALS3D_PTPsAlignment.fa`: A Multiple Sequence Alignment (MSA) file (e.g., `.fa` or `.aln`) of your structures
+- `PROMALS3D_PTPsAlignment.fa`: A Multiple Sequence Alignment (MSA) file (`.fa`) of your structures
 - `PTPs_Metadata.csv`: Optional metadata file in csv format to generate networks from subsets of structures
 
 ## Example Scripts
