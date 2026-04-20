@@ -1,11 +1,10 @@
-inputdir='/your/input/dir/'
-outputfilename='/your/output/dir/output_filename’
-outputdir='/your/output/dir/'
+output_dir="/your/output/directory/test_run_1/"
+rinfaire_install_dir="/your/install/rinfaire/"
+zenodo_dir="/your/download/zenodo_files/"
 
-pipenv run python /multirin/installation/dir/generate_multi.py \
-	${inputdir}All_PTPs_input.txt \
-	${inputdir}PROMALS3D_PTPsAlignment.fa \
-	${outputdir} \
-	--metadata /multirin/installation/dir/examples/PTPs_Metadata.csv \
-	--output_info \
-	--norm_type log
+mkdir -p ${output_dir}
+
+python ${rinfaire_install_dir}/generate_multi.py \
+        ${zenodo_dir}/All_PTPs_input.txt \
+        ${zenodo_dir}/PROMALS3D_All_PTPs_aligned.fa \
+        ${output_dir}
