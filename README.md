@@ -54,11 +54,11 @@ See [examples](examples/) for examples of the files above. For more specific ins
 ---
 The core of RINFAIRE is the Multinetwork, which aligns the Residue Interaction Networks (RINs) of all input structures into a single object.
 ```bash
-python generate_multi.py \
-    input_pdbs.txt \
-    path/to/alignment.fa \
-    output_directory/project_name \
-    --metadata path/to/metadata.csv \
+python generate_multi.py \ 
+    input_pdbs.txt \ 
+    path/to/alignment.fa \ 
+    output_directory/project_name \ 
+    --metadata path/to/metadata.csv \ 
     --output_info
 ```
 
@@ -68,13 +68,33 @@ Once you have your MultiNetwork.pkl, you can perform various downstream analyses
 
 One example is to normalize and sum the individual networks from the multinetwork to generate a sum network:
 ```bash
-python analysis_sum.py \
-    output_directory/MultiNetwork.pkl \
-    output_directory/sum_network \
+python analysis_sum.py \ 
+    output_directory/MultiNetwork.pkl \ 
+    output_directory/sum_network \ 
     --output_graph_info
 ```
 
-See additional network analyses in [examples](examples/) directory.
+You can also generate sum networks of subsets of the data that can then be compared:
+ ```bash
+python analysis_sum.py \ 
+    output_directory/MultiNetwork.pkl \ 
+    output_directory/sum_network \ 
+    --subset 'Column_Name' 'Value' \ 
+    --output_graph_info
+```
+
+You can also compare network overlap to multiple sets of residues and test whether this overlap is statistically significant:
+ ```bash
+python analysis_residues_of_interest.py \ 
+        output_directory/SumNetwork.pkl \ 
+        output_filename \ 
+        --input_set ResiduesOfInterest.csv \ 
+        --col 'Column_Name' \ 
+        --find_significance reference.pdb \ 
+        --n_iter_sig_test 100
+```
+
+A detailed example workflow can be found in the [examples](examples/) directory along with additional network analyses.
 
 *Please note* that scripts in the `wip` (work in progress) directory may not have been tested with the current code so should be used with caution.
 
