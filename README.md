@@ -74,15 +74,6 @@ python analysis_sum.py \
     --output_graph_info
 ```
 
-You can also generate sum networks of subsets of the data that can then be compared:
- ```bash
-python analysis_sum.py \ 
-    output_directory/MultiNetwork.pkl \ 
-    output_directory/sum_network \ 
-    --subset 'Column_Name' 'Value' \ 
-    --output_graph_info
-```
-
 You can also compare network overlap to multiple sets of residues and test whether this overlap is statistically significant:
  ```bash
 python analysis_residues_of_interest.py \ 
