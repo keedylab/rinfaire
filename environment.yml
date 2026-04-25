@@ -1,0 +1,22 @@
+name: rinfaire
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - networkx
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - xarray
+  - biopython
+  - gemmi
+  - pip:
+    - pyvis==0.3.1
