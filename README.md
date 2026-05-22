@@ -1,4 +1,6 @@
 # RINFAIRE
+![Python Version](https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=yellow)
+![Python Version](https://img.shields.io/badge/license-MIT-blue)
 
 RINFAIRE (**R**esidue **I**nteraction **N**etworks **F**rom **A**lternate conformations **I**n **RE**lated structures) uses alternate conformations in crystallographic multiconformer models to calculate residue interaction networks (RINs) for sets of protein structures. It can then normalize and sum these networks, calculate differences between networks, and identify communities within a network, among other downstream analyses.
 
