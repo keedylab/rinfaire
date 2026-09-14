@@ -70,11 +70,11 @@ class ResiduesOfInterest:
                 addString = "(and adjacent to)"
 
             print(f'''
-{col}: \n   
-    {overlapPercent}% of residues are found in {addString} network \n   
-    Has {len(intersectionList)} residues in common: {intersectionList} \n
-    Has {len(networkNotInputList)} residues in network but not input set: {networkNotInputList} \n
-    Has {len(inputNotNetworkList)} residues in input set but not network: {inputNotNetworkList} \n
+                {col}: \n   
+                {overlapPercent}% of residues are found in {addString} network \n   
+                Has {len(intersectionList)} residues in common: {intersectionList} \n
+                Has {len(networkNotInputList)} residues in network but not input set: {networkNotInputList} \n
+                Has {len(inputNotNetworkList)} residues in input set but not network: {inputNotNetworkList} \n
             ''')
 
             # Appends list to overlap dictionary
@@ -107,13 +107,12 @@ class ResiduesOfInterest:
         # closeNonInputResiCountList = self.findFractionCloseToNetwork(nonInputResiList)
 
         sig_test_values = []
+        residue_comp_dfs = []
 
         for i in range(0, int(self.args.n_iter_sig_test)):
 
             # Finds random sample of residues
-            #print(len(self.inputSetDict[self.args.col]))
-            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col])) # allNetworkList
-            #print(randomResiList)
+            randomResiList = random.sample(allNetworkList, len(self.inputSetDict[self.args.col]))
 
             ### Then finds the fraction of residues to each non input set residue that are close to network residues
             randomResiCountList = self.findFractionCloseToNetwork(randomResiList)
@@ -131,15 +130,25 @@ class ResiduesOfInterest:
             # print(f'Non-input set mean: {statistics.mean(randomResiCountList)}')
             # print(f'The p value is: {pValue}')
 
+            residue_comp_df = pd.concat([
+                pd.DataFrame({'class_type': 'Input_Set_Residues', 'count': closeInputResiCountList}),
+                pd.DataFrame({'class_type': 'Random_Residues', 'count': randomResiCountList})
+            ], ignore_index=True)
+            residue_comp_df['iter'] = i
+            residue_comp_dfs.append(residue_comp_df)
+
+            # Plots histograms if either flag is provided
+            if (self.args.cumulative_histogram or self.args.histogram) == True:
+                self.plotHistogram(closeInputResiCountList, randomResiCountList, i)
+                self.plotBoxPlot(closeInputResiCountList, randomResiCountList, i)
+
         sig_test_df = pd.DataFrame(sig_test_values)
         sig_test_df.to_csv(f'{self.args.outputname}_{self.args.col}_sig_test.csv', index=False)
 
-        # Plots histograms if either flag is provided
-        if (self.args.cumulative_histogram or self.args.histogram) == True:
-            self.plotHistogram(closeInputResiCountList, randomResiCountList)
-            self.plotBoxPlot(closeInputResiCountList, randomResiCountList)
+        residue_comp_full_df = pd.concat(residue_comp_dfs, ignore_index=True)
+        residue_comp_full_df.to_csv(f'{self.args.outputname}_{self.args.col}_all_resi_comparisons.csv', index=False)
     
-    def plotHistogram (self, closeInputResiCountList, closeNonInputResiCountList):
+    def plotHistogram (self, closeInputResiCountList, closeNonInputResiCountList, i):
 
         """
         This function plots the histograms between the input set given and non input set
@@ -191,9 +200,11 @@ class ResiduesOfInterest:
 
         # Saving figure
         plt.title(self.args.col)
-        plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram.png')
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram_{i}.png')
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_Histogram_{i}.pdf', format='pdf')
+        plt.close()
 
-    def plotBoxPlot (self, closeInputResiCountList, closeNonInputResiCountList):
+    def plotBoxPlot (self, closeInputResiCountList, closeNonInputResiCountList, i):
 
         import matplotlib.pyplot as plt
         import numpy as np
@@ -225,14 +236,16 @@ class ResiduesOfInterest:
         colors = ['darkorange', 'darkgray']
 
 
-        for i, (y, color) in enumerate(zip(combinedLists, colors)):
-            y = combinedLists[i]
-            x = np.random.normal(1+i, 0.04, size=len(y))
+        for a, (y, color) in enumerate(zip(combinedLists, colors)):
+            y = combinedLists[a]
+            x = np.random.normal(1+a, 0.04, size=len(y))
             plt.plot(x, y, '.', color=color, alpha=0.5)
             plt.tight_layout()
 
         # Show the plot
-        plt.savefig(f'{self.args.outputname}_{self.args.col}_BoxPlot.png', bbox_inches='tight', dpi=300)
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_BoxPlot_{i}.png', bbox_inches='tight', dpi=300)
+        plt.savefig(f'{self.args.outputname}_{self.args.col}_BoxPlot_{i}.pdf', bbox_inches='tight', dpi=300, format='pdf')
+        plt.close(fig)
 
     def findFractionCloseToNetwork (self, resiList):
         
