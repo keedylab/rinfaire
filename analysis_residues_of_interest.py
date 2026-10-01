@@ -102,8 +102,8 @@ def main ():
     if args.find_significance != None:
         resiObject.findSignificance()
 
-    resiObject.labelGraphOverlap()
-    resiObject.visualize(resiObject.overlapGraph, "overlapGraph")
+    #resiObject.labelGraphOverlap()
+    #resiObject.visualize(resiObject.overlapGraph, "overlapGraph")
 
     # # If the user wants to output a pickle file, then it calls on the outputPickle() function
     # # If not then it gets visualized through PyVis which creates a .html output

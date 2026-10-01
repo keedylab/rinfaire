@@ -131,8 +131,8 @@ class ResiduesOfInterest:
             # print(f'The p value is: {pValue}')
 
             residue_comp_df = pd.concat([
-                pd.DataFrame({'class_type': 'Input_Set_Residues', 'count': closeInputResiCountList}),
-                pd.DataFrame({'class_type': 'Random_Residues', 'count': randomResiCountList})
+                pd.DataFrame({'class_type': 'Input_Set_Residues', 'residue_number': self.inputSetDict[self.args.col], 'count': closeInputResiCountList}),
+                pd.DataFrame({'class_type': 'Random_Residues', 'residue_number': randomResiList, 'count': randomResiCountList})
             ], ignore_index=True)
             residue_comp_df['iter'] = i
             residue_comp_dfs.append(residue_comp_df)
