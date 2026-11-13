@@ -25,14 +25,6 @@ def setupArguments (multiFlag):
             help='Sequence alignment file in fasta (.fa) format'
         )
 
-        parser.add_argument( 
-            '-s',
-            '--only_sidechain', 
-            default=False,
-            action='store_true', 
-            help="Only looks at sidechain alt confs"
-        )
-
         parser.add_argument(
             '-m', 
             '--metadata',
@@ -161,6 +153,14 @@ def setupArguments (multiFlag):
         default=False,
         action='store_true', 
         help="Adds residues spatially adjacent to the determined network"
+    )
+
+    parser.add_argument(
+        '-s',
+        '--only_sidechain',
+        default=False,
+        action='store_true',
+        help="Only looks at sidechain alt confs"
     )
 
     args = parser.parse_args()
